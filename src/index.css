@@ -25,6 +25,7 @@ body.dark {
 }
 
 body {
+  box-sizing: border-box;
   font-family: -apple-system, 'Helvetica Neue', BlinkMacSystemFont, Cantarell,
     'Open Sans', sans-serif;
   font-size: calc(22px + 0.33vw);
@@ -32,6 +33,8 @@ body {
   padding: 5vh 10vw;
   background-color: var(--bgColor);
   color: var(--textColor);
+  margin: 0;
+  min-height: 100vh;
 }
 
 ::selection {
