@@ -1,0 +1,23 @@
+{
+  "name": "esm.dev",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "author": "Eduardo San Martin Morote <posva13@gmail.com>",
+  "scripts": {
+    "dev": "webpack-dev-server --env.mode=development",
+    "build": "webpack --env.mode=production"
+  },
+  "devDependencies": {
+    "css-loader": "^2.1.1",
+    "html-inline-css-webpack-plugin": "^1.4.0",
+    "html-webpack-plugin": "^4.0.0-beta.5",
+    "mini-css-extract-plugin": "^0.5.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "style-loader": "^0.23.1",
+    "terser-webpack-plugin": "^1.2.3",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1"
+  }
+}
