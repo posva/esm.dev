@@ -24,8 +24,16 @@ body.dark {
   --textColor: var(--light);
 }
 
+#physics {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+}
+
 body {
   box-sizing: border-box;
+  position: relative;
   font-family: -apple-system, 'Helvetica Neue', BlinkMacSystemFont, Cantarell,
     'Open Sans', sans-serif;
   font-size: calc(22px + 0.33vw);
