@@ -9,26 +9,34 @@ var Engine = Matter.Engine,
 // create an engine
 var engine = Engine.create()
 
+let ratio = window.innerWidth / window.innerHeight
+
 // create a renderer
 var render = Render.create({
   canvas: document.getElementById('physics'),
   options: {
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: 400,
+    height: 400 / ratio,
   },
   engine,
 })
 
 window.addEventListener('resize', () => {
+  ratio = window.innerWidth / window.innerHeight
+  return
   render.options.width = window.innerWidth
   render.options.height = window.innerHeight
   // render.bounds = Matter.Bounds.create(Matter.Vertices.create())
 })
 
+document.addEventListener('click', event => {
+  debugger
+})
+
 // create two boxes and a ground
-var boxA = Bodies.rectangle(400, 200, 80, 80)
-var boxB = Bodies.rectangle(450, 50, 80, 80)
-var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true })
+var boxA = Bodies.rectangle(200, 200, 30, 30)
+var boxB = Bodies.rectangle(220, 50, 30, 30)
+var ground = Bodies.rectangle(200, 300, 310, 20, { isStatic: true })
 
 // add all of the bodies to the world
 World.add(engine.world, [boxA, boxB, ground])

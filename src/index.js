@@ -1,6 +1,6 @@
 import './index.css'
 import { rotateOffsets } from './links'
-// import './physics'
+import './physics'
 
 let rafId
 function update() {
