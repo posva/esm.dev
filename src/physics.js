@@ -30,7 +30,7 @@ window.addEventListener('resize', () => {
 })
 
 document.addEventListener('click', event => {
-  debugger
+  // debugger
 })
 
 // create two boxes and a ground
