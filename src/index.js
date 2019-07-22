@@ -33,11 +33,11 @@ function stepper(elapsed) {
   lastElapsed = elapsed
   const ratio = lastDelta / BASE_DELTA
 
-  if (Date.now() - lastMove > 300) {
-    mouseTravel = Math.max(0, mouseTravel - ratio * 40)
+  if (Date.now() - lastMove > 200) {
+    mouseTravel = Math.max(0, mouseTravel - ratio * 70)
   }
 
-  rotateOffsets(ratio, Math.max(1, mouseTravel / 200))
+  rotateOffsets(ratio, Math.max(1, Math.min(mouseTravel / 200, 10)))
 }
 
 const lastMousePos = [-1, -1]
