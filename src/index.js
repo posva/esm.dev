@@ -18,6 +18,10 @@ if (module.hot) {
   })
 }
 
+document.querySelectorAll('a').forEach(link => {
+  link.dataset['text'] = link.innerText
+})
+
 update()
 
 let lastElapsed = 0
@@ -29,5 +33,23 @@ function stepper(elapsed) {
   lastElapsed = elapsed
   const ratio = lastDelta / BASE_DELTA
 
-  rotateOffsets(ratio)
+  if (Date.now() - lastMove > 300) {
+    mouseTravel = Math.max(0, mouseTravel - ratio * 40)
+  }
+
+  rotateOffsets(ratio, Math.max(1, mouseTravel / 200))
 }
+
+const lastMousePos = [-1, -1]
+let mouseTravel = 0
+let lastMove = 0
+document.body.addEventListener('mousemove', ({ pageX, pageY }) => {
+  if (lastMousePos[0] > -1)
+    mouseTravel += Math.max(
+      Math.abs(pageX - lastMousePos[0]),
+      Math.abs(pageY - lastMousePos[1])
+    )
+  lastMousePos[0] = pageX
+  lastMousePos[1] = pageY
+  lastMove = Date.now()
+})

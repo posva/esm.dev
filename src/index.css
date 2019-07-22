@@ -31,6 +31,11 @@ body.dark {
   z-index: -1;
 }
 
+#main {
+  width: 48rem;
+  max-width: 100%;
+}
+
 body {
   box-sizing: border-box;
   position: relative;
@@ -54,6 +59,7 @@ a {
   display: inline-block;
   color: var(--blue);
   position: relative;
+  font-weight: 500;
   text-decoration: none;
   transition: color 500ms linear 200ms;
 
