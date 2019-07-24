@@ -6,7 +6,8 @@
   "author": "Eduardo San Martin Morote <posva13@gmail.com>",
   "scripts": {
     "dev": "webpack-dev-server --env.mode=development",
-    "build": "webpack --env.mode=production"
+    "build": "webpack --env.mode=production",
+    "test": "yarn run build && webpack --env.mode=development"
   },
   "devDependencies": {
     "css-loader": "^3.1.0",
