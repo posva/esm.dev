@@ -10,7 +10,7 @@
     "test": "yarn run build && webpack --env.mode=development"
   },
   "devDependencies": {
-    "css-loader": "^3.1.0",
+    "css-loader": "^3.2.0",
     "html-inline-css-webpack-plugin": "^1.6.0",
     "html-webpack-plugin": "^4.0.0-beta.5",
     "mini-css-extract-plugin": "^0.8.0",
