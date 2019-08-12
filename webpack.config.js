@@ -44,10 +44,19 @@ module.exports = ({ mode = 'production' } = {}) => {
   const extraConfig =
     mode === 'production' ? productionOnlyConfig : devOnlyConfig
 
-  return {
+  /** @type {import('webpack').Configuration} */
+  const config = {
+    entry: path.resolve(__dirname, './src/index.ts'),
     mode,
+    resolve: {
+      extensions: ['.js', '.ts'],
+    },
     module: {
       rules: [
+        {
+          test: /\.ts$/,
+          loader: 'ts-loader',
+        },
         {
           test: /\.css$/,
           use: [
@@ -69,4 +78,6 @@ module.exports = ({ mode = 'production' } = {}) => {
       ...extraPlugins,
     ],
   }
+
+  return config
 }
