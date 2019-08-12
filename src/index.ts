@@ -1,6 +1,7 @@
 import './index.css'
 import { rotateOffsets } from './links'
 // import './physics'
+import { render as windmillRender } from './visual-experiments/windmill-problem'
 
 let rafId
 function update() {
@@ -11,7 +12,9 @@ function update() {
 }
 
 // For better dev
+// @ts-ignore
 if (module.hot) {
+  // @ts-ignore
   module.hot.accept('./links.js', () => {
     cancelAnimationFrame(rafId)
     update()
@@ -37,7 +40,9 @@ function stepper(elapsed) {
     mouseTravel = Math.max(0, mouseTravel - ratio * 70)
   }
 
-  rotateOffsets(ratio, Math.max(1, Math.min(mouseTravel / 200, 10)))
+  // rotateOffsets(ratio, Math.max(1, Math.min(mouseTravel / 200, 10)))
+
+  windmillRender(ratio)
 }
 
 const lastMousePos = [-1, -1]
