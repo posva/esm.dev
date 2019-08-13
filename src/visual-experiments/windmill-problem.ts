@@ -65,6 +65,10 @@ interface Context {
   seed: number
   points: Point[]
   current: number
+  nextPoint: {
+    i: number
+    angle: number
+  }
   angle: number
   options: Options
 }
@@ -77,22 +81,80 @@ interface Options {
 let context: Context = {
   seed: -1,
   points: [],
+  nextPoint: {
+    i: 0,
+    angle: 0,
+  },
   options: {} as Options,
   current: 0,
   angle: 0,
 }
+
 function start(seed: number, options: Options) {
   if (context.seed !== seed) {
     context = {
       seed,
       points: createSetOfPoints(options.amount, options.width, options.height),
-      current: Math.floor(Math.random() * options.amount),
-      angle: Math.random() * PI2,
+      nextPoint: {
+        i: 0,
+        angle: 0,
+      },
+      current: -1,
+      angle: 0,
       options,
     }
   }
 
+  // @ts-ignore
+  window.context = context
+
   return context
+}
+
+/**
+ * Returns the angle difference in radians [0, 2Pi]
+ * @param a first point
+ * @param b second point
+ */
+function angleBetweenPoints(a: Point, b: Point): number {
+  const angle = Math.atan2(a.y - b.y, b.x - a.x)
+  if (angle >= 0) return angle
+  return angle + PI2
+}
+
+function setNextPoint(context: Context) {
+  let lastPoint: number | null = null
+  if (context.current < 0) {
+    context.current = 0
+    context.angle = 0
+  } else {
+    lastPoint = context.current
+    context.current = context.nextPoint.i
+  }
+  let point = context.points[context.current]
+
+  let smallestPoint = {
+    i: 0,
+    angle: 0,
+    remainingAngle: Number.POSITIVE_INFINITY,
+  }
+
+  for (let i = 0; i < context.points.length; i++) {
+    if (i === context.current || i === lastPoint) continue
+    let angle = angleBetweenPoints(point, context.points[i])
+    // ignore if we have gone past through it
+    let remainingAngle =
+      context.angle > Math.PI
+        ? (Math.abs(context.angle - PI2) + angle) % PI2
+        : (angle - context.angle + PI2) % PI2
+    if (remainingAngle < smallestPoint.remainingAngle) {
+      smallestPoint.i = i
+      smallestPoint.angle = angle
+      smallestPoint.remainingAngle = remainingAngle
+    }
+  }
+
+  context.nextPoint = smallestPoint
 }
 
 export function render(ratio: number) {
@@ -105,15 +167,39 @@ export function render(ratio: number) {
   if (!ctx) return // avoid errors if no supporting browser
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 
-  const context = start(1, { amount: 10, width: size.x, height: size.y })
+  const context = start(1, { amount: 4, width: size.x, height: size.y })
+  context.points = [
+    {
+      x: 273.1264047366357,
+      y: 40.53436314001162,
+    },
+    {
+      x: 139.06916638441857,
+      y: 50.69419734248379,
+    },
+    {
+      x: 164.99958575741297,
+      y: 267.8015206521626,
+    },
+    {
+      x: 199.5673927514191,
+      y: 2.446256884441622,
+    },
+  ]
+
+  if (
+    context.current < 0 ||
+    Math.abs(context.nextPoint.angle - context.angle) <= 0.01
+  )
+    setNextPoint(context)
 
   // console.log(elapsed)
-  context.angle = (context.angle + ratio / 50) % PI2
+  context.angle = -((-context.angle - ratio / 50) % PI2)
 
-  const DISTANCE = 10000
+  const DISTANCE = 500
   const moveTo: Point = {
     x: Math.cos(context.angle) * DISTANCE,
-    y: Math.sin(context.angle) * DISTANCE,
+    y: -Math.sin(context.angle) * DISTANCE,
   }
 
   const point = context.points[context.current]
@@ -122,12 +208,24 @@ export function render(ratio: number) {
   ctx.fillStyle = getBackgroundColor()
   ctx.fillRect(0, 0, size.x, size.y)
 
-  ctx.strokeStyle = 'crimson'
   ctx.fillStyle = 'crimson'
   ctx.lineWidth = 1
+
+  const from: Point = {
+    x: point.x - moveTo.x,
+    y: point.y - moveTo.y,
+  }
+  const to: Point = {
+    x: point.x + moveTo.x,
+    y: point.y + moveTo.y,
+  }
+  const lineGradient = ctx.createLinearGradient(from.x, from.y, to.x, to.y)
+  lineGradient.addColorStop(0, 'red')
+  lineGradient.addColorStop(1, 'blue')
+  ctx.strokeStyle = lineGradient
   ctx.beginPath()
-  ctx.moveTo(point.x - moveTo.x, point.y - moveTo.y)
-  ctx.lineTo(point.x + moveTo.x, point.y + moveTo.y)
+  ctx.moveTo(from.x, from.y)
+  ctx.lineTo(to.x, to.y)
   // ctx.lineTo(center.x + 100, center.y + Math.sin(context.angle) * center.y)
   ctx.stroke()
 
@@ -138,5 +236,7 @@ export function render(ratio: number) {
     if (p === point) ctx.fillStyle = 'khaki'
     else ctx.fillStyle = 'crimson'
     drawPoint(ctx, p)
+    ctx.font = '20px Georgia'
+    ctx.fillText('' + context.points.indexOf(p), p.x, p.y)
   }
 }

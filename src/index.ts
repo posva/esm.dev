@@ -29,9 +29,7 @@ let experimentRender: ((...args: any[]) => void) | null = null
 
 // still testing this out
 if (process.env.NODE_ENV !== 'production') {
-  console.log('yeeee')
   experiment().then(module => {
-    console.log('done')
     experimentRender = module.render
   })
 }
