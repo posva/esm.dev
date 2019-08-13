@@ -133,7 +133,28 @@ function setNextPoint(context: Context) {
   let lastPoint: number | null = null
   if (context.current < 0) {
     // find initial point
-    context.current = 1
+    let minDelta = Number.POSITIVE_INFINITY
+    let center = -1
+    for (let i = 0; i < context.points.length; i++) {
+      // create two groups
+      let a = 0,
+        b = 0
+      for (let j = 0; j < context.points.length; j++) {
+        if (i === j) continue
+        // this simplification is possible because we are starting with an angle of 0
+        if (context.points[j].y < context.points[i].y) a++
+        else b++
+      }
+      const delta = Math.abs(a - b)
+      if (delta < minDelta) {
+        minDelta = delta
+        center = i
+        // this one is good as it evenly splits the space
+        if (delta < 1) break
+      }
+    }
+    console.log('starting with', center)
+    context.current = center
     context.angle = 0
   } else {
     lastPoint = context.current
@@ -182,7 +203,7 @@ export function render(ratio: number) {
   if (!ctx) return // avoid errors if no supporting browser
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 
-  const context = start(1, { amount: 10, width: size.x, height: size.y })
+  const context = start(1, { amount: 100, width: size.x, height: size.y })
   // context.points = [
   //   {
   //     x: 273.1264047366357,
