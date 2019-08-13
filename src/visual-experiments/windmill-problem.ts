@@ -68,8 +68,11 @@ interface Context {
   nextPoint: {
     i: number
     angle: number
+    remainingAngle: number
   }
   angle: number
+  // delta since last point reset
+  angleDelta: number
   options: Options
 }
 
@@ -84,10 +87,12 @@ let context: Context = {
   nextPoint: {
     i: 0,
     angle: 0,
+    remainingAngle: 0,
   },
   options: {} as Options,
   current: 0,
   angle: 0,
+  angleDelta: 0,
 }
 
 function start(seed: number, options: Options) {
@@ -98,9 +103,11 @@ function start(seed: number, options: Options) {
       nextPoint: {
         i: -1,
         angle: 0,
+        remainingAngle: 0,
       },
       current: -1,
       angle: 0,
+      angleDelta: 0,
       options,
     }
   }
@@ -125,6 +132,7 @@ function angleBetweenPoints(a: Point, b: Point): number {
 function setNextPoint(context: Context) {
   let lastPoint: number | null = null
   if (context.current < 0) {
+    // find initial point
     context.current = 1
     context.angle = 0
   } else {
@@ -159,6 +167,7 @@ function setNextPoint(context: Context) {
   }
 
   context.nextPoint = smallestPoint
+  context.angleDelta = context.nextPoint.remainingAngle
 }
 
 export function render(ratio: number) {
@@ -173,31 +182,33 @@ export function render(ratio: number) {
   if (!ctx) return // avoid errors if no supporting browser
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 
-  const context = start(1, { amount: 4, width: size.x, height: size.y })
-  context.points = [
-    {
-      x: 273.1264047366357,
-      y: 40.53436314001162,
-    },
-    {
-      x: 139.06916638441857,
-      y: 50.69419734248379,
-    },
-    {
-      x: 164.99958575741297,
-      y: 267.8015206521626,
-    },
-    {
-      x: 199.5673927514191,
-      y: 2.446256884441622,
-    },
-  ]
+  const context = start(1, { amount: 10, width: size.x, height: size.y })
+  // context.points = [
+  //   {
+  //     x: 273.1264047366357,
+  //     y: 40.53436314001162,
+  //   },
+  //   {
+  //     x: 139.06916638441857,
+  //     y: 50.69419734248379,
+  //   },
+  //   {
+  //     x: 164.99958575741297,
+  //     y: 267.8015206521626,
+  //   },
+  //   {
+  //     x: 199.5673927514191,
+  //     y: 2.446256884441622,
+  //   },
+  // ]
 
-  if (context.current < 0 || context.nextPoint.angle <= context.angle)
-    setNextPoint(context)
+  const angleIncrement = ratio / 50
+  context.angleDelta -= angleIncrement
+  // if (context.current < 0 || context.nextPoint.angle <= context.angle)
+  if (context.angleDelta < 0) setNextPoint(context)
 
   // console.log(elapsed)
-  context.angle = -((-context.angle - ratio / 50) % PI2)
+  context.angle = (context.angle + angleIncrement) % PI2
 
   const DISTANCE = 500
   const moveTo: Point = {
