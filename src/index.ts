@@ -1,7 +1,7 @@
 import './index.css'
 import { rotateOffsets } from './links'
 // import './physics'
-import { render as windmillRender } from './visual-experiments/windmill-problem'
+const experiment = () => import('./visual-experiments/windmill-problem')
 
 let rafId
 function update() {
@@ -25,6 +25,17 @@ document.querySelectorAll('a').forEach(link => {
   link.dataset['text'] = link.innerText
 })
 
+let experimentRender: ((...args: any[]) => void) | null = null
+
+// still testing this out
+if (process.env.NODE_ENV !== 'production') {
+  console.log('yeeee')
+  experiment().then(module => {
+    console.log('done')
+    experimentRender = module.render
+  })
+}
+
 update()
 
 let lastElapsed = 0
@@ -42,7 +53,7 @@ function stepper(elapsed) {
 
   // rotateOffsets(ratio, Math.max(1, Math.min(mouseTravel / 200, 10)))
 
-  windmillRender(ratio)
+  experimentRender && experimentRender(ratio)
 }
 
 const lastMousePos = [-1, -1]
