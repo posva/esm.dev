@@ -3,7 +3,6 @@
  */
 
 import { debounce, throttle } from 'lodash-es'
-import { IncomingMessage } from 'http'
 
 const container = document.getElementById('experiment-container') as HTMLElement
 const canvasEl: HTMLCanvasElement = document.getElementById(
@@ -232,7 +231,11 @@ export function render(ratio: number) {
   if (!ctx) return // avoid errors if no supporting browser
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 
-  const context = start(1, { amount: 20, width: size.x, height: size.y })
+  const context = start(1, {
+    amount: Math.random() * 7 + 15,
+    width: size.x,
+    height: size.y,
+  })
 
   const angleIncrement = (context.speed * ratio) / 200
   context.angleDelta -= angleIncrement
@@ -253,7 +256,6 @@ export function render(ratio: number) {
 
   // draw all points except current one
   ctx.fillStyle = 'crimson'
-  // ctx.strokeStyle = getColor()
   const circleGradient = ctx.createLinearGradient(
     0,
     0,
@@ -282,7 +284,12 @@ export function render(ratio: number) {
     x: point.x + moveTo.x,
     y: point.y + moveTo.y,
   }
-  const lineGradient = ctx.createLinearGradient(from.x, from.y, to.x, to.y)
+  const lineGradient = ctx.createLinearGradient(
+    Math.max(0, Math.min(from.x, size.x)),
+    Math.max(0, Math.min(from.y, size.y)),
+    Math.max(0, Math.min(to.x, size.x)),
+    Math.max(0, Math.min(to.y, size.y))
+  )
   lineGradient.addColorStop(0, 'red')
   lineGradient.addColorStop(1, 'blue')
   ctx.strokeStyle = lineGradient
@@ -293,6 +300,6 @@ export function render(ratio: number) {
   ctx.stroke()
 
   // draw current point
-  ctx.fillStyle = 'khaki'
+  ctx.fillStyle = getColor()
   drawPoint(ctx, point)
 }

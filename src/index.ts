@@ -51,7 +51,9 @@ function stepper(elapsed) {
     mouseTravel = Math.max(0, mouseTravel - ratio * 70)
   }
 
-  // rotateOffsets(ratio, Math.max(1, Math.min(mouseTravel / 200, 10)))
+  // only on production because we add css variables on root and it's hard to debug
+  if (process.env.NODE_ENV === 'production')
+    rotateOffsets(ratio, Math.max(1, Math.min(mouseTravel / 200, 10)))
 
   experimentRender && experimentRender(ratio)
 }

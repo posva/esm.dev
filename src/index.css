@@ -130,13 +130,12 @@ a:focus::after {
 
 #experiment-container::after {
   content: '';
-  /* display: block; */
   position: fixed;
   top: 0;
   left: 0;
   z-index: -5;
-  /* background: black; */
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--bgColor);
+  opacity: 0.5;
   width: 100vw;
   height: 100vh;
 }
