@@ -96,7 +96,7 @@ function start(seed: number, options: Options) {
       seed,
       points: createSetOfPoints(options.amount, options.width, options.height),
       nextPoint: {
-        i: 0,
+        i: -1,
         angle: 0,
       },
       current: -1,
@@ -125,16 +125,17 @@ function angleBetweenPoints(a: Point, b: Point): number {
 function setNextPoint(context: Context) {
   let lastPoint: number | null = null
   if (context.current < 0) {
-    context.current = 0
+    context.current = 1
     context.angle = 0
   } else {
     lastPoint = context.current
     context.current = context.nextPoint.i
+    context.angle = context.nextPoint.angle
   }
   let point = context.points[context.current]
 
   let smallestPoint = {
-    i: 0,
+    i: -1,
     angle: 0,
     remainingAngle: Number.POSITIVE_INFINITY,
   }
@@ -142,14 +143,17 @@ function setNextPoint(context: Context) {
   for (let i = 0; i < context.points.length; i++) {
     if (i === context.current || i === lastPoint) continue
     let angle = angleBetweenPoints(point, context.points[i])
-    // ignore if we have gone past through it
-    let remainingAngle =
-      context.angle > Math.PI
-        ? (Math.abs(context.angle - PI2) + angle) % PI2
-        : (angle - context.angle + PI2) % PI2
+    // the line is turning, so the intersection can happen at tho different spots
+    const dir1 = context.angle
+    const dir2 = (context.angle + Math.PI) % PI2
+
+    const delta1 = (angle - dir1 + PI2) % PI2
+    const delta2 = (angle - dir2 + PI2) % PI2
+
+    let remainingAngle = Math.min(delta1, delta2)
     if (remainingAngle < smallestPoint.remainingAngle) {
       smallestPoint.i = i
-      smallestPoint.angle = angle
+      smallestPoint.angle = (context.angle + remainingAngle) % PI2
       smallestPoint.remainingAngle = remainingAngle
     }
   }
@@ -158,6 +162,8 @@ function setNextPoint(context: Context) {
 }
 
 export function render(ratio: number) {
+  // skip if too fast
+  if (ratio > 2) return
   const size = getDimensions()
   canvasEl.setAttribute('width', '' + size.x)
   canvasEl.setAttribute('height', '' + size.x)
@@ -187,10 +193,7 @@ export function render(ratio: number) {
     },
   ]
 
-  if (
-    context.current < 0 ||
-    Math.abs(context.nextPoint.angle - context.angle) <= 0.01
-  )
+  if (context.current < 0 || context.nextPoint.angle <= context.angle)
     setNextPoint(context)
 
   // console.log(elapsed)
