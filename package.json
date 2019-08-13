@@ -24,6 +24,7 @@
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
+    "lodash-es": "^4.17.15",
     "matter-js": "^0.14.2"
   }
 }

@@ -1,7 +1,12 @@
 import './index.css'
 import { rotateOffsets } from './links'
 // import './physics'
-const experiment = () => import('./visual-experiments/windmill-problem')
+
+const possibleExperiments = ['windmill-problem']
+const experimentId = Math.floor(Math.random() * possibleExperiments.length)
+
+const experiment = () =>
+  import(`./visual-experiments/${possibleExperiments[experimentId]}.ts`)
 
 let rafId
 function update() {
@@ -27,12 +32,9 @@ document.querySelectorAll('a').forEach(link => {
 
 let experimentRender: ((...args: any[]) => void) | null = null
 
-// still testing this out
-if (process.env.NODE_ENV !== 'production') {
-  experiment().then(module => {
-    experimentRender = module.render
-  })
-}
+experiment().then(module => {
+  experimentRender = module.render
+})
 
 update()
 

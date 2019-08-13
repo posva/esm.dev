@@ -2,6 +2,10 @@
  * Insipired by https://www.youtube.com/watch?v=M64HUIJFTZM
  */
 
+import { debounce, throttle } from 'lodash-es'
+import { IncomingMessage } from 'http'
+
+const container = document.getElementById('experiment-container') as HTMLElement
 const canvasEl: HTMLCanvasElement = document.getElementById(
   'experiment'
 ) as HTMLCanvasElement
@@ -10,18 +14,18 @@ canvasEl.setAttribute('width', '' + size.x)
 canvasEl.setAttribute('height', '' + size.x)
 
 function getBackgroundColor(): string {
-  const { backgroundColor } = window.getComputedStyle(canvasEl)
+  const { backgroundColor } = window.getComputedStyle(container)
   return backgroundColor || '#121314'
 }
 
 function getColor(): string {
-  const { color } = window.getComputedStyle(canvasEl)
+  const { color } = window.getComputedStyle(container)
   return color || '#efeeed'
 }
 
 function getDimensions(): { x: number; y: number } {
-  const { width, height } = canvasEl
-  return { x: width, y: height }
+  const { width, height } = window.getComputedStyle(canvasEl)
+  return { x: parseInt(width!, 10) || 0, y: parseInt(height!, 10) || 0 }
 }
 
 interface Point {
@@ -51,20 +55,21 @@ function createSetOfPoints(n: number, w: number, h: number): Point[] {
   return points
 }
 
-const radius = 3
+const radius = 10
 const PI2 = Math.PI * 2
 
 function drawPoint(ctx: CanvasRenderingContext2D, point: Point): void {
   ctx.beginPath()
   ctx.arc(point.x, point.y, radius, 0, PI2, false)
   ctx.fill()
-  ctx.stroke()
+  // ctx.stroke()
 }
 
 interface Context {
   seed: number
   points: Point[]
   current: number
+  speed: number
   nextPoint: {
     i: number
     angle: number
@@ -73,6 +78,7 @@ interface Context {
   angle: number
   // delta since last point reset
   angleDelta: number
+  lineDemiWidth: number
   options: Options
 }
 
@@ -84,6 +90,7 @@ interface Options {
 let context: Context = {
   seed: -1,
   points: [],
+  speed: 1,
   nextPoint: {
     i: 0,
     angle: 0,
@@ -92,13 +99,18 @@ let context: Context = {
   options: {} as Options,
   current: 0,
   angle: 0,
+  lineDemiWidth: 100,
   angleDelta: 0,
 }
+
+let isListeningForResize = false
+let lastScrollY = window.scrollY
 
 function start(seed: number, options: Options) {
   if (context.seed !== seed) {
     context = {
       seed,
+      speed: 1,
       points: createSetOfPoints(options.amount, options.width, options.height),
       nextPoint: {
         i: -1,
@@ -108,12 +120,32 @@ function start(seed: number, options: Options) {
       current: -1,
       angle: 0,
       angleDelta: 0,
+      lineDemiWidth: Math.sqrt(options.width ** 2 + options.height ** 2),
       options,
     }
   }
 
   // @ts-ignore
   window.context = context
+
+  if (!isListeningForResize) {
+    isListeningForResize = true
+    window.addEventListener(
+      'resize',
+      debounce(() => {
+        start(seed + 1, options)
+      }, 500)
+    )
+    document.body.addEventListener(
+      'wheel',
+      throttle(({ deltaY }) => {
+        const inc = deltaY * (lastScrollY > window.screenY ? -1 : 1) * 0.0025
+        context.speed = Math.max(0.05, Math.min(context.speed + inc, 10))
+        console.log('scrolling', deltaY, context.speed)
+        lastScrollY = window.scrollY
+      }, 50)
+    )
+  }
 
   return context
 }
@@ -153,7 +185,6 @@ function setNextPoint(context: Context) {
         if (delta < 1) break
       }
     }
-    console.log('starting with', center)
     context.current = center
     context.angle = 0
   } else {
@@ -195,56 +226,53 @@ export function render(ratio: number) {
   // skip if too fast
   if (ratio > 2) return
   const size = getDimensions()
-  canvasEl.setAttribute('width', '' + size.x)
-  canvasEl.setAttribute('height', '' + size.x)
   canvasEl.width = size.x * window.devicePixelRatio
   canvasEl.height = size.y * window.devicePixelRatio
   const ctx = canvasEl.getContext('2d')
   if (!ctx) return // avoid errors if no supporting browser
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 
-  const context = start(1, { amount: 100, width: size.x, height: size.y })
-  // context.points = [
-  //   {
-  //     x: 273.1264047366357,
-  //     y: 40.53436314001162,
-  //   },
-  //   {
-  //     x: 139.06916638441857,
-  //     y: 50.69419734248379,
-  //   },
-  //   {
-  //     x: 164.99958575741297,
-  //     y: 267.8015206521626,
-  //   },
-  //   {
-  //     x: 199.5673927514191,
-  //     y: 2.446256884441622,
-  //   },
-  // ]
+  const context = start(1, { amount: 20, width: size.x, height: size.y })
 
-  const angleIncrement = ratio / 50
+  const angleIncrement = (context.speed * ratio) / 200
   context.angleDelta -= angleIncrement
-  // if (context.current < 0 || context.nextPoint.angle <= context.angle)
   if (context.angleDelta < 0) setNextPoint(context)
 
-  // console.log(elapsed)
   context.angle = (context.angle + angleIncrement) % PI2
 
-  const DISTANCE = 500
   const moveTo: Point = {
-    x: Math.cos(context.angle) * DISTANCE,
-    y: -Math.sin(context.angle) * DISTANCE,
+    x: Math.cos(context.angle) * context.lineDemiWidth,
+    y: -Math.sin(context.angle) * context.lineDemiWidth,
   }
 
   const point = context.points[context.current]
 
-  const center = { x: size.x / 2, y: size.y / 2 }
+  // clear
   ctx.fillStyle = getBackgroundColor()
   ctx.fillRect(0, 0, size.x, size.y)
 
+  // draw all points except current one
   ctx.fillStyle = 'crimson'
-  ctx.lineWidth = 1
+  // ctx.strokeStyle = getColor()
+  const circleGradient = ctx.createLinearGradient(
+    0,
+    0,
+    context.options.width,
+    0
+  )
+  circleGradient.addColorStop(0, 'red')
+  circleGradient.addColorStop(1, 'blue')
+  for (const p of context.points) {
+    if (p === point) continue
+    else ctx.fillStyle = circleGradient
+    drawPoint(ctx, p)
+    // ctx.font = '20px Georgia'
+    // ctx.fillText('' + context.points.indexOf(p), p.x, p.y)
+  }
+
+  // draw line
+  ctx.fillStyle = 'crimson'
+  ctx.lineWidth = 4
 
   const from: Point = {
     x: point.x - moveTo.x,
@@ -264,14 +292,7 @@ export function render(ratio: number) {
   // ctx.lineTo(center.x + 100, center.y + Math.sin(context.angle) * center.y)
   ctx.stroke()
 
-  ctx.fillStyle = 'crimson'
-  ctx.strokeStyle = getColor()
-  ctx.lineWidth = 0.5
-  for (const p of context.points) {
-    if (p === point) ctx.fillStyle = 'khaki'
-    else ctx.fillStyle = 'crimson'
-    drawPoint(ctx, p)
-    ctx.font = '20px Georgia'
-    ctx.fillText('' + context.points.indexOf(p), p.x, p.y)
-  }
+  // draw current point
+  ctx.fillStyle = 'khaki'
+  drawPoint(ctx, point)
 }
