@@ -144,9 +144,37 @@ function start(seed: number, options: Options) {
         lastScrollY = window.scrollY
       }, 50)
     )
+    // remove add points
+    document.body.addEventListener('click', event => {
+      const mousePoint = {
+        x: event.clientX,
+        y: event.clientY,
+      }
+      const collisionPointI = context.points.findIndex((p, i) =>
+        isPointInside(mousePoint, p, radius)
+      )
+      if (collisionPointI < 0) {
+        context.points.push(mousePoint)
+        // reset nextPoint
+        context.nextPoint.i = context.current
+        context.nextPoint.angle = context.angle
+        setNextPoint(context)
+      } else if (
+        collisionPointI !== context.current &&
+        collisionPointI !== context.nextPoint.i
+      ) {
+        context.points.splice(collisionPointI, 1)
+        context.current += context.current > collisionPointI ? -1 : 0
+        context.nextPoint.i += context.nextPoint.i > collisionPointI ? -1 : 0
+      }
+    })
   }
 
   return context
+}
+
+function isPointInside(point: Point, circle: Point, radius: number): boolean {
+  return (point.x - circle.x) ** 2 + (point.y - circle.y) ** 2 < radius ** 2
 }
 
 /**
