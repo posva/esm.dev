@@ -145,7 +145,7 @@ function start(seed: number, options: Options) {
       }, 50)
     )
     // remove add points
-    document.body.addEventListener('click', event => {
+    document.body.addEventListener('pointerdown', event => {
       const mousePoint = {
         x: event.clientX,
         y: event.clientY,
