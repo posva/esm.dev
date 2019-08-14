@@ -105,6 +105,42 @@ let context: Context = {
 let isListeningForResize = false
 let lastScrollY = window.scrollY
 
+function globalClickHandler(event: MouseEvent | TouchEvent | PointerEvent) {
+  let mousePoint: Point
+  if ('clientX' in event) {
+    mousePoint = {
+      x: event.clientX,
+      y: event.clientY,
+    }
+  } else {
+    mousePoint = {
+      x: event.touches[0].clientX,
+      y: event.touches[0].clientY,
+    }
+  }
+
+  const collisionPointI = context.points.findIndex((p, i) =>
+    isPointInside(mousePoint, p, radius)
+  )
+  if (collisionPointI < 0) {
+    context.points.push(mousePoint)
+    // reset nextPoint
+    context.nextPoint.i = context.current
+    context.nextPoint.angle = context.angle
+    setNextPoint(context)
+  } else if (collisionPointI !== context.current) {
+    context.points.splice(collisionPointI, 1)
+    context.current += context.current > collisionPointI ? -1 : 0
+    // context.nextPoint.i += context.nextPoint.i > collisionPointI ? -1 : 0
+    if (collisionPointI === context.nextPoint.i) {
+      // reset nextPoint
+      context.nextPoint.i = context.current
+      context.nextPoint.angle = context.angle
+      setNextPoint(context)
+    } else if (context.nextPoint.i > collisionPointI) context.nextPoint.i--
+  }
+}
+
 function start(seed: number, options: Options) {
   if (context.seed !== seed) {
     context = {
@@ -145,29 +181,12 @@ function start(seed: number, options: Options) {
       }, 50)
     )
     // remove add points
-    document.body.addEventListener('pointerdown', event => {
-      const mousePoint = {
-        x: event.clientX,
-        y: event.clientY,
-      }
-      const collisionPointI = context.points.findIndex((p, i) =>
-        isPointInside(mousePoint, p, radius)
-      )
-      if (collisionPointI < 0) {
-        context.points.push(mousePoint)
-        // reset nextPoint
-        context.nextPoint.i = context.current
-        context.nextPoint.angle = context.angle
-        setNextPoint(context)
-      } else if (
-        collisionPointI !== context.current &&
-        collisionPointI !== context.nextPoint.i
-      ) {
-        context.points.splice(collisionPointI, 1)
-        context.current += context.current > collisionPointI ? -1 : 0
-        context.nextPoint.i += context.nextPoint.i > collisionPointI ? -1 : 0
-      }
-    })
+    const throttledClick = throttle(globalClickHandler, 100)
+    if ('PointerEvent' in window)
+      document.body.addEventListener('pointerdown', throttledClick)
+    else document.body.addEventListener('mousedown', throttledClick)
+    // touch devices
+    document.body.addEventListener('touchstart', throttledClick)
   }
 
   return context
