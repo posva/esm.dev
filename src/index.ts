@@ -2,8 +2,11 @@ import './index.css'
 import { rotateOffsets } from './links'
 // import './physics'
 
-const possibleExperiments = ['windmill-problem']
-const experimentId = Math.floor(Math.random() * possibleExperiments.length)
+const possibleExperiments = ['windmill-problem', 'maze']
+const experimentId =
+  process.env.NODE_ENV === 'production'
+    ? Math.floor(Math.random() * possibleExperiments.length)
+    : possibleExperiments.length - 1
 
 const experiment = () =>
   import(`./visual-experiments/${possibleExperiments[experimentId]}.ts`)
