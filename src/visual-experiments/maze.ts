@@ -147,7 +147,14 @@ function drawTree(
   tree: MazeNode,
   offset: Point
 ) {
-  ctx.strokeStyle = 'crimson'
+  // TODO: animation effect gradient
+  const width = tree.width * cellSize
+  const height = tree.height * cellSize
+  const lineGradient = ctx.createLinearGradient(0, 0, width, height)
+  lineGradient.addColorStop(0, 'crimson')
+  lineGradient.addColorStop(1, 'royalblue')
+  ctx.strokeStyle = lineGradient
+  // ctx.strokeStyle = 'crimson'
   ctx.lineWidth = cellSize / 8
   ctx.beginPath()
   ctx.moveTo(offset.x + cellSize, offset.y)
