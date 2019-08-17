@@ -112,14 +112,15 @@ function drawWall(
   tree: MazeNode,
   offset: Point
 ) {
-  ctx.transform(1, 0, 0, 1, offset.x, offset.y)
   ctx.beginPath()
   const x =
     (tree.x + (tree.wall === WallType.vertical ? tree.wallOffset : 0)) *
-    cellSize
+      cellSize +
+    offset.x
   const y =
     (tree.y + (tree.wall === WallType.vertical ? 0 : tree.wallOffset)) *
-    cellSize
+      cellSize +
+    offset.y
 
   ctx.moveTo(x, y)
   if (tree.wall === WallType.vertical) {
@@ -135,8 +136,6 @@ function drawWall(
     ctx.lineTo(x + tree.width * cellSize, y)
     ctx.stroke()
   }
-
-  ctx.setTransform(1, 0, 0, 1, 0, 0)
 
   if (tree.left.wall !== WallType.none) drawWall(ctx, tree.left, offset)
   if (tree.right.wall !== WallType.none) drawWall(ctx, tree.right, offset)
