@@ -1,3 +1,4 @@
+import { debounce } from 'lodash-es'
 import {
   getDimensions,
   canvasEl,
@@ -97,10 +98,21 @@ function generateMaze(width: number, height: number): MazeNode {
 let tree: MazeNode
 let lastUsedSeed = -1
 
+let isListeningForResize = false
+
 function start(seed: number, width: number, height: number): MazeNode {
   if (lastUsedSeed !== seed) {
     lastUsedSeed = seed
     tree = generateMaze(width, height)
+  }
+  if (!isListeningForResize) {
+    isListeningForResize = true
+    window.addEventListener(
+      'resize',
+      debounce(() => {
+        start(seed + 1, width, height)
+      }, 500)
+    )
   }
   return tree
 }
@@ -174,10 +186,12 @@ function drawTree(
   drawWall(ctx, tree, offset)
 }
 
+let lastUsedTree: MazeNode | null = null
+
 export function render(ratio: number) {
   if (ratio > 2) return
   // TODO: this should only be done once as it resets the canvas
-  if (!tree) {
+  if (lastUsedTree !== tree) {
     const size = getDimensions()
     canvasEl.width = size.x * window.devicePixelRatio
     canvasEl.height = size.y * window.devicePixelRatio
@@ -199,8 +213,8 @@ export function render(ratio: number) {
       `Generating a maze ${width}x${height} with cellSize of ${cellSize}`
     )
 
-    const context = start(1, width, height)
-    console.log(context)
+    lastUsedTree = start(1, width, height)
+    console.log(lastUsedTree)
     // clear
     ctx.fillStyle = getBackgroundColor()
     // ctx.fillStyle = 'black'
