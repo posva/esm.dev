@@ -4,33 +4,13 @@
 
 import { debounce, throttle } from 'lodash-es'
 
-const container = document.getElementById('experiment-container') as HTMLElement
-const canvasEl: HTMLCanvasElement = document.getElementById(
-  'experiment'
-) as HTMLCanvasElement
-const size = getDimensions()
-canvasEl.setAttribute('width', '' + size.x)
-canvasEl.setAttribute('height', '' + size.x)
-
-function getBackgroundColor(): string {
-  const { backgroundColor } = window.getComputedStyle(container)
-  return backgroundColor || '#121314'
-}
-
-function getColor(): string {
-  const { color } = window.getComputedStyle(container)
-  return color || '#efeeed'
-}
-
-function getDimensions(): { x: number; y: number } {
-  const { width, height } = window.getComputedStyle(canvasEl)
-  return { x: parseInt(width!, 10) || 0, y: parseInt(height!, 10) || 0 }
-}
-
-interface Point {
-  x: number
-  y: number
-}
+import {
+  Point,
+  canvasEl,
+  getDimensions,
+  getBackgroundColor,
+  getColor,
+} from './utils/screen'
 
 /**
  *
