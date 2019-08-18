@@ -294,9 +294,10 @@ function createContext(width: number, height: number): Context | null {
 function movePosition(context: Context, ratio: number) {
   const { position, direction, nextPoint } = context
   const point = context.solution[nextPoint]
+  const delta = ratio * 3
   position[direction] +=
-    ((position[direction] < point[direction] ? 1 : -1) * ratio) / 10
-  context.remaining -= ratio / 10
+    (position[direction] < point[direction] ? 1 : -1) * delta
+  context.remaining -= delta
 
   if (context.remaining <= 0) {
     context.position = { ...point }
@@ -429,7 +430,8 @@ function drawPath(context: Context) {
   }
   // draw the portion that is being walked currently
   const remaining =
-    context.remaining * (position[direction] < point[direction] ? 1 : -1)
+    Math.max(context.remaining, 0) *
+    (position[direction] < point[direction] ? 1 : -1)
   x =
     offset.x +
     (point.x + 0.5 - +(context.direction === 'x') * remaining) * cellSize
