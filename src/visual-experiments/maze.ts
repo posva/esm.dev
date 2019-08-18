@@ -214,7 +214,7 @@ let isListeningForResize = false
  * @param width size in px
  * @param height size in px
  */
-function start(width: number, height: number): Context | null {
+function createContext(width: number, height: number): Context | null {
   if (_context) return _context
   // console.time('Maze Generation')
 
@@ -246,7 +246,7 @@ function start(width: number, height: number): Context | null {
       'resize',
       debounce(() => {
         _context = null
-        start(width, height)
+        createContext(width, height)
       }, 500)
     )
   }
@@ -283,18 +283,27 @@ function drawWall(context: Context) {
 
   ctx.moveTo(x, y)
   if (tree.wall === WallType.vertical) {
-    ctx.lineTo(x, y + tree.doorOffset * cellSize)
-    ctx.stroke()
-    ctx.moveTo(x, y + (tree.doorOffset + 1) * cellSize)
-    ctx.lineTo(x, y + tree.height * cellSize)
-    ctx.stroke()
+    // do not draw emptylines
+    if (tree.doorOffset) {
+      ctx.lineTo(x, y + tree.doorOffset * cellSize)
+    }
+    // do not draw emptylines
+    if (tree.doorOffset < tree.height - 1) {
+      ctx.moveTo(x, y + (tree.doorOffset + 1) * cellSize)
+      ctx.lineTo(x, y + tree.height * cellSize)
+    }
   } else {
-    ctx.lineTo(x + tree.doorOffset * cellSize, y)
-    ctx.stroke()
-    ctx.moveTo(x + (tree.doorOffset + 1) * cellSize, y)
-    ctx.lineTo(x + tree.width * cellSize, y)
-    ctx.stroke()
+    // do not draw emptylines
+    if (tree.doorOffset) {
+      ctx.lineTo(x + tree.doorOffset * cellSize, y)
+    }
+    // do not draw emptylines
+    if (tree.doorOffset < tree.width - 1) {
+      ctx.moveTo(x + (tree.doorOffset + 1) * cellSize, y)
+      ctx.lineTo(x + tree.width * cellSize, y)
+    }
   }
+  ctx.stroke()
 
   if (tree.left.wall !== WallType.none)
     drawWall({ ...context, tree: tree.left })
@@ -342,7 +351,7 @@ export function render(ratio: number) {
   const size = getDimensions()
 
   // TODO: rename to getContext
-  const context = start(size.x, size.y)
+  const context = createContext(size.x, size.y)
   if (!context) return
 
   if (context.state === 'start') {
