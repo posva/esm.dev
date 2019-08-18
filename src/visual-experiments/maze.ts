@@ -96,7 +96,7 @@ function createWall(
  * @param width > 2
  * @param height > 2
  */
-function generateMaze(width: number, height: number): MazeNode {
+export function generateMaze(width: number, height: number): MazeNode {
   return createWall(0, 0, width, height) as MazeNode
 }
 
@@ -160,13 +160,13 @@ function dividePath(
   return startPath.concat(endPath)
 }
 
-function solveMaze(maze: MazeNode): Point[] {
+export function solveMaze(maze: MazeNode): Point[] {
   const left: Point = { x: 0, y: 0 }
   const right: Point = { x: maze.width - 1, y: maze.height - 1 }
   return dividePath(maze, left, right)
 }
 
-function simplifyPath(points: Point[]): Point[] {
+export function simplifyPath(points: Point[]): Point[] {
   // begining of a path
   let initialPoint: Point = points[0]
   // current point
@@ -191,7 +191,7 @@ function simplifyPath(points: Point[]): Point[] {
   return simplified
 }
 
-interface Context {
+export interface Context {
   tree: MazeNode
   solution: Point[]
   width: number
@@ -210,22 +210,27 @@ interface Context {
 let _context: Context | null = null
 let isListeningForResize = false
 
+const defaultCellsize = 2 ** 4
+const defaultOffset = {
+  x: defaultCellsize * 2,
+  y: defaultCellsize * 2,
+}
+
 /**
  * Get current context or creates a new one
  * @param width size in px
  * @param height size in px
+ * @param cellSize size of a cell in the maze
+ * @param offest position to offset to drawingn and center around it
  */
-function createContext(width: number, height: number): Context | null {
+export function createContext(
+  width: number,
+  height: number,
+  cellSize: number,
+  offset: Point
+): Context | null {
   if (_context) return _context
   // console.time('Maze Generation')
-
-  // size of a cell in the maze
-  const cellSize = 2 ** 4
-  // padding to draw
-  const offset: Point = {
-    x: cellSize * 2,
-    y: cellSize * 2,
-  }
 
   // convert sizes from px to cells
   width = Math.floor((width - offset.x * 2) / cellSize)
@@ -244,14 +249,8 @@ function createContext(width: number, height: number): Context | null {
   let solutionUnoptimized = solveMaze(tree)
   // console.timeEnd('Maze solving')
   // add a small offset outside of the maze to make it look better
-  solutionUnoptimized.unshift({
-    x: 0,
-    y: -1,
-  })
-  solutionUnoptimized.push({
-    x: tree.width - 1,
-    y: tree.height,
-  })
+  solutionUnoptimized.unshift({ x: 0, y: -1 })
+  solutionUnoptimized.push({ x: tree.width - 1, y: tree.height })
 
   // console.time('Path simplification')
   const solution = simplifyPath(solutionUnoptimized)
@@ -262,8 +261,12 @@ function createContext(width: number, height: number): Context | null {
     window.addEventListener(
       'resize',
       debounce(() => {
+        const { cellSize, offset } = _context!
         _context = null
-        createContext(width, height)
+        const size = getDimensions()
+        const width = Math.floor((size.x - offset.x * 2) / cellSize)
+        const height = Math.floor((size.y - offset.y * 2) / cellSize)
+        createContext(width, height, cellSize, offset)
       }, 500)
     )
   }
@@ -295,10 +298,14 @@ function createContext(width: number, height: number): Context | null {
   })
 }
 
+export function resetContext() {
+  _context = null
+}
+
 function movePosition(context: Context, ratio: number) {
   const { position, direction, nextPoint } = context
   const point = context.solution[nextPoint]
-  const delta = (ratio * context.solution.length) / 100
+  const delta = (ratio * context.solution.length) / 1000
   position[direction] +=
     (position[direction] < point[direction] ? 1 : -1) * delta
   context.remaining -= delta
@@ -391,9 +398,11 @@ function drawTree(context: Context) {
   drawWall(context)
 }
 
+const guyRadiusRatio = 2
+
 function clearPlayer(context: Context) {
   const { offset, cellSize, ctx, position } = context
-  const radius = ctx.lineWidth * 0.7
+  const radius = ctx.lineWidth * guyRadiusRatio
   // dot position
   const x = offset.x + (position.x + 0.5) * cellSize
   const y = offset.y + (position.y + 0.5) * cellSize
@@ -405,7 +414,7 @@ function clearPlayer(context: Context) {
   ctx.stroke()
 }
 
-function drawPath(context: Context) {
+export function drawPath(context: Context) {
   const {
     offset,
     cellSize,
@@ -446,7 +455,7 @@ function drawPath(context: Context) {
   ctx.stroke()
 
   // draw the dot
-  const radius = ctx.lineWidth * 0.7
+  const radius = ctx.lineWidth * guyRadiusRatio
   // dot position
   x = offset.x + (position.x + 0.5) * cellSize
   y = offset.y + (position.y + 0.5) * cellSize
@@ -464,7 +473,7 @@ export function render(ratio: number) {
   const size = getDimensions()
 
   // TODO: rename to getContext
-  const context = createContext(size.x, size.y)
+  const context = createContext(size.x, size.y, defaultCellsize, defaultOffset)
   if (!context) return
 
   if (context.state === 'start') {
