@@ -2,7 +2,7 @@ import './index.css'
 import { rotateOffsets } from './links'
 // import './physics'
 
-const possibleExperiments = ['windmill-problem', 'maze']
+const possibleExperiments = ['windmill-problem', 'maze', 'coast']
 const experimentId =
   process.env.NODE_ENV === 'production'
     ? Math.floor(Math.random() * possibleExperiments.length)
