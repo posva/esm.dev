@@ -166,6 +166,29 @@ function solveMaze(maze: MazeNode): Point[] {
   return dividePath(maze, left, right)
 }
 
+function simplifyPath(points: Point[]): Point[] {
+  // begining of a path
+  let initialPoint: Point = points[0]
+  // current point
+  let point: Point = points[1]
+  // last point that was checked
+  let lastPoint = point
+  let direction: 'x' | 'y' = initialPoint.x === point.x ? 'x' : 'y'
+  const simplified: Point[] = [initialPoint]
+  for (let i = 2; i < points.length; i++) {
+    point = points[i]
+    // we are changing directions
+    if (initialPoint[direction] !== point[direction]) {
+      simplified.push(lastPoint)
+      direction = direction === 'x' ? 'y' : 'x'
+      initialPoint = lastPoint
+    }
+    lastPoint = point
+  }
+
+  return simplified
+}
+
 let tree: MazeNode
 let lastUsedSeed = -1
 
@@ -288,7 +311,8 @@ export function render(ratio: number) {
     lastUsedTree = start(1, width, height)
     console.log(lastUsedTree)
     requestAnimationFrame(() => {
-      const solved = solveMaze(tree)
+      let solved = solveMaze(tree)
+      // add a small offset outside of the maze to make it look better
       solved.unshift({
         x: 0,
         y: -1,
@@ -297,7 +321,9 @@ export function render(ratio: number) {
         x: tree.width - 1,
         y: tree.height,
       })
-      console.log(solved)
+      console.log(solved.length)
+      solved = simplifyPath(solved)
+      console.log(solved.length)
       let point = solved[0]
       const x = offset.x + (point.x + 0.5) * cellSize
       const y = offset.y + (point.y + 0.5) * cellSize
@@ -320,12 +346,9 @@ export function render(ratio: number) {
         const y = offset.y + (point.y + 0.5) * cellSize
         ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
         ctx.fill()
-        ctx.font = '32px Helvetica Neue'
-        ctx.textAlign = 'center'
-        ctx.fillStyle = 'crimson'
-        // ctx.fillText('' + solved.indexOf(point), x, y)
       }
     })
+
     // clear
     ctx.fillStyle = getBackgroundColor()
     // ctx.fillStyle = 'black'
