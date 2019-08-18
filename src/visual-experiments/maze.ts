@@ -186,6 +186,8 @@ function simplifyPath(points: Point[]): Point[] {
     lastPoint = point
   }
 
+  if (initialPoint !== lastPoint) simplified.push(lastPoint)
+
   return simplified
 }
 
@@ -197,7 +199,9 @@ let isListeningForResize = false
 function start(seed: number, width: number, height: number): MazeNode {
   if (lastUsedSeed !== seed) {
     lastUsedSeed = seed
+    // console.time('Maze Generation')
     tree = generateMaze(width, height)
+    // console.timeEnd('Maze Generation')
   }
   if (!isListeningForResize) {
     isListeningForResize = true
@@ -295,8 +299,8 @@ export function render(ratio: number) {
     ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 
     const offset: Point = {
-      x: cellSize * 4,
-      y: cellSize * 4,
+      x: cellSize * 2,
+      y: cellSize * 2,
     }
 
     const width = Math.floor((size.x - offset.x * 2) / cellSize)
@@ -311,7 +315,9 @@ export function render(ratio: number) {
     lastUsedTree = start(1, width, height)
     console.log(lastUsedTree)
     requestAnimationFrame(() => {
+      // console.time('Maze solving')
       let solved = solveMaze(tree)
+      // console.timeEnd('Maze solving')
       // add a small offset outside of the maze to make it look better
       solved.unshift({
         x: 0,
@@ -321,12 +327,15 @@ export function render(ratio: number) {
         x: tree.width - 1,
         y: tree.height,
       })
-      console.log(solved.length)
+
+      // console.time('Path simplification')
       solved = simplifyPath(solved)
-      console.log(solved.length)
+      // console.timeEnd('Path simplification')
+
       let point = solved[0]
       const x = offset.x + (point.x + 0.5) * cellSize
       const y = offset.y + (point.y + 0.5) * cellSize
+      // console.time('Drawing solution')
       ctx.beginPath()
       ctx.strokeStyle = getColor()
       ctx.moveTo(x, y)
@@ -347,6 +356,7 @@ export function render(ratio: number) {
         ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
         ctx.fill()
       }
+      // console.timeEnd('Drawing solution')
     })
 
     // clear
@@ -354,6 +364,8 @@ export function render(ratio: number) {
     // ctx.fillStyle = 'black'
     ctx.fillRect(0, 0, size.x, size.y)
 
+    // console.time('Drawing maze')
     drawTree(ctx, tree, offset)
+    // console.timeEnd('Drawing maze')
   }
 }
