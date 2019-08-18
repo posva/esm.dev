@@ -4,6 +4,7 @@ import {
   canvasEl,
   getBackgroundColor,
   Point,
+  getColor,
 } from './utils/screen'
 
 const enum WallType {
@@ -105,9 +106,7 @@ function dividePath(
   end: Point
 ): Point[] {
   if (isSamePoint(start, end)) return [start]
-  if (maze.wall === WallType.none) {
-    return [start, end]
-  }
+  if (maze.wall === WallType.none) return [start, end]
 
   const isVertical = maze.wall === WallType.vertical
 
@@ -115,6 +114,14 @@ function dividePath(
     x: maze.right.x + (isVertical ? 0 : maze.doorOffset),
     y: maze.right.y + (!isVertical ? 0 : maze.doorOffset),
   }
+
+  const shouldComputeRight = !isVertical
+    ? start.y >= doorRight.y || end.y >= doorRight.y
+    : start.x >= doorRight.x || end.x >= doorRight.x
+
+  // we can skip the other side
+  if (!shouldComputeRight) return dividePath(maze.left, start, end)
+
   const doorLeft: Point = {
     x: doorRight.x - (isVertical ? 1 : 0),
     y: doorRight.y - (!isVertical ? 1 : 0),
@@ -124,94 +131,31 @@ function dividePath(
     ? start.y <= doorLeft.y || end.y <= doorLeft.y
     : start.x <= doorLeft.x || end.x <= doorLeft.x
 
-  // we can skip the other side
-  if (!shouldComputeLeft) return dividePath(maze.right, start, end)
-
-  const shouldComputeRight = !isVertical
-    ? start.y >= doorRight.y || end.y >= doorRight.y
-    : start.x >= doorRight.x || end.x >= doorRight.x
-
   // same as above
-  if (!shouldComputeRight) return dividePath(maze.left, start, end)
-
-  console.log(
-    `(${maze.x},${maze.y}) ${maze.width}x${maze.height} ${
-      maze.wall === 1 ? '↔️' : '↕️'
-    } at ${maze.wallOffset} 🚪:${
-      maze.doorOffset
-    }.\n left: ${shouldComputeLeft}/right: ${shouldComputeRight}`
-  )
+  if (!shouldComputeLeft) return dividePath(maze.right, start, end)
 
   let startPath: Point[] = []
   let endPath: Point[] = []
 
   // we must compute both, it's a matter of passing down the right start and end points
   if (isVertical) {
-    if (start.x <= doorLeft.x)
+    // the end must be of the other side
+    if (start.x <= doorLeft.x) {
       startPath = dividePath(maze.left, start, doorLeft)
-    else endPath = dividePath(maze.left, doorLeft, end)
-
-    if (end.x >= doorRight.x) endPath = dividePath(maze.right, doorRight, end)
-    else startPath = dividePath(maze.right, start, doorRight)
+      endPath = dividePath(maze.right, doorRight, end)
+    } else {
+      startPath = dividePath(maze.right, start, doorRight)
+      endPath = dividePath(maze.left, doorLeft, end)
+    }
   } else {
-    if (start.y <= doorLeft.y)
+    if (start.y <= doorLeft.y) {
       startPath = dividePath(maze.left, start, doorLeft)
-    else endPath = dividePath(maze.left, doorLeft, end)
-
-    if (end.y >= doorRight.y) endPath = dividePath(maze.right, doorRight, end)
-    else startPath = dividePath(maze.right, start, doorRight)
+      endPath = dividePath(maze.right, doorRight, end)
+    } else {
+      startPath = dividePath(maze.right, start, doorRight)
+      endPath = dividePath(maze.left, doorLeft, end)
+    }
   }
-
-  // // Find the path on the start side if it is relevant
-  // if (shouldComputeLeft) {
-  //   const leftEnd = !isVertical
-  //     ? end.y <= doorLeft.y
-  //       ? end
-  //       : doorLeft
-  //     : end.x <= doorLeft.x
-  //     ? end
-  //     : doorLeft
-  //   // const leftStart =
-  //   //   (isVertical && doorLeft.x <= start.x) ||
-  //   //   (!isVertical && doorLeft.y <= start.y)
-  //   //     ? doorLeft
-  //   //     : start
-  //   leftPath = dividePath(maze.left, start, leftEnd)
-  //   // isSamePoint(start, doorLeft) || isSamePoint(start, end)
-  //   //   ? [start]
-  // }
-
-  // // same on the end
-  // let rigthPath: Point[] = []
-  // if (shouldComputeRight) {
-  //   // const rightStart = (isVertical && start.x >= doorRight.x || (!isVertical && start.y >= doorRight.y)) ? start : doorRight
-  //   const rightStart = !isVertical
-  //     ? start.y >= doorRight.y
-  //       ? start
-  //       : doorRight
-  //     : start.x >= doorRight.x
-  //     ? start
-  //     : doorRight
-  //   // const rightEnd =
-  //   //   (isVertical && doorRight.x >= end.x) ||
-  //   //   (!isVertical && doorRight.y >= end.y)
-  //   //     ? doorRight
-  //   //     : end
-  //   rigthPath = dividePath(maze.right, rightStart, end)
-  //   // isSamePoint(doorRight, end) || isSamePoint(start, end)
-  //   //   ? [end]
-  // }
-
-  console.log(
-    `END: (${maze.x},${maze.y}) ${maze.width}x${maze.height} ${
-      maze.wall === 1 ? '↔️' : '↕️'
-    } at ${maze.wallOffset} 🚪:${
-      maze.doorOffset
-    }.\n left: ${shouldComputeLeft}/right: ${shouldComputeRight}`
-  )
-  console.log(startPath)
-  console.log(endPath)
-  console.log('---')
 
   return startPath.concat(endPath)
 }
@@ -342,109 +286,6 @@ export function render(ratio: number) {
     )
 
     lastUsedTree = start(1, width, height)
-    // tree = lastUsedTree = {
-    //   x: 0,
-    //   y: 0,
-    //   wall: 1,
-    //   width: 3,
-    //   height: 5,
-    //   wallOffset: 4,
-    //   doorOffset: 1,
-    //   left: {
-    //     x: 0,
-    //     y: 0,
-    //     wall: 1,
-    //     width: 3,
-    //     height: 4,
-    //     wallOffset: 2,
-    //     doorOffset: 2,
-    //     left: {
-    //       x: 0,
-    //       y: 0,
-    //       wall: 0,
-    //       width: 3,
-    //       height: 2,
-    //       wallOffset: 2,
-    //       doorOffset: 0,
-    //       left: {
-    //         x: 0,
-    //         y: 0,
-    //         wall: 0,
-    //         width: 2,
-    //         height: 2,
-    //         wallOffset: 1,
-    //         doorOffset: 1,
-    //         left: {
-    //           x: 0,
-    //           y: 0,
-    //           width: 1,
-    //           height: 2,
-    //           wall: 2,
-    //         },
-    //         right: {
-    //           x: 1,
-    //           y: 0,
-    //           width: 1,
-    //           height: 2,
-    //           wall: 2,
-    //         },
-    //       },
-    //       right: {
-    //         x: 2,
-    //         y: 0,
-    //         width: 1,
-    //         height: 2,
-    //         wall: 2,
-    //       },
-    //     },
-    //     right: {
-    //       x: 0,
-    //       y: 2,
-    //       wall: 0,
-    //       width: 3,
-    //       height: 2,
-    //       wallOffset: 2,
-    //       doorOffset: 1,
-    //       left: {
-    //         x: 0,
-    //         y: 2,
-    //         wall: 0,
-    //         width: 2,
-    //         height: 2,
-    //         wallOffset: 1,
-    //         doorOffset: 0,
-    //         left: {
-    //           x: 0,
-    //           y: 2,
-    //           width: 1,
-    //           height: 2,
-    //           wall: 2,
-    //         },
-    //         right: {
-    //           x: 1,
-    //           y: 2,
-    //           width: 1,
-    //           height: 2,
-    //           wall: 2,
-    //         },
-    //       },
-    //       right: {
-    //         x: 2,
-    //         y: 2,
-    //         width: 1,
-    //         height: 2,
-    //         wall: 2,
-    //       },
-    //     },
-    //   },
-    //   right: {
-    //     x: 0,
-    //     y: 4,
-    //     width: 3,
-    //     height: 1,
-    //     wall: 2,
-    //   },
-    // }
     console.log(lastUsedTree)
     requestAnimationFrame(() => {
       const solved = solveMaze(tree)
@@ -461,7 +302,7 @@ export function render(ratio: number) {
       const x = offset.x + (point.x + 0.5) * cellSize
       const y = offset.y + (point.y + 0.5) * cellSize
       ctx.beginPath()
-      ctx.strokeStyle = 'white'
+      ctx.strokeStyle = getColor()
       ctx.moveTo(x, y)
       for (let i = 1; i < solved.length; i++) {
         let point = solved[i]
@@ -471,12 +312,13 @@ export function render(ratio: number) {
       }
       ctx.stroke()
 
+      const radius = ctx.lineWidth * 0.7
       for (const point of solved) {
         ctx.beginPath()
-        ctx.fillStyle = 'white'
+        ctx.fillStyle = 'crimson'
         const x = offset.x + (point.x + 0.5) * cellSize
         const y = offset.y + (point.y + 0.5) * cellSize
-        ctx.arc(x, y, ctx.lineWidth / 2, 0, 2 * Math.PI, false)
+        ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
         ctx.fill()
         ctx.font = '32px Helvetica Neue'
         ctx.textAlign = 'center'
