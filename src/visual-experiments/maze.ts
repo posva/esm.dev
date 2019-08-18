@@ -90,9 +90,12 @@ function createWall(
   }
 }
 
+/**
+ * Generate a maze as a binary tree
+ * @param width > 2
+ * @param height > 2
+ */
 function generateMaze(width: number, height: number): MazeNode {
-  if (width < 2 || height < 2)
-    throw new Error('width and height must be both larger than ')
   return createWall(0, 0, width, height) as MazeNode
 }
 
@@ -191,37 +194,83 @@ function simplifyPath(points: Point[]): Point[] {
   return simplified
 }
 
-let tree: MazeNode
-let lastUsedSeed = -1
+interface Context {
+  tree: MazeNode
+  width: number
+  height: number
+  state: 'start' | 'moving' | 'end'
+
+  ctx: CanvasRenderingContext2D
+  cellSize: number
+  offset: Point
+}
+
+let _context: Context | null = null
 
 let isListeningForResize = false
 
-function start(seed: number, width: number, height: number): MazeNode {
-  if (lastUsedSeed !== seed) {
-    lastUsedSeed = seed
-    // console.time('Maze Generation')
-    tree = generateMaze(width, height)
-    // console.timeEnd('Maze Generation')
+/**
+ * Get current context or creates a new one
+ * @param width size in px
+ * @param height size in px
+ */
+function start(width: number, height: number): Context | null {
+  if (_context) return _context
+  // console.time('Maze Generation')
+
+  // size of a cell in the maze
+  const cellSize = 2 ** 6
+  // padding to draw
+  const offset: Point = {
+    x: cellSize * 2,
+    y: cellSize * 2,
   }
+
+  // convert sizes from px to cells
+  width = Math.floor((width - offset.x * 2) / cellSize)
+  height = Math.floor((height - offset.y * 2) / cellSize)
+
+  // too small
+  if (width < 3 || height < 3) return null
+
+  console.log(
+    `Generating a maze ${width}x${height} with cellSize of ${cellSize}`
+  )
+
+  const tree = generateMaze(width, height)
+  // console.timeEnd('Maze Generation')
+
   if (!isListeningForResize) {
     isListeningForResize = true
     window.addEventListener(
       'resize',
       debounce(() => {
-        start(seed + 1, width, height)
+        _context = null
+        start(width, height)
       }, 500)
     )
   }
-  return tree
+
+  const size = getDimensions()
+  canvasEl.width = size.x * window.devicePixelRatio
+  canvasEl.height = size.y * window.devicePixelRatio
+  const ctx = canvasEl.getContext('2d')!
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
+
+  return (_context = {
+    tree,
+    width,
+    height,
+    state: 'start',
+
+    ctx,
+    cellSize,
+    offset,
+  })
 }
 
-const cellSize = 2 ** 4
-
-function drawWall(
-  ctx: CanvasRenderingContext2D,
-  tree: MazeNode,
-  offset: Point
-) {
+function drawWall(context: Context) {
+  const { ctx, tree, cellSize, offset } = context
   ctx.beginPath()
   const x =
     (tree.x + (tree.wall === WallType.vertical ? tree.wallOffset : 0)) *
@@ -247,15 +296,15 @@ function drawWall(
     ctx.stroke()
   }
 
-  if (tree.left.wall !== WallType.none) drawWall(ctx, tree.left, offset)
-  if (tree.right.wall !== WallType.none) drawWall(ctx, tree.right, offset)
+  if (tree.left.wall !== WallType.none)
+    drawWall({ ...context, tree: tree.left })
+  if (tree.right.wall !== WallType.none)
+    drawWall({ ...context, tree: tree.right })
 }
 
-function drawTree(
-  ctx: CanvasRenderingContext2D,
-  tree: MazeNode,
-  offset: Point
-) {
+function drawTree(context: Context) {
+  const { ctx, tree, offset, cellSize } = context
+
   // TODO: animation effect gradient
   const width = tree.width * cellSize
   const height = tree.height * cellSize
@@ -282,41 +331,28 @@ function drawTree(
 
   ctx.stroke()
 
-  drawWall(ctx, tree, offset)
+  drawWall(context)
 }
 
 let lastUsedTree: MazeNode | null = null
 
 export function render(ratio: number) {
   if (ratio > 2) return
-  // TODO: this should only be done once as it resets the canvas
-  if (lastUsedTree !== tree) {
-    const size = getDimensions()
-    canvasEl.width = size.x * window.devicePixelRatio
-    canvasEl.height = size.y * window.devicePixelRatio
-    const ctx = canvasEl.getContext('2d')
-    if (!ctx) return // avoid errors if no supporting browser
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio)
 
-    const offset: Point = {
-      x: cellSize * 2,
-      y: cellSize * 2,
-    }
+  const size = getDimensions()
 
-    const width = Math.floor((size.x - offset.x * 2) / cellSize)
-    const height = Math.floor((size.y - offset.y * 2) / cellSize)
-    // const width = 3
-    // const height = 5
+  // TODO: rename to getContext
+  const context = start(size.x, size.y)
+  if (!context) return
 
-    console.log(
-      `Generating a maze ${width}x${height} with cellSize of ${cellSize}`
-    )
+  if (context.state === 'start') {
+    // TODO: refactor in functions
+    const { offset, cellSize, ctx } = context
 
-    lastUsedTree = start(1, width, height)
-    console.log(lastUsedTree)
+    console.log(context)
     requestAnimationFrame(() => {
       // console.time('Maze solving')
-      let solved = solveMaze(tree)
+      let solved = solveMaze(context.tree)
       // console.timeEnd('Maze solving')
       // add a small offset outside of the maze to make it look better
       solved.unshift({
@@ -324,8 +360,8 @@ export function render(ratio: number) {
         y: -1,
       })
       solved.push({
-        x: tree.width - 1,
-        y: tree.height,
+        x: context.tree.width - 1,
+        y: context.tree.height,
       })
 
       // console.time('Path simplification')
@@ -337,6 +373,8 @@ export function render(ratio: number) {
       const y = offset.y + (point.y + 0.5) * cellSize
       // console.time('Drawing solution')
       ctx.beginPath()
+      ctx.lineJoin = 'round'
+      ctx.lineCap = 'round'
       ctx.strokeStyle = getColor()
       ctx.moveTo(x, y)
       for (let i = 1; i < solved.length; i++) {
@@ -347,25 +385,26 @@ export function render(ratio: number) {
       }
       ctx.stroke()
 
-      const radius = ctx.lineWidth * 0.7
-      for (const point of solved) {
-        ctx.beginPath()
-        ctx.fillStyle = 'crimson'
-        const x = offset.x + (point.x + 0.5) * cellSize
-        const y = offset.y + (point.y + 0.5) * cellSize
-        ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
-        ctx.fill()
-      }
+      // const radius = ctx.lineWidth * 0.7
+      // for (const point of solved) {
+      //   ctx.beginPath()
+      //   ctx.fillStyle = 'crimson'
+      //   const x = offset.x + (point.x + 0.5) * cellSize
+      //   const y = offset.y + (point.y + 0.5) * cellSize
+      //   ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
+      //   ctx.fill()
+      // }
       // console.timeEnd('Drawing solution')
     })
 
     // clear
-    ctx.fillStyle = getBackgroundColor()
+    context.ctx.fillStyle = getBackgroundColor()
     // ctx.fillStyle = 'black'
-    ctx.fillRect(0, 0, size.x, size.y)
+    context.ctx.fillRect(0, 0, size.x, size.y)
 
     // console.time('Drawing maze')
-    drawTree(ctx, tree, offset)
+    drawTree(context)
     // console.timeEnd('Drawing maze')
+    context.state = 'moving'
   }
 }
