@@ -267,6 +267,10 @@ function createContext(width: number, height: number): Context | null {
       }, 500)
     )
   }
+  if (newMazeTimeout > 0) {
+    clearTimeout(newMazeTimeout)
+    newMazeTimeout = -1
+  }
 
   const size = getDimensions()
   canvasEl.width = size.x * window.devicePixelRatio
@@ -294,7 +298,7 @@ function createContext(width: number, height: number): Context | null {
 function movePosition(context: Context, ratio: number) {
   const { position, direction, nextPoint } = context
   const point = context.solution[nextPoint]
-  const delta = ratio * 3
+  const delta = (ratio * context.solution.length) / 100
   position[direction] +=
     (position[direction] < point[direction] ? 1 : -1) * delta
   context.remaining -= delta
@@ -453,6 +457,7 @@ function drawPath(context: Context) {
   ctx.fill()
 }
 
+let newMazeTimeout = -1
 export function render(ratio: number) {
   if (ratio > 2) return
 
@@ -475,5 +480,12 @@ export function render(ratio: number) {
     clearPlayer(context)
     movePosition(context, ratio)
     drawPath(context)
+  } else {
+    newMazeTimeout < 0 &&
+      (newMazeTimeout = window.setTimeout(() => {
+        // generate a new maze
+        _context = null
+        newMazeTimeout = -1
+      }, 5000))
   }
 }
