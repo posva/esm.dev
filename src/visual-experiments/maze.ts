@@ -196,6 +196,7 @@ function simplifyPath(points: Point[]): Point[] {
 
 interface Context {
   tree: MazeNode
+  solution: Point[]
   width: number
   height: number
   state: 'start' | 'moving' | 'end'
@@ -239,6 +240,22 @@ function createContext(width: number, height: number): Context | null {
 
   const tree = generateMaze(width, height)
   // console.timeEnd('Maze Generation')
+  // console.time('Maze solving')
+  let solutionUnoptimized = solveMaze(tree)
+  // console.timeEnd('Maze solving')
+  // add a small offset outside of the maze to make it look better
+  solutionUnoptimized.unshift({
+    x: 0,
+    y: -1,
+  })
+  solutionUnoptimized.push({
+    x: tree.width - 1,
+    y: tree.height,
+  })
+
+  // console.time('Path simplification')
+  const solution = simplifyPath(solutionUnoptimized)
+  // console.timeEnd('Path simplification')
 
   if (!isListeningForResize) {
     isListeningForResize = true
@@ -259,6 +276,7 @@ function createContext(width: number, height: number): Context | null {
 
   return (_context = {
     tree,
+    solution,
     width,
     height,
     state: 'start',
@@ -356,28 +374,10 @@ export function render(ratio: number) {
 
   if (context.state === 'start') {
     // TODO: refactor in functions
-    const { offset, cellSize, ctx } = context
+    const { offset, cellSize, ctx, solution } = context
 
-    console.log(context)
     requestAnimationFrame(() => {
-      // console.time('Maze solving')
-      let solved = solveMaze(context.tree)
-      // console.timeEnd('Maze solving')
-      // add a small offset outside of the maze to make it look better
-      solved.unshift({
-        x: 0,
-        y: -1,
-      })
-      solved.push({
-        x: context.tree.width - 1,
-        y: context.tree.height,
-      })
-
-      // console.time('Path simplification')
-      solved = simplifyPath(solved)
-      // console.timeEnd('Path simplification')
-
-      let point = solved[0]
+      let point = solution[0]
       const x = offset.x + (point.x + 0.5) * cellSize
       const y = offset.y + (point.y + 0.5) * cellSize
       // console.time('Drawing solution')
@@ -386,8 +386,8 @@ export function render(ratio: number) {
       ctx.lineCap = 'round'
       ctx.strokeStyle = getColor()
       ctx.moveTo(x, y)
-      for (let i = 1; i < solved.length; i++) {
-        let point = solved[i]
+      for (let i = 1; i < solution.length; i++) {
+        let point = solution[i]
         const x = offset.x + (point.x + 0.5) * cellSize
         const y = offset.y + (point.y + 0.5) * cellSize
         ctx.lineTo(x, y)
@@ -408,7 +408,6 @@ export function render(ratio: number) {
 
     // clear
     context.ctx.fillStyle = getBackgroundColor()
-    // ctx.fillStyle = 'black'
     context.ctx.fillRect(0, 0, size.x, size.y)
 
     // console.time('Drawing maze')
