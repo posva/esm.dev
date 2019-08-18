@@ -4,6 +4,7 @@ import {
   canvasEl,
   getBackgroundColor,
   Point,
+  isSamePoint,
   getColor,
 } from './utils/screen'
 
@@ -97,10 +98,6 @@ function createWall(
  */
 function generateMaze(width: number, height: number): MazeNode {
   return createWall(0, 0, width, height) as MazeNode
-}
-
-function isSamePoint(a: Point, b: Point): boolean {
-  return a.x === b.x && a.y === b.y
 }
 
 function dividePath(
@@ -200,6 +197,10 @@ interface Context {
   width: number
   height: number
   state: 'start' | 'moving' | 'end'
+  position: Point
+  direction: 'x' | 'y'
+  remaining: number
+  nextPoint: number
 
   ctx: CanvasRenderingContext2D
   cellSize: number
@@ -207,7 +208,6 @@ interface Context {
 }
 
 let _context: Context | null = null
-
 let isListeningForResize = false
 
 /**
@@ -220,7 +220,7 @@ function createContext(width: number, height: number): Context | null {
   // console.time('Maze Generation')
 
   // size of a cell in the maze
-  const cellSize = 2 ** 6
+  const cellSize = 2 ** 4
   // padding to draw
   const offset: Point = {
     x: cellSize * 2,
@@ -280,11 +280,36 @@ function createContext(width: number, height: number): Context | null {
     width,
     height,
     state: 'start',
+    direction: 'y',
+    position: { ...solution[0] },
+    remaining: solution[1].y - solution[0].y,
+    nextPoint: 1,
 
     ctx,
     cellSize,
     offset,
   })
+}
+
+function movePosition(context: Context, ratio: number) {
+  const { position, direction, nextPoint } = context
+  const point = context.solution[nextPoint]
+  position[direction] +=
+    ((position[direction] < point[direction] ? 1 : -1) * ratio) / 10
+  context.remaining -= ratio / 10
+
+  if (context.remaining <= 0) {
+    context.position = { ...point }
+    context.nextPoint++
+    context.direction = direction === 'x' ? 'y' : 'x'
+    if (context.nextPoint >= context.solution.length) context.state = 'end'
+    else {
+      context.remaining = Math.abs(
+        context.solution[context.nextPoint][context.direction] -
+          position[context.direction]
+      )
+    }
+  }
 }
 
 function drawWall(context: Context) {
@@ -361,7 +386,70 @@ function drawTree(context: Context) {
   drawWall(context)
 }
 
-let lastUsedTree: MazeNode | null = null
+function clearPlayer(context: Context) {
+  const { offset, cellSize, ctx, position } = context
+  const radius = ctx.lineWidth * 0.7
+  // dot position
+  const x = offset.x + (position.x + 0.5) * cellSize
+  const y = offset.y + (position.y + 0.5) * cellSize
+  ctx.fillStyle = getBackgroundColor()
+  ctx.strokeStyle = getBackgroundColor()
+  ctx.beginPath()
+  ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
+  ctx.fill()
+  ctx.stroke()
+}
+
+function drawPath(context: Context) {
+  const {
+    offset,
+    cellSize,
+    ctx,
+    position,
+    solution,
+    nextPoint,
+    direction,
+  } = context
+
+  // draw the path that has been traversed already
+  let point = solution[0]
+  let x = offset.x + (point.x + 0.5) * cellSize
+  let y = offset.y + (point.y + 0.5) * cellSize
+  ctx.beginPath()
+  ctx.lineJoin = 'round'
+  ctx.lineCap = 'round'
+  ctx.strokeStyle = getColor()
+  ctx.moveTo(x, y)
+  for (let i = 1; i < solution.length; i++) {
+    point = solution[i]
+    if (i >= nextPoint) break
+    x = offset.x + (point.x + 0.5) * cellSize
+    y = offset.y + (point.y + 0.5) * cellSize
+    ctx.lineTo(x, y)
+  }
+  // draw the portion that is being walked currently
+  const remaining =
+    context.remaining * (position[direction] < point[direction] ? 1 : -1)
+  x =
+    offset.x +
+    (point.x + 0.5 - +(context.direction === 'x') * remaining) * cellSize
+  y =
+    offset.y +
+    (point.y + 0.5 - +(context.direction === 'y') * remaining) * cellSize
+  ctx.lineTo(x, y)
+  ctx.stroke()
+
+  // draw the dot
+  const radius = ctx.lineWidth * 0.7
+  // dot position
+  x = offset.x + (position.x + 0.5) * cellSize
+  y = offset.y + (position.y + 0.5) * cellSize
+
+  ctx.beginPath()
+  ctx.fillStyle = 'crimson'
+  ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
+  ctx.fill()
+}
 
 export function render(ratio: number) {
   if (ratio > 2) return
@@ -373,39 +461,6 @@ export function render(ratio: number) {
   if (!context) return
 
   if (context.state === 'start') {
-    // TODO: refactor in functions
-    const { offset, cellSize, ctx, solution } = context
-
-    requestAnimationFrame(() => {
-      let point = solution[0]
-      const x = offset.x + (point.x + 0.5) * cellSize
-      const y = offset.y + (point.y + 0.5) * cellSize
-      // console.time('Drawing solution')
-      ctx.beginPath()
-      ctx.lineJoin = 'round'
-      ctx.lineCap = 'round'
-      ctx.strokeStyle = getColor()
-      ctx.moveTo(x, y)
-      for (let i = 1; i < solution.length; i++) {
-        let point = solution[i]
-        const x = offset.x + (point.x + 0.5) * cellSize
-        const y = offset.y + (point.y + 0.5) * cellSize
-        ctx.lineTo(x, y)
-      }
-      ctx.stroke()
-
-      // const radius = ctx.lineWidth * 0.7
-      // for (const point of solved) {
-      //   ctx.beginPath()
-      //   ctx.fillStyle = 'crimson'
-      //   const x = offset.x + (point.x + 0.5) * cellSize
-      //   const y = offset.y + (point.y + 0.5) * cellSize
-      //   ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
-      //   ctx.fill()
-      // }
-      // console.timeEnd('Drawing solution')
-    })
-
     // clear
     context.ctx.fillStyle = getBackgroundColor()
     context.ctx.fillRect(0, 0, size.x, size.y)
@@ -414,5 +469,9 @@ export function render(ratio: number) {
     drawTree(context)
     // console.timeEnd('Drawing maze')
     context.state = 'moving'
+  } else if (context.state === 'moving') {
+    clearPlayer(context)
+    movePosition(context, ratio)
+    drawPath(context)
   }
 }
