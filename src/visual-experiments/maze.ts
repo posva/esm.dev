@@ -62,7 +62,7 @@ function createWall(
   const wall = biggest === width ? WallType.vertical : WallType.horizontal
   const wallOffset = Math.floor(Math.random() * (biggest - 1)) + 1
   const doorOffset = Math.floor(Math.random() * smallest)
-  // TODO: stop condition
+
   const left = createWall(
     x,
     y,
@@ -95,6 +95,133 @@ function generateMaze(width: number, height: number): MazeNode {
   return createWall(0, 0, width, height) as MazeNode
 }
 
+function isSamePoint(a: Point, b: Point): boolean {
+  return a.x === b.x && a.y === b.y
+}
+
+function dividePath(
+  maze: MazeNode | MazeNodeLeaf,
+  start: Point,
+  end: Point
+): Point[] {
+  if (isSamePoint(start, end)) return [start]
+  if (maze.wall === WallType.none) {
+    return [start, end]
+  }
+
+  const isVertical = maze.wall === WallType.vertical
+
+  const doorRight: Point = {
+    x: maze.right.x + (isVertical ? 0 : maze.doorOffset),
+    y: maze.right.y + (!isVertical ? 0 : maze.doorOffset),
+  }
+  const doorLeft: Point = {
+    x: doorRight.x - (isVertical ? 1 : 0),
+    y: doorRight.y - (!isVertical ? 1 : 0),
+  }
+
+  const shouldComputeLeft = !isVertical
+    ? start.y <= doorLeft.y || end.y <= doorLeft.y
+    : start.x <= doorLeft.x || end.x <= doorLeft.x
+
+  // we can skip the other side
+  if (!shouldComputeLeft) return dividePath(maze.right, start, end)
+
+  const shouldComputeRight = !isVertical
+    ? start.y >= doorRight.y || end.y >= doorRight.y
+    : start.x >= doorRight.x || end.x >= doorRight.x
+
+  // same as above
+  if (!shouldComputeRight) return dividePath(maze.left, start, end)
+
+  console.log(
+    `(${maze.x},${maze.y}) ${maze.width}x${maze.height} ${
+      maze.wall === 1 ? '↔️' : '↕️'
+    } at ${maze.wallOffset} 🚪:${
+      maze.doorOffset
+    }.\n left: ${shouldComputeLeft}/right: ${shouldComputeRight}`
+  )
+
+  let startPath: Point[] = []
+  let endPath: Point[] = []
+
+  // we must compute both, it's a matter of passing down the right start and end points
+  if (isVertical) {
+    if (start.x <= doorLeft.x)
+      startPath = dividePath(maze.left, start, doorLeft)
+    else endPath = dividePath(maze.left, doorLeft, end)
+
+    if (end.x >= doorRight.x) endPath = dividePath(maze.right, doorRight, end)
+    else startPath = dividePath(maze.right, start, doorRight)
+  } else {
+    if (start.y <= doorLeft.y)
+      startPath = dividePath(maze.left, start, doorLeft)
+    else endPath = dividePath(maze.left, doorLeft, end)
+
+    if (end.y >= doorRight.y) endPath = dividePath(maze.right, doorRight, end)
+    else startPath = dividePath(maze.right, start, doorRight)
+  }
+
+  // // Find the path on the start side if it is relevant
+  // if (shouldComputeLeft) {
+  //   const leftEnd = !isVertical
+  //     ? end.y <= doorLeft.y
+  //       ? end
+  //       : doorLeft
+  //     : end.x <= doorLeft.x
+  //     ? end
+  //     : doorLeft
+  //   // const leftStart =
+  //   //   (isVertical && doorLeft.x <= start.x) ||
+  //   //   (!isVertical && doorLeft.y <= start.y)
+  //   //     ? doorLeft
+  //   //     : start
+  //   leftPath = dividePath(maze.left, start, leftEnd)
+  //   // isSamePoint(start, doorLeft) || isSamePoint(start, end)
+  //   //   ? [start]
+  // }
+
+  // // same on the end
+  // let rigthPath: Point[] = []
+  // if (shouldComputeRight) {
+  //   // const rightStart = (isVertical && start.x >= doorRight.x || (!isVertical && start.y >= doorRight.y)) ? start : doorRight
+  //   const rightStart = !isVertical
+  //     ? start.y >= doorRight.y
+  //       ? start
+  //       : doorRight
+  //     : start.x >= doorRight.x
+  //     ? start
+  //     : doorRight
+  //   // const rightEnd =
+  //   //   (isVertical && doorRight.x >= end.x) ||
+  //   //   (!isVertical && doorRight.y >= end.y)
+  //   //     ? doorRight
+  //   //     : end
+  //   rigthPath = dividePath(maze.right, rightStart, end)
+  //   // isSamePoint(doorRight, end) || isSamePoint(start, end)
+  //   //   ? [end]
+  // }
+
+  console.log(
+    `END: (${maze.x},${maze.y}) ${maze.width}x${maze.height} ${
+      maze.wall === 1 ? '↔️' : '↕️'
+    } at ${maze.wallOffset} 🚪:${
+      maze.doorOffset
+    }.\n left: ${shouldComputeLeft}/right: ${shouldComputeRight}`
+  )
+  console.log(startPath)
+  console.log(endPath)
+  console.log('---')
+
+  return startPath.concat(endPath)
+}
+
+function solveMaze(maze: MazeNode): Point[] {
+  const left: Point = { x: 0, y: 0 }
+  const right: Point = { x: maze.width - 1, y: maze.height - 1 }
+  return dividePath(maze, left, right)
+}
+
 let tree: MazeNode
 let lastUsedSeed = -1
 
@@ -117,7 +244,7 @@ function start(seed: number, width: number, height: number): MazeNode {
   return tree
 }
 
-const cellSize = 2 ** 3
+const cellSize = 2 ** 4
 
 function drawWall(
   ctx: CanvasRenderingContext2D,
@@ -167,6 +294,7 @@ function drawTree(
   ctx.strokeStyle = lineGradient
   // ctx.strokeStyle = 'crimson'
   ctx.lineWidth = cellSize / 8
+  ctx.lineCap = 'square'
   ctx.beginPath()
   ctx.moveTo(offset.x + cellSize, offset.y)
   ctx.lineTo(offset.x + tree.width * cellSize, offset.y)
@@ -206,7 +334,7 @@ export function render(ratio: number) {
 
     const width = Math.floor((size.x - offset.x * 2) / cellSize)
     const height = Math.floor((size.y - offset.y * 2) / cellSize)
-    // const width = 5
+    // const width = 3
     // const height = 5
 
     console.log(
@@ -214,7 +342,148 @@ export function render(ratio: number) {
     )
 
     lastUsedTree = start(1, width, height)
+    // tree = lastUsedTree = {
+    //   x: 0,
+    //   y: 0,
+    //   wall: 1,
+    //   width: 3,
+    //   height: 5,
+    //   wallOffset: 4,
+    //   doorOffset: 1,
+    //   left: {
+    //     x: 0,
+    //     y: 0,
+    //     wall: 1,
+    //     width: 3,
+    //     height: 4,
+    //     wallOffset: 2,
+    //     doorOffset: 2,
+    //     left: {
+    //       x: 0,
+    //       y: 0,
+    //       wall: 0,
+    //       width: 3,
+    //       height: 2,
+    //       wallOffset: 2,
+    //       doorOffset: 0,
+    //       left: {
+    //         x: 0,
+    //         y: 0,
+    //         wall: 0,
+    //         width: 2,
+    //         height: 2,
+    //         wallOffset: 1,
+    //         doorOffset: 1,
+    //         left: {
+    //           x: 0,
+    //           y: 0,
+    //           width: 1,
+    //           height: 2,
+    //           wall: 2,
+    //         },
+    //         right: {
+    //           x: 1,
+    //           y: 0,
+    //           width: 1,
+    //           height: 2,
+    //           wall: 2,
+    //         },
+    //       },
+    //       right: {
+    //         x: 2,
+    //         y: 0,
+    //         width: 1,
+    //         height: 2,
+    //         wall: 2,
+    //       },
+    //     },
+    //     right: {
+    //       x: 0,
+    //       y: 2,
+    //       wall: 0,
+    //       width: 3,
+    //       height: 2,
+    //       wallOffset: 2,
+    //       doorOffset: 1,
+    //       left: {
+    //         x: 0,
+    //         y: 2,
+    //         wall: 0,
+    //         width: 2,
+    //         height: 2,
+    //         wallOffset: 1,
+    //         doorOffset: 0,
+    //         left: {
+    //           x: 0,
+    //           y: 2,
+    //           width: 1,
+    //           height: 2,
+    //           wall: 2,
+    //         },
+    //         right: {
+    //           x: 1,
+    //           y: 2,
+    //           width: 1,
+    //           height: 2,
+    //           wall: 2,
+    //         },
+    //       },
+    //       right: {
+    //         x: 2,
+    //         y: 2,
+    //         width: 1,
+    //         height: 2,
+    //         wall: 2,
+    //       },
+    //     },
+    //   },
+    //   right: {
+    //     x: 0,
+    //     y: 4,
+    //     width: 3,
+    //     height: 1,
+    //     wall: 2,
+    //   },
+    // }
     console.log(lastUsedTree)
+    requestAnimationFrame(() => {
+      const solved = solveMaze(tree)
+      solved.unshift({
+        x: 0,
+        y: -1,
+      })
+      solved.push({
+        x: tree.width - 1,
+        y: tree.height,
+      })
+      console.log(solved)
+      let point = solved[0]
+      const x = offset.x + (point.x + 0.5) * cellSize
+      const y = offset.y + (point.y + 0.5) * cellSize
+      ctx.beginPath()
+      ctx.strokeStyle = 'white'
+      ctx.moveTo(x, y)
+      for (let i = 1; i < solved.length; i++) {
+        let point = solved[i]
+        const x = offset.x + (point.x + 0.5) * cellSize
+        const y = offset.y + (point.y + 0.5) * cellSize
+        ctx.lineTo(x, y)
+      }
+      ctx.stroke()
+
+      for (const point of solved) {
+        ctx.beginPath()
+        ctx.fillStyle = 'white'
+        const x = offset.x + (point.x + 0.5) * cellSize
+        const y = offset.y + (point.y + 0.5) * cellSize
+        ctx.arc(x, y, ctx.lineWidth / 2, 0, 2 * Math.PI, false)
+        ctx.fill()
+        ctx.font = '32px Helvetica Neue'
+        ctx.textAlign = 'center'
+        ctx.fillStyle = 'crimson'
+        // ctx.fillText('' + solved.indexOf(point), x, y)
+      }
+    })
     // clear
     ctx.fillStyle = getBackgroundColor()
     // ctx.fillStyle = 'black'
