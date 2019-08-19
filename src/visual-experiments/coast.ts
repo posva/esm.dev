@@ -34,7 +34,7 @@ export function createContext(): Context | null {
   // too small
   if (width < 3 || height < 3) return null
 
-  const seed = window.location.hash.slice(1) || nanoid()
+  const seed = (!isListening && window.location.hash.slice(1)) || nanoid()
   console.log(`🌱 seed "${seed}"`)
   const random = new Randomizer(seed)
   setRandomizer(random)
@@ -50,7 +50,10 @@ export function createContext(): Context | null {
 
   if (!isListening) {
     isListening = true
-    addTapListener(() => (_context = null))
+    addTapListener(() => {
+      if (window.location.hash) window.location.hash = ''
+      _context = null
+    })
     window.addEventListener(
       'resize',
       debounce(() => {
