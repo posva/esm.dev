@@ -3,15 +3,19 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HTMLInlineCSSWebpackPlugin = require('html-inline-css-webpack-plugin')
   .default
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin
 const TerserPlugin = require('terser-webpack-plugin')
 const webpack = require('webpack')
 const path = require('path')
 
-module.exports = ({ mode = 'production' } = {}) => {
+module.exports = ({ mode = 'production', analyze = false } = {}) => {
   const productionOnlyPlugins = [
     new MiniCssExtractPlugin(),
     new HTMLInlineCSSWebpackPlugin(),
   ]
+
+  if (analyze) productionOnlyPlugins.push(new BundleAnalyzerPlugin())
 
   const devOnlyPlugins = [new webpack.HotModuleReplacementPlugin()]
 
