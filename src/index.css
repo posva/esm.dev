@@ -8,12 +8,12 @@
   --indigo: 75, 0, 130;
   --aqua: 127, 255, 212;
 
-  --bgColor: var(--light);
-  /* --bgColor: var(--aqua); */
-  --textColor: var(--dark);
-  --accent: var(--indigo);
-  --primary: var(--blue);
-  --secondary: crimson;
+  --bgColor: var(--dark);
+  /* --bgColor: var(--indigo); */
+  --textColor: var(--light);
+  --accent: var(--aqua);
+  --primary: var(--indigo);
+  --secondary: var(--red);
 
   --moveOffset: 1.35px;
 }
@@ -24,18 +24,29 @@
     /* --bgColor: var(--indigo); */
     --textColor: var(--light);
     --accent: var(--aqua);
-    --primary: crimson;
-    --secondary: var(--blue);
+    --primary: var(--indigo);
+    --secondary: var(--red);
   }
 }
 
-body.dark {
-  --bgColor: var(--dark);
-  /* --bgColor: var(--indigo); */
-  --textColor: var(--light);
-  --accent: var(--aqua);
-  --primary: crimson;
-  --secondary: var(--blue);
+@media (prefers-light-interface), (prefers-color-scheme: light) {
+  :root {
+    --bgColor: var(--light);
+    /* --bgColor: var(--aqua); */
+    --textColor: var(--dark);
+    --accent: var(--indigo);
+    --primary: var(--blue);
+    --secondary: var(--red);
+  }
+}
+
+body.light {
+  --bgColor: var(--light);
+  /* --bgColor: var(--aqua); */
+  --textColor: var(--dark);
+  --accent: var(--indigo);
+  --primary: var(--blue);
+  --secondary: var(--red);
 }
 
 #physics {

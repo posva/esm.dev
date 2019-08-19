@@ -277,25 +277,24 @@ export function render(ratio: number) {
   ctx.fillRect(0, 0, size.x, size.y)
 
   // draw all points except current one
-  ctx.fillStyle = 'crimson'
   const circleGradient = ctx.createLinearGradient(
     0,
     0,
     context.options.width,
     0
   )
-  circleGradient.addColorStop(0, 'red')
-  circleGradient.addColorStop(1, 'blue')
+  circleGradient.addColorStop(0, getColorVariable('primary'))
+  circleGradient.addColorStop(1, getColorVariable('secondary'))
+  ctx.fillStyle = circleGradient
   for (const p of context.points) {
     if (p === point) continue
-    else ctx.fillStyle = circleGradient
+    ctx.fillStyle = circleGradient
     drawPoint(ctx, p)
     // ctx.font = '20px Georgia'
     // ctx.fillText('' + context.points.indexOf(p), p.x, p.y)
   }
 
   // draw line
-  ctx.fillStyle = 'crimson'
   ctx.lineWidth = 4
 
   const from: Point = {

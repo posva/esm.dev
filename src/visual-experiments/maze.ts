@@ -377,8 +377,8 @@ function drawTree(context: Context) {
   const width = tree.width * cellSize
   const height = tree.height * cellSize
   const lineGradient = ctx.createLinearGradient(0, 0, width, height)
-  lineGradient.addColorStop(0, getColorVariable('accent'))
-  lineGradient.addColorStop(1, 'royalblue')
+  lineGradient.addColorStop(0, getColorVariable('secondary'))
+  lineGradient.addColorStop(1, getColorVariable('primary'))
   ctx.strokeStyle = lineGradient
   // ctx.strokeStyle = 'crimson'
   ctx.lineWidth = cellSize / 8
