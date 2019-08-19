@@ -2,9 +2,9 @@
   --dark: 18, 19, 20;
   --light: 239, 238, 237;
 
-  --red: #e3342f;
-  --green: #38c172;
-  --blue: #3490dc;
+  --red: 227, 52, 47;
+  --green: 56, 193, 114;
+  --blue: 52, 144, 220;
   --indigo: 75, 0, 130;
   --aqua: 127, 255, 212;
 
@@ -12,6 +12,7 @@
   /* --bgColor: var(--aqua); */
   --textColor: var(--dark);
   --accent: var(--indigo);
+  --primary: var(--blue);
   --secondary: crimson;
 
   --moveOffset: 1.35px;
@@ -23,6 +24,8 @@
     /* --bgColor: var(--indigo); */
     --textColor: var(--light);
     --accent: var(--aqua);
+    --primary: crimson;
+    --secondary: var(--blue);
   }
 }
 
@@ -31,6 +34,8 @@ body.dark {
   /* --bgColor: var(--indigo); */
   --textColor: var(--light);
   --accent: var(--aqua);
+  --primary: crimson;
+  --secondary: var(--blue);
 }
 
 #physics {
@@ -66,13 +71,13 @@ body {
 
 a {
   display: inline-block;
-  color: var(--blue);
+  color: rgb(var(--blue));
   position: relative;
   font-weight: 500;
   text-decoration: none;
   transition: color 500ms linear 200ms;
 
-  /* border-bottom: var(--blue) 1px solid; */
+  /* border-bottom: rgb(var(--blue)) 1px solid; */
 }
 
 a::before,
@@ -96,16 +101,16 @@ a:hover::after {
 }
 
 a::before {
-  color: var(--red);
+  color: rgb(var(--red));
 }
 
 a::after {
-  color: var(--blue);
+  color: rgb(var(--blue));
 }
 
 a:hover,
 a:focus {
-  color: var(--green);
+  color: rgb(var(--green));
   transition-delay: 0s;
 }
 
@@ -120,7 +125,7 @@ a:focus::before {
 
 a:hover::after,
 a:focus::after {
-  color: var(--blue);
+  color: rgb(var(--blue));
   transform: translate3d(
     calc(-1 * var(--moveX, var(--moveOffset))),
     calc(-1 * var(--moveY, var(--moveOffset))),
@@ -144,14 +149,6 @@ a:focus::after {
   top: 0;
   width: 0;
   height: 0;
-}
-
-#experiment-container > span.accent {
-  color: rgb(var(--accent));
-}
-
-#experiment-container > span.secondary {
-  color: rgb(var(--accent));
 }
 
 #experiment-container::after {

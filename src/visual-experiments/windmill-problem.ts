@@ -4,13 +4,8 @@
 
 import { debounce, throttle } from 'lodash-es'
 
-import {
-  Point,
-  canvasEl,
-  getDimensions,
-  getBackgroundColor,
-  getColor,
-} from './utils/screen'
+import { Point, canvasEl, getDimensions } from './utils/screen'
+import { getColorVariable } from './utils/colors'
 
 /**
  *
@@ -278,7 +273,7 @@ export function render(ratio: number) {
   const point = context.points[context.current]
 
   // clear
-  ctx.fillStyle = getBackgroundColor()
+  ctx.fillStyle = getColorVariable('bgColor')
   ctx.fillRect(0, 0, size.x, size.y)
 
   // draw all points except current one
@@ -327,6 +322,6 @@ export function render(ratio: number) {
   ctx.stroke()
 
   // draw current point
-  ctx.fillStyle = getColor()
+  ctx.fillStyle = getColorVariable('textColor')
   drawPoint(ctx, point)
 }

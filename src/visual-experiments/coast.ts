@@ -1,12 +1,7 @@
 import nanoid from 'nanoid'
 import { debounce } from 'lodash-es'
-import {
-  getDimensions,
-  getBackgroundColor,
-  getColor,
-  canvasEl,
-  getAccentColor,
-} from './utils/screen'
+import { getDimensions, canvasEl } from './utils/screen'
+import { getColorVariable } from './utils/colors'
 import {
   generateMaze,
   solveMaze,
@@ -99,9 +94,7 @@ export function render() {
 
     // clear
     ctx.fillStyle =
-      getBackgroundColor() === 'rgb(18, 19, 20)' ? 'black' : 'white'
-    // ctx.fillStyle = 'black'
-    console.log(ctx.fillStyle, getBackgroundColor())
+      getColorVariable('bgColor') === 'rgb(18, 19, 20)' ? 'black' : 'white'
     ctx.fillRect(0, 0, size.x, size.y)
 
     // draw the path that has been traversed already
@@ -111,8 +104,8 @@ export function render() {
     ctx.beginPath()
     // ctx.lineJoin = 'round'
     // ctx.lineCap = 'round'
-    ctx.strokeStyle = getAccentColor()
-    ctx.fillStyle = getBackgroundColor()
+    ctx.strokeStyle = getColorVariable('accent')
+    ctx.fillStyle = getColorVariable('bgColor')
     ctx.moveTo(x, y)
     for (let i = 1; i < solution.length; i++) {
       point = solution[i]

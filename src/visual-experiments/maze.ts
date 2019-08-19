@@ -1,13 +1,7 @@
 import { debounce } from 'lodash-es'
 import nanoid from 'nanoid'
-import {
-  getDimensions,
-  canvasEl,
-  getBackgroundColor,
-  Point,
-  isSamePoint,
-  getColor,
-} from './utils/screen'
+import { getDimensions, canvasEl, Point, isSamePoint } from './utils/screen'
+import { getColorVariable } from './utils/colors'
 import { Randomizer } from './utils/random'
 
 const enum WallType {
@@ -383,7 +377,7 @@ function drawTree(context: Context) {
   const width = tree.width * cellSize
   const height = tree.height * cellSize
   const lineGradient = ctx.createLinearGradient(0, 0, width, height)
-  lineGradient.addColorStop(0, 'crimson')
+  lineGradient.addColorStop(0, getColorVariable('accent'))
   lineGradient.addColorStop(1, 'royalblue')
   ctx.strokeStyle = lineGradient
   // ctx.strokeStyle = 'crimson'
@@ -416,8 +410,8 @@ function clearPlayer(context: Context) {
   // dot position
   const x = offset.x + (position.x + 0.5) * cellSize
   const y = offset.y + (position.y + 0.5) * cellSize
-  ctx.fillStyle = getBackgroundColor()
-  ctx.strokeStyle = getBackgroundColor()
+  ctx.fillStyle = getColorVariable('bgColor')
+  ctx.strokeStyle = getColorVariable('bgColor')
   ctx.beginPath()
   ctx.arc(x, y, radius, 0, 2 * Math.PI, false)
   ctx.fill()
@@ -442,7 +436,7 @@ export function drawPath(context: Context) {
   ctx.beginPath()
   ctx.lineJoin = 'round'
   ctx.lineCap = 'round'
-  ctx.strokeStyle = getColor()
+  ctx.strokeStyle = getColorVariable('accent')
   ctx.moveTo(x, y)
   for (let i = 1; i < solution.length; i++) {
     point = solution[i]
@@ -488,7 +482,7 @@ export function render(ratio: number) {
 
   if (context.state === 'start') {
     // clear
-    context.ctx.fillStyle = getBackgroundColor()
+    context.ctx.fillStyle = getColorVariable('bgColor')
     context.ctx.fillRect(0, 0, size.x, size.y)
 
     // console.time('Drawing maze')
