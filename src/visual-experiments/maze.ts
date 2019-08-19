@@ -1,4 +1,5 @@
 import { debounce } from 'lodash-es'
+import nanoid from 'nanoid'
 import {
   getDimensions,
   canvasEl,
@@ -7,6 +8,7 @@ import {
   isSamePoint,
   getColor,
 } from './utils/screen'
+import { Randomizer } from './utils/random'
 
 const enum WallType {
   vertical,
@@ -62,8 +64,8 @@ function createWall(
   const biggest = Math.max(width, height)
   const smallest = biggest === width ? height : width
   const wall = biggest === width ? WallType.vertical : WallType.horizontal
-  const wallOffset = Math.floor(Math.random() * (biggest - 1)) + 1
-  const doorOffset = Math.floor(Math.random() * smallest)
+  const wallOffset = Math.floor(randomizer.double() * (biggest - 1)) + 1
+  const doorOffset = Math.floor(randomizer.double() * smallest)
 
   const left = createWall(
     x,
@@ -201,6 +203,7 @@ export interface Context {
   direction: 'x' | 'y'
   remaining: number
   nextPoint: number
+  random: Randomizer
 
   ctx: CanvasRenderingContext2D
   cellSize: number
@@ -208,6 +211,7 @@ export interface Context {
 }
 
 let _context: Context | null = null
+let randomizer: Randomizer
 let isListeningForResize = false
 
 const defaultCellsize = 2 ** 4
@@ -239,9 +243,12 @@ export function createContext(
   // too small
   if (width < 3 || height < 3) return null
 
+  const seed = window.location.hash.slice(1) || nanoid()
   console.log(
-    `Generating a maze ${width}x${height} with cellSize of ${cellSize}`
+    `Generating a maze ${width}x${height} with cellSize of ${cellSize} with 🌱 seed "${seed}"`
   )
+  const random = new Randomizer(seed)
+  randomizer = random
 
   const tree = generateMaze(width, height)
   // console.timeEnd('Maze Generation')
@@ -291,6 +298,7 @@ export function createContext(
     position: { ...solution[0] },
     remaining: solution[1].y - solution[0].y,
     nextPoint: 1,
+    random,
 
     ctx,
     cellSize,
