@@ -8,6 +8,14 @@ export const size = getDimensions()
 canvasEl.setAttribute('width', '' + size.x)
 canvasEl.setAttribute('height', '' + size.x)
 
+const accentEl = document.querySelector(
+  '#experiment-container > .accent'
+) as HTMLElement
+
+const secondaryEl = document.querySelector(
+  '#experiment-container > .secondary'
+) as HTMLElement
+
 export interface Point {
   x: number
   y: number
@@ -25,6 +33,16 @@ export function getBackgroundColor(): string {
 export function getColor(): string {
   const { color } = window.getComputedStyle(container)
   return color || '#efeeed'
+}
+
+export function getAccentColor(): string {
+  const { color } = window.getComputedStyle(accentEl)
+  return color || 'crimson'
+}
+
+export function getSeondaryColor(): string {
+  const { color } = window.getComputedStyle(secondaryEl)
+  return color || 'crimson'
 }
 
 export function getDimensions(): Point {

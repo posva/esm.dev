@@ -1,13 +1,18 @@
 :root {
-  --dark: #121314;
-  --light: #efeeed;
+  --dark: 18, 19, 20;
+  --light: 239, 238, 237;
 
   --red: #e3342f;
   --green: #38c172;
   --blue: #3490dc;
+  --indigo: 75, 0, 130;
+  --aqua: 127, 255, 212;
 
   --bgColor: var(--light);
+  /* --bgColor: var(--aqua); */
   --textColor: var(--dark);
+  --accent: var(--indigo);
+  --secondary: crimson;
 
   --moveOffset: 1.35px;
 }
@@ -15,13 +20,17 @@
 @media (prefers-dark-interface), (prefers-color-scheme: dark) {
   :root {
     --bgColor: var(--dark);
+    /* --bgColor: var(--indigo); */
     --textColor: var(--light);
+    --accent: var(--aqua);
   }
 }
 
 body.dark {
   --bgColor: var(--dark);
+  /* --bgColor: var(--indigo); */
   --textColor: var(--light);
+  --accent: var(--aqua);
 }
 
 #physics {
@@ -44,15 +53,15 @@ body {
   font-size: calc(22px + 0.33vw);
   -webkit-font-smoothing: antialiased;
   padding: 5vh 10vw;
-  background-color: var(--bgColor);
-  color: var(--textColor);
+  background-color: rgb(var(--bgColor));
+  color: rgb(var(--textColor));
   margin: 0;
   min-height: 100vh;
 }
 
 ::selection {
-  color: var(--bgColor);
-  background-color: var(--textColor);
+  color: rgb(var(--bgColor));
+  background-color: rgb(var(--textColor));
 }
 
 a {
@@ -128,14 +137,30 @@ a:focus::after {
   height: 100vh;
 }
 
+#experiment-container {
+  z-index: -5;
+  background-color: rgba(var(--bgColor), 0.5);
+  position: fixed;
+  top: 0;
+  width: 0;
+  height: 0;
+}
+
+#experiment-container > span.accent {
+  color: rgb(var(--accent));
+}
+
+#experiment-container > span.secondary {
+  color: rgb(var(--accent));
+}
+
 #experiment-container::after {
   content: '';
   position: fixed;
   top: 0;
   left: 0;
   z-index: -5;
-  background-color: var(--bgColor);
-  opacity: 0.5;
+  background-color: inherit;
   width: 100vw;
   height: 100vh;
 }

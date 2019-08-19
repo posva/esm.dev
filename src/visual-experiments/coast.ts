@@ -5,6 +5,7 @@ import {
   getBackgroundColor,
   getColor,
   canvasEl,
+  getAccentColor,
 } from './utils/screen'
 import {
   generateMaze,
@@ -110,7 +111,7 @@ export function render() {
     ctx.beginPath()
     // ctx.lineJoin = 'round'
     // ctx.lineCap = 'round'
-    ctx.strokeStyle = getColor()
+    ctx.strokeStyle = getAccentColor()
     ctx.fillStyle = getBackgroundColor()
     ctx.moveTo(x, y)
     for (let i = 1; i < solution.length; i++) {
