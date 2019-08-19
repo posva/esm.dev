@@ -214,6 +214,8 @@ let _context: Context | null = null
 let randomizer: Randomizer
 let isListeningForResize = false
 
+export const setRandomizer = (r: Randomizer) => (randomizer = r)
+
 const defaultCellsize = 2 ** 4
 const defaultOffset = {
   x: defaultCellsize * 2,

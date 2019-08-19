@@ -1,3 +1,4 @@
+import nanoid from 'nanoid'
 import { debounce } from 'lodash-es'
 import {
   getDimensions,
@@ -6,13 +7,14 @@ import {
   canvasEl,
 } from './utils/screen'
 import {
-  resetContext,
   generateMaze,
   solveMaze,
   simplifyPath,
   Context,
+  setRandomizer,
 } from './maze'
 import { addTapListener } from './utils/events'
+import { Randomizer } from './utils/random'
 
 let isListening = false
 
@@ -31,6 +33,11 @@ export function createContext(): Context | null {
 
   // too small
   if (width < 3 || height < 3) return null
+
+  const seed = window.location.hash.slice(1) || nanoid()
+  console.log(`🌱 seed "${seed}"`)
+  const random = new Randomizer(seed)
+  setRandomizer(random)
 
   const tree = generateMaze(width, height)
   let solutionUnoptimized = solveMaze(tree)
@@ -68,6 +75,7 @@ export function createContext(): Context | null {
     position: { ...solution[0] },
     remaining: solution[1].y - solution[0].y,
     nextPoint: 1,
+    random,
 
     ctx,
     cellSize,
