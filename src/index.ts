@@ -6,7 +6,7 @@ const possibleExperiments = ['windmill-problem', 'maze', 'coast']
 const experimentId =
   process.env.NODE_ENV === 'production'
     ? Math.floor(Math.random() * possibleExperiments.length)
-    : possibleExperiments.length - 2
+    : possibleExperiments.length - 3
 
 const experiment = () =>
   import(`./visual-experiments/${possibleExperiments[experimentId]}.ts`)
