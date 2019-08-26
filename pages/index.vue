@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { rotateOffsets } from '~/extra/links'
+import { rotateOffsets } from '~/lab/dom/links'
 
 export default {
   mounted() {
@@ -49,9 +49,7 @@ export default {
         : possibleExperiments.length - 1
 
     const experiment = () =>
-      import(
-        `~/extra/visual-experiments/${possibleExperiments[experimentId]}.ts`
-      )
+      import(`~/lab/${possibleExperiments[experimentId]}.ts`)
 
     let rafId: number
     function update() {
@@ -65,7 +63,7 @@ export default {
     // @ts-ignore
     if (module.hot) {
       // @ts-ignore
-      module.hot.accept('~/extra/links', () => {
+      module.hot.accept('~/lab/dom/links', () => {
         cancelAnimationFrame(rafId)
         update()
       })
