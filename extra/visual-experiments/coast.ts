@@ -31,7 +31,7 @@ export function createContext(): Context | null {
   if (width < 3 || height < 3) return null
 
   const seed = (!isListening && window.location.hash.slice(1)) || nanoid()
-  console.log(`🌱 seed "${seed}"`)
+  console.log(`🖼 ${width}x${height}\n🌱 "${seed}"`)
   const random = new Randomizer(seed)
   setRandomizer(random)
 

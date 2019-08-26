@@ -57,8 +57,12 @@ body.light {
 }
 
 #main {
-  width: 48rem;
+  width: 28rem;
   max-width: 100%;
+}
+
+html {
+  font-size: calc(22px + 0.33vw);
 }
 
 body {
@@ -66,7 +70,6 @@ body {
   position: relative;
   font-family: -apple-system, 'Helvetica Neue', BlinkMacSystemFont, Cantarell,
     'Open Sans', sans-serif;
-  font-size: calc(22px + 0.33vw);
   -webkit-font-smoothing: antialiased;
   padding: 5vh 10vw;
   background-color: rgb(var(--bgColor));
