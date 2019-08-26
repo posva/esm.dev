@@ -2094,10 +2094,12 @@ html-entities@^1.2.1:
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-1.2.1.tgz#0df29351f0721163515dfb9e5543e5f6eed5162f"
   integrity sha1-DfKTUfByEWNRXfueVUPl9u7VFi8=
 
-html-inline-css-webpack-plugin@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/html-inline-css-webpack-plugin/-/html-inline-css-webpack-plugin-1.6.0.tgz#a0f7281678d37bacd5c5e14a6d534619a5d4898d"
-  integrity sha512-bl9nCY2k9FcPwJojFMDP4Iuf83NeZey8UznTRP7w7LIiXV5srzjyQXaprAn60m+ab7ptg+ntAQN0acLF0f5KfQ==
+html-inline-css-webpack-plugin@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/html-inline-css-webpack-plugin/-/html-inline-css-webpack-plugin-1.7.0.tgz#0c66baa630d870693a2c617c80a668f9218582d7"
+  integrity sha512-QNUdH0wj8PH9jnPC69C85JGbeBicLOWwdbKf42XRmptMoqImyoAH76eb8hB4tQO4TBJNRgMP69cdR+kAS5ypKA==
+  dependencies:
+    lodash "^4.17.15"
 
 html-minifier@^4.0.0:
   version "4.0.0"
@@ -2700,7 +2702,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@^4.17.11, lodash@^4.17.5:
+lodash@^4.17.11, lodash@^4.17.15, lodash@^4.17.5:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
