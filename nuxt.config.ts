@@ -1,10 +1,13 @@
 import { Configuration } from '@nuxt/types'
 
+const description = process.env.npm_package_description as string
+const title = 'Eduardo San Martin Morote'
+
 const config: Configuration = {
   mode: 'universal',
 
   head: {
-    title: 'Eduardo San Martin Morote',
+    title,
 
     htmlAttrs: {
       lang: 'en',
@@ -16,7 +19,7 @@ const config: Configuration = {
       {
         hid: 'description',
         name: 'description',
-        content: `Eduardo's personal website`,
+        content: description,
       },
       // <meta name="theme-color" content="black" />
       // <meta name="msapplication-navbutton-color" content="black" />
@@ -24,17 +27,17 @@ const config: Configuration = {
       // <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
       // Open Graph data
-      { property: 'og:title', content: 'Eduardo San Martin Morote' },
+      { property: 'og:title', content: title },
       { property: 'og:type', content: 'website' },
       { property: 'og:url', content: 'https://esm.dev' },
       { property: 'og:image', content: 'https://esm.dev/media-preview.jpg' },
-      { property: 'og:description', content: 'Hello! I am Eduardo,' },
+      { property: 'og:description', content: description },
       // Twitter Card data
       { name: 'twitter:card', content: 'summary' },
       { name: 'twitter:site', content: '@posva' },
       { name: 'twitter:creator', content: '@posva' },
-      { name: 'twitter:title', content: 'Eduardo San Martin Morote' },
-      { name: 'twitter:description', content: 'Hello! I am Eduardo.' },
+      { name: 'twitter:title', content: title },
+      { name: 'twitter:description', content: description },
       { name: 'twitter:image', content: 'https://esm.dev/media-preview.jpg' },
     ],
     link: [

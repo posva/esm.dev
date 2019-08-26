@@ -1,7 +1,7 @@
 {
   "name": "esm.dev",
+  "description": "Hello! I am Eduardo and this is my website 🙂",
   "version": "1.0.0",
-  "main": "index.js",
   "private": true,
   "author": "Eduardo San Martin Morote <posva13@gmail.com>",
   "scripts": {
