@@ -26,6 +26,6 @@
   "dependencies": {
     "lodash-es": "^4.17.15",
     "matter-js": "^0.14.2",
-    "nanoid": "^2.0.3"
+    "nanoid": "^2.0.4"
   }
 }
