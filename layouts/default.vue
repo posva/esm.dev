@@ -1,11 +1,4 @@
 <template>
-  <div id="page-container">
-    <nuxt />
-  </div>
+  <nuxt />
 </template>
 
-<style scoped>
-#page-container {
-  height: 100vh;
-}
-</style>

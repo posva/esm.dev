@@ -1,5 +1,5 @@
 <template>
-  <div class="leading-tight">
+  <div class="leading-tight" id="bio-container">
     <h1 class="text-4xl font-bold my-3">Hi 👋</h1>
     <p class="my-4">
       <!-- <img src="assets/casual-me.jpg" alt="picture of myself" /> -->
@@ -40,7 +40,6 @@ import { rotateOffsets } from '~/lab/dom/links'
 import LabExperiment from '~/components/LabExperiment.vue'
 
 export default {
-  layout: 'bio',
   components: { LabExperiment },
 
   mounted() {
@@ -110,3 +109,10 @@ export default {
   },
 }
 </script>
+
+<style>
+#bio-container {
+  position: relative;
+  padding: 5vh 10vw;
+}
+</style>
