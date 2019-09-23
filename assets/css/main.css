@@ -67,11 +67,9 @@ html {
 
 body {
   box-sizing: border-box;
-  position: relative;
   font-family: -apple-system, 'Helvetica Neue', BlinkMacSystemFont, Cantarell,
     'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
-  padding: 5vh 10vw;
   background-color: rgb(var(--bgColor));
   color: rgb(var(--textColor));
   margin: 0;

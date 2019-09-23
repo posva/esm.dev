@@ -6,7 +6,7 @@ export const canvasEl: HTMLCanvasElement = document.getElementById(
 ) as HTMLCanvasElement
 export const size = getDimensions()
 canvasEl.setAttribute('width', '' + size.x)
-canvasEl.setAttribute('height', '' + size.x)
+canvasEl.setAttribute('height', '' + size.y)
 
 export interface Point {
   x: number

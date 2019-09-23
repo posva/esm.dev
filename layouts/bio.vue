@@ -6,6 +6,7 @@
 
 <style scoped>
 .padded-container {
-  height: 100vh;
+  position: relative;
+  padding: 5vh 10vw;
 }
 </style>

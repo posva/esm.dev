@@ -41,6 +41,8 @@
 import { rotateOffsets } from '~/lab/dom/links'
 
 export default {
+  layout: 'bio',
+
   mounted() {
     const possibleExperiments = ['windmill-problem', 'maze', 'coast']
     let experimentIndexFromRoute = Number(this.$route.query.i)

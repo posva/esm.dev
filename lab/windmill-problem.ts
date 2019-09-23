@@ -146,15 +146,14 @@ function start(seed: number, options: Options) {
         start(seed + 1, options)
       }, 500)
     )
-    document.body.addEventListener(
-      'wheel',
-      throttle(({ deltaY }) => {
-        const inc = deltaY * (lastScrollY > window.screenY ? -1 : 1) * 0.0025
-        context.speed = Math.max(0.05, Math.min(context.speed + inc, 10))
-        console.log('scrolling', deltaY, context.speed)
-        lastScrollY = window.scrollY
-      }, 50)
-    )
+    document.body.addEventListener('keydown', ({ key }) => {
+      const inc = (+(key === 'ArrowRight') - +(key === 'ArrowLeft')) * 0.15
+      // inc will only apply if one of the arrows is pressed
+      if (!inc) return
+      context.speed = Math.max(0.05, Math.min(context.speed + inc, 10))
+      console.log('scrolling', inc, context.speed)
+      lastScrollY = window.scrollY
+    })
     // remove add points
     const throttledClick = throttle(globalClickHandler, 100)
     if ('PointerEvent' in window)
