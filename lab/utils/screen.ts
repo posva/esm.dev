@@ -1,12 +1,8 @@
-export const container = document.getElementById(
-  'experiment-container'
-) as HTMLElement
-export const canvasEl: HTMLCanvasElement = document.getElementById(
-  'experiment'
-) as HTMLCanvasElement
-export const size = getDimensions()
-canvasEl.setAttribute('width', '' + size.x)
-canvasEl.setAttribute('height', '' + size.y)
+export let canvasEl: HTMLCanvasElement
+// must be called when resizing
+// @ts-ignore
+export const resetCanvasCheck = () => (canvasEl = null)
+let size: Point = { x: 0, y: 0 }
 
 export interface Point {
   x: number
@@ -18,6 +14,19 @@ export function isSamePoint(a: Point, b: Point): boolean {
 }
 
 export function getDimensions(): Point {
+  const newCanvasEl = document.getElementById('experiment') as HTMLCanvasElement
+
+  if (!newCanvasEl) {
+    console.log('No Canvas element with id "experiment" found')
+  }
+
+  if (newCanvasEl === canvasEl) return size
+  canvasEl = newCanvasEl
+
   const { width, height } = window.getComputedStyle(canvasEl)
-  return { x: parseInt(width!, 10) || 0, y: parseInt(height!, 10) || 0 }
+  size = { x: parseInt(width!, 10) || 0, y: parseInt(height!, 10) || 0 }
+  canvasEl.setAttribute('width', '' + size.x)
+  canvasEl.setAttribute('height', '' + size.y)
+
+  return size
 }

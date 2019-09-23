@@ -1,6 +1,12 @@
 import { debounce } from 'lodash-es'
 import nanoid from 'nanoid'
-import { getDimensions, canvasEl, Point, isSamePoint } from './utils/screen'
+import {
+  getDimensions,
+  canvasEl,
+  Point,
+  isSamePoint,
+  resetCanvasCheck,
+} from './utils/screen'
 import { getColorVariable } from './utils/colors'
 import { Randomizer } from './utils/random'
 
@@ -230,6 +236,7 @@ export function createContext(
   offset: Point
 ): Context | null {
   if (_context) return _context
+  resetCanvasCheck()
   // console.time('Maze Generation')
 
   // convert sizes from px to cells

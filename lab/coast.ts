@@ -1,6 +1,6 @@
 import nanoid from 'nanoid'
 import { debounce } from 'lodash-es'
-import { getDimensions, canvasEl } from './utils/screen'
+import { getDimensions, canvasEl, resetCanvasCheck } from './utils/screen'
 import { getColorVariable } from './utils/colors'
 import {
   generateMaze,
@@ -17,10 +17,12 @@ let isListening = false
 let _context: Context | null = null
 
 export function createContext(): Context | null {
+  if (_context) return _context
+  resetCanvasCheck()
+
   const size = getDimensions()
   const offset = { x: 1, y: 1 }
   const cellSize = 1.5
-  if (_context) return _context
   // console.time('Maze Generation')
 
   // convert sizes from px to cells

@@ -4,7 +4,12 @@
 
 import { debounce, throttle } from 'lodash-es'
 
-import { Point, canvasEl, getDimensions } from './utils/screen'
+import {
+  Point,
+  canvasEl,
+  getDimensions,
+  resetCanvasCheck,
+} from './utils/screen'
 import { getColorVariable } from './utils/colors'
 
 /**
@@ -78,7 +83,6 @@ let context: Context = {
 }
 
 let isListeningForResize = false
-let lastScrollY = window.scrollY
 
 function globalClickHandler(event: MouseEvent | TouchEvent | PointerEvent) {
   let mousePoint: Point
@@ -117,6 +121,7 @@ function globalClickHandler(event: MouseEvent | TouchEvent | PointerEvent) {
 }
 
 function start(seed: number, options: Options) {
+  resetCanvasCheck()
   if (context.seed !== seed) {
     context = {
       seed,
@@ -152,7 +157,6 @@ function start(seed: number, options: Options) {
       if (!inc) return
       context.speed = Math.max(0.05, Math.min(context.speed + inc, 10))
       console.log('scrolling', inc, context.speed)
-      lastScrollY = window.scrollY
     })
     // remove add points
     const throttledClick = throttle(globalClickHandler, 100)
@@ -246,6 +250,7 @@ export function render(ratio: number) {
   // skip if too fast
   if (ratio > 2) return
   const size = getDimensions()
+  if (!canvasEl) return
   canvasEl.width = size.x * window.devicePixelRatio
   canvasEl.height = size.y * window.devicePixelRatio
   const ctx = canvasEl.getContext('2d')
