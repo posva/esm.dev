@@ -43,13 +43,26 @@ import { rotateOffsets } from '~/lab/dom/links'
 export default {
   mounted() {
     const possibleExperiments = ['windmill-problem', 'maze', 'coast']
-    const experimentId =
-      process.env.NODE_ENV === 'production'
-        ? Math.floor(Math.random() * possibleExperiments.length)
-        : possibleExperiments.length - 1
+    let experimentIndexFromRoute = Number(this.$route.query.i)
+    const isValidIndex =
+      experimentIndexFromRoute != null &&
+      !Number.isNaN(experimentIndexFromRoute)
+    const experimentId = isValidIndex
+      ? experimentIndexFromRoute
+      : process.env.NODE_ENV === 'production'
+      ? Math.floor(Math.random() * possibleExperiments.length)
+      : possibleExperiments.length - 1
 
     const experiment = () =>
-      import(`~/lab/${possibleExperiments[experimentId]}.ts`)
+      import(`~/lab/${possibleExperiments[experimentId]}.ts`).catch(err =>
+        import(
+          `~/lab/${
+            possibleExperiments[
+              Math.floor(Math.random() * possibleExperiments.length)
+            ]
+          }.ts`
+        )
+      )
 
     let rafId: number
     function update() {
