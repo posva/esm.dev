@@ -1,11 +1,11 @@
 <template>
-  <div class="padded-container">
+  <div id="bio-container">
     <nuxt />
   </div>
 </template>
 
 <style scoped>
-.padded-container {
+#bio-container {
   position: relative;
   padding: 5vh 10vw;
 }
