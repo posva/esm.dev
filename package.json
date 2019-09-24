@@ -16,7 +16,7 @@
     "nuxt": "^2.9.2"
   },
   "devDependencies": {
-    "@nuxt/typescript-build": "^0.2.9",
+    "@nuxt/typescript-build": "^0.2.10",
     "@nuxt/typescript-runtime": "^0.1.6",
     "@nuxtjs/tailwindcss": "^1.0.0",
     "@types/lodash-es": "^4.17.3",
