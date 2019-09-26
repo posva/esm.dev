@@ -56,6 +56,10 @@ const config: Configuration = {
     '@nuxtjs/tailwindcss',
     '@nuxt/typescript-build',
   ],
+
+  modern: true,
+
+  modules: ['@nuxt/press'],
 }
 
 export default config
