@@ -1,2 +1,5 @@
 https://esm.netlify.com/* https://esm.dev/:splat 301!
+/sponsorship   https://github.com/users/posva/sponsorship
+/sponsor   https://github.com/users/posva/sponsorship
+/donate   https://github.com/users/posva/sponsorship
 /*    /index.html   200
