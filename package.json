@@ -13,11 +13,11 @@
   "dependencies": {
     "lodash-es": "^4.17.15",
     "nanoid": "^2.1.2",
-    "nuxt": "^2.9.2"
+    "nuxt": "^2.10.0"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.3.0",
-    "@nuxt/typescript-runtime": "^0.1.7",
+    "@nuxt/typescript-runtime": "^0.2.0",
     "@nuxtjs/tailwindcss": "^1.0.0",
     "@types/lodash-es": "^4.17.3",
     "@types/nanoid": "^2.0.0",
