@@ -21,7 +21,7 @@
     "@nuxtjs/tailwindcss": "^1.2.0",
     "@types/lodash-es": "^4.17.3",
     "@types/nanoid": "^2.1.0",
-    "@types/node": "^12.12.11",
+    "@types/node": "^12.12.12",
     "prettier": "^1.19.1"
   }
 }
