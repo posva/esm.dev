@@ -15,3 +15,24 @@ export function getColorVariable(variable: string): string {
 
   return color || ''
 }
+
+let mql: MediaQueryList
+let mqlListeners: MqlListener[] = []
+
+type MqlListener = (event: MediaQueryListEvent) => any
+
+export function onColorChange(listener: MqlListener): () => void {
+  // lazily create the object because it was causing errors on Safari on totally different
+  // dependencies being undefined. Webpack seems to duplicate the file and include it in multiple files
+  if (!mql) {
+    mql = window.matchMedia('(prefers-color-scheme: light)')
+    mql.addEventListener('change', event => {
+      mqlListeners.forEach(listener => listener(event))
+    })
+  }
+  mqlListeners.push(listener)
+  return () => {
+    const index = mqlListeners.indexOf(listener)
+    if (index > -1) mqlListeners.splice(index, 1)
+  }
+}
