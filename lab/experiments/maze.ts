@@ -6,9 +6,9 @@ import {
   Point,
   isSamePoint,
   resetCanvasCheck,
-} from './utils/screen'
-import { getColorVariable } from './utils/colors'
-import { Randomizer } from './utils/random'
+} from '../utils/screen'
+import { getColorVariable } from '../utils/colors'
+import { Randomizer } from '../utils/random'
 
 const enum WallType {
   vertical,
@@ -229,7 +229,7 @@ const defaultOffset = {
  * @param cellSize size of a cell in the maze
  * @param offest position to offset to drawingn and center around it
  */
-export function createContext(
+function getContext(
   width: number,
   height: number,
   cellSize: number,
@@ -276,7 +276,7 @@ export function createContext(
         const size = getDimensions()
         const width = Math.floor((size.x - offset.x * 2) / cellSize)
         const height = Math.floor((size.y - offset.y * 2) / cellSize)
-        createContext(width, height, cellSize, offset)
+        getContext(width, height, cellSize, offset)
       }, 500)
     )
   }
@@ -484,7 +484,7 @@ export function render(ratio: number) {
   const size = getDimensions()
 
   // TODO: rename to getContext
-  const context = createContext(size.x, size.y, defaultCellsize, defaultOffset)
+  const context = getContext(size.x, size.y, defaultCellsize, defaultOffset)
   if (!context) return
 
   if (context.state === 'start') {

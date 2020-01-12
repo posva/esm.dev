@@ -1,7 +1,7 @@
 import nanoid from 'nanoid'
 import { debounce } from 'lodash-es'
-import { getDimensions, canvasEl, resetCanvasCheck } from './utils/screen'
-import { getColorVariable } from './utils/colors'
+import { getDimensions, canvasEl, resetCanvasCheck } from '../utils/screen'
+import { getColorVariable } from '../utils/colors'
 import {
   generateMaze,
   solveMaze,
@@ -9,14 +9,14 @@ import {
   Context,
   setRandomizer,
 } from './maze'
-import { addTapListener } from './utils/events'
-import { Randomizer } from './utils/random'
+import { addTapListener } from '../utils/events'
+import { Randomizer } from '../utils/random'
 
 let isListening = false
 
 let _context: Context | null = null
 
-export function createContext(): Context | null {
+function getContext(): Context | null {
   if (_context) return _context
   resetCanvasCheck()
 
@@ -56,7 +56,7 @@ export function createContext(): Context | null {
       'resize',
       debounce(() => {
         _context = null
-        createContext()
+        getContext()
       }, 200)
     )
   }
@@ -88,7 +88,7 @@ export function render() {
   const size = getDimensions()
 
   // TODO: rename to getContext
-  const context = createContext()
+  const context = getContext()
   if (!context) return
 
   if (context.state === 'start') {

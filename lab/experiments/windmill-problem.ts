@@ -9,8 +9,8 @@ import {
   canvasEl,
   getDimensions,
   resetCanvasCheck,
-} from './utils/screen'
-import { getColorVariable } from './utils/colors'
+} from '../utils/screen'
+import { getColorVariable } from '../utils/colors'
 
 /**
  *
