@@ -21,45 +21,46 @@ function createMasher() {
   }
 }
 
-export class Randomizer {
-  private c: number
-  private s0: number
-  private s1: number
-  private s2: number
+export interface Randomizer {
+  int32(): number
+  double(): number
+}
 
-  constructor(seed: string) {
-    const mash = createMasher()
-    // Apply the seeding algorithm from Baagoe.
-    this.c = 1
-    this.s0 = mash(' ')
-    this.s1 = mash(' ')
-    this.s2 = mash(' ')
-    this.s0 -= mash(seed)
-    if (this.s0 < 0) {
-      this.s0 += 1
-    }
-    this.s1 -= mash(seed)
-    if (this.s1 < 0) {
-      this.s1 += 1
-    }
-    this.s2 -= mash(seed)
-    if (this.s2 < 0) {
-      this.s2 += 1
-    }
+export function createRandomizer(seed: string): Randomizer {
+  const mash = createMasher()
+
+  // Apply the seeding algorithm from Baagoe.
+  let c: number = 1
+  let s0: number = mash(' ')
+  let s1: number = mash(' ')
+  let s2: number = mash(' ')
+  s0 -= mash(seed)
+  if (s0 < 0) {
+    s0 += 1
+  }
+  s1 -= mash(seed)
+  if (s1 < 0) {
+    s1 += 1
+  }
+  s2 -= mash(seed)
+  if (s2 < 0) {
+    s2 += 1
   }
 
-  next() {
-    let t = 2091639 * this.s0 + this.c * 2.3283064365386963e-10 // 2^-32
-    this.s0 = this.s1
-    this.s1 = this.s2
-    return (this.s2 = t - (this.c = t | 0))
+  function next() {
+    let t = 2091639 * s0 + c * 2.3283064365386963e-10 // 2^-32
+    s0 = s1
+    s1 = s2
+    return (s2 = t - (c = t | 0))
   }
 
-  int32() {
-    return (this.next() * 0x100000000) | 0
+  function int32() {
+    return (next() * 0x100000000) | 0
   }
 
-  double() {
-    return this.next() + ((this.next() * 0x200000) | 0) * 1.1102230246251565e-16 // 2^-53
+  function double() {
+    return next() + ((next() * 0x200000) | 0) * 1.1102230246251565e-16 // 2^-53
   }
+
+  return { int32, double }
 }

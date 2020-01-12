@@ -7,8 +7,8 @@ import {
   isSamePoint,
   resetCanvasCheck,
 } from '../utils/screen'
-import { getColorVariable } from '../utils/colors'
-import { Randomizer } from '../utils/random'
+import { getColorVariable, onColorChange } from '../utils/colors'
+import { createRandomizer, Randomizer } from '../utils/random'
 
 const enum WallType {
   vertical,
@@ -250,7 +250,7 @@ function getContext(
   console.log(
     `Generating a maze ${width}x${height} with cellSize of ${cellSize} with 🌱 seed "${seed}"`
   )
-  const random = new Randomizer(seed)
+  const random = createRandomizer(seed)
   randomizer = random
 
   const tree = generateMaze(width, height)
@@ -279,7 +279,17 @@ function getContext(
         getContext(width, height, cellSize, offset)
       }, 500)
     )
+    onColorChange(() => {
+      if (!_context) return
+      // draw the maze again so it works no matter the state
+      _context.ctx.fillStyle = getColorVariable('bgColor')
+      _context.ctx.fillRect(0, 0, size.x, size.y)
+
+      drawTree(_context)
+      drawPath(_context)
+    })
   }
+
   if (newMazeTimeout > 0) {
     clearTimeout(newMazeTimeout)
     newMazeTimeout = -1
@@ -316,7 +326,7 @@ export function resetContext() {
 function movePosition(context: Context, ratio: number) {
   const { position, direction, nextPoint } = context
   const point = context.solution[nextPoint]
-  const delta = (ratio * context.solution.length) / 1000
+  const delta = (ratio * context.solution.length) / 10
   position[direction] +=
     (position[direction] < point[direction] ? 1 : -1) * delta
   context.remaining -= delta
@@ -483,7 +493,6 @@ export function render(ratio: number) {
 
   const size = getDimensions()
 
-  // TODO: rename to getContext
   const context = getContext(size.x, size.y, defaultCellsize, defaultOffset)
   if (!context) return
 

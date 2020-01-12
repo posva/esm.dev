@@ -1,7 +1,7 @@
 import nanoid from 'nanoid'
 import { debounce } from 'lodash-es'
 import { getDimensions, canvasEl, resetCanvasCheck } from '../utils/screen'
-import { getColorVariable } from '../utils/colors'
+import { getColorVariable, onColorChange } from '../utils/colors'
 import {
   generateMaze,
   solveMaze,
@@ -10,7 +10,7 @@ import {
   setRandomizer,
 } from './maze'
 import { addTapListener } from '../utils/events'
-import { Randomizer } from '../utils/random'
+import { createRandomizer } from '../utils/random'
 
 let isListening = false
 
@@ -34,7 +34,7 @@ function getContext(): Context | null {
 
   const seed = (!isListening && window.location.hash.slice(1)) || nanoid()
   console.log(`🖼 ${width}x${height}\n🌱 "${seed}"`)
-  const random = new Randomizer(seed)
+  const random = createRandomizer(seed)
   setRandomizer(random)
 
   const tree = generateMaze(width, height)
@@ -59,6 +59,10 @@ function getContext(): Context | null {
         getContext()
       }, 200)
     )
+
+    onColorChange(() => {
+      _context!.state = 'start'
+    })
   }
 
   canvasEl.width = size.x * window.devicePixelRatio
@@ -87,7 +91,6 @@ function getContext(): Context | null {
 export function render() {
   const size = getDimensions()
 
-  // TODO: rename to getContext
   const context = getContext()
   if (!context) return
 

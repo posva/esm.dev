@@ -26,7 +26,8 @@ export function onColorChange(listener: MqlListener): () => void {
   // dependencies being undefined. Webpack seems to duplicate the file and include it in multiple files
   if (!mql) {
     mql = window.matchMedia('(prefers-color-scheme: light)')
-    mql.addEventListener('change', event => {
+    // old browsers need this one instead of the newer addEventListener
+    mql.addListener(event => {
       mqlListeners.forEach(listener => listener(event))
     })
   }
@@ -36,3 +37,8 @@ export function onColorChange(listener: MqlListener): () => void {
     if (index > -1) mqlListeners.splice(index, 1)
   }
 }
+
+// reset color check if the scheme changes
+onColorChange(() => {
+  colorMap.clear()
+})
