@@ -1030,15 +1030,15 @@
     webpack-node-externals "^1.7.2"
     webpackbar "^4.0.0"
 
-"@nuxtjs/tailwindcss@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/tailwindcss/-/tailwindcss-1.2.0.tgz#e558ef3c4a19e57f5e962b7f4ae8522fa3494891"
-  integrity sha512-ZVwN7o6Ot/e3deJy8rfbzkl+JAbBouGosAY02UPiTMfBFGNYV+d3OXijpSfaMXnipHVgPZeBzs17tyGmx0p1ZQ==
+"@nuxtjs/tailwindcss@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/tailwindcss/-/tailwindcss-1.3.0.tgz#d120694fc093939ce5d85c2433ec304e41979acc"
+  integrity sha512-6Bbr7hEuMW5s5QU73a/LYKB2EdJVJEXZI8521VQrWCtliR0EoJtJaakU6PyfBXHt3PINuEyfgptXZ+1+Qt4ffQ==
   dependencies:
-    consola "^2.10.1"
+    consola "^2.11.3"
     fs-extra "^8.1.0"
     nuxt-purgecss "^0.2.1"
-    tailwindcss "^1.1.3"
+    tailwindcss "^1.1.4"
 
 "@nuxtjs/youch@^4.2.3":
   version "4.2.3"
@@ -7168,10 +7168,10 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-tailwindcss@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-1.1.3.tgz#ad154f78e1e44060e32e3ed44b27287c2be126a6"
-  integrity sha512-8sa/QO+blnu3WXUylsgvYZlUbBpVH36QeGuZxgSGqp1dF3g4AGe1azt8FsO8i8Hfe9Oyvwhx3iSjRDak3nngeQ==
+tailwindcss@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-1.1.4.tgz#786bd5faaf485c9eddcb821dd55666c56baa814e"
+  integrity sha512-p4AxVa4CKpX7IbNxImwNMGG9MHuLgratOaOE/iGriNd4AsRQRM2xMisoQ3KQHqShunrWuObga7rI7xbNsVoWGA==
   dependencies:
     autoprefixer "^9.4.5"
     bytes "^3.0.0"
