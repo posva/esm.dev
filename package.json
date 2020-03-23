@@ -22,6 +22,6 @@
     "@types/lodash-es": "^4.17.3",
     "@types/nanoid": "^2.1.0",
     "@types/node": "^13.9.1",
-    "prettier": "^1.19.1"
+    "prettier": "^2.0.1"
   }
 }
