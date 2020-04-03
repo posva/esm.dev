@@ -13,7 +13,7 @@ export function getColorVariable(variable: string): string {
   document.body.removeChild(el)
   colorMap.set(variable, color || '')
 
-  return color || ''
+  return color || variable
 }
 
 let mql: MediaQueryList
@@ -27,8 +27,8 @@ export function onColorChange(listener: MqlListener): () => void {
   if (!mql) {
     mql = window.matchMedia('(prefers-color-scheme: light)')
     // old browsers need this one instead of the newer addEventListener
-    mql.addListener(event => {
-      mqlListeners.forEach(listener => listener(event))
+    mql.addListener((event) => {
+      mqlListeners.forEach((listener) => listener(event))
     })
   }
   mqlListeners.push(listener)

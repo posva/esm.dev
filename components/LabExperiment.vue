@@ -15,7 +15,12 @@ export default Vue.extend({
   },
 
   mounted() {
-    const possibleExperiments = ['windmill-problem', 'maze', 'coast']
+    const possibleExperiments = [
+      'windmill-problem',
+      'maze',
+      'coast',
+      'crossing-lines',
+    ]
     const experimentId =
       this.labId == null
         ? process.env.NODE_ENV === 'production'
@@ -26,7 +31,7 @@ export default Vue.extend({
     const experiment = () =>
       import(
         `~/lab/experiments/${possibleExperiments[experimentId]}.ts`
-      ).catch(err =>
+      ).catch((err) =>
         import(
           `~/lab/experiments/${
             possibleExperiments[
@@ -37,7 +42,7 @@ export default Vue.extend({
       )
 
     function update() {
-      rafId = requestAnimationFrame(elapsed => {
+      rafId = requestAnimationFrame((elapsed) => {
         stepper(elapsed)
         update()
       })
@@ -45,7 +50,7 @@ export default Vue.extend({
 
     let experimentRender: ((...args: any[]) => void) | null = null
 
-    experiment().then(module => {
+    experiment().then((module) => {
       experimentRender = module.render
     })
 
