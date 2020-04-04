@@ -76,7 +76,7 @@ export default Vue.extend({
   destroyed() {
     cancelAnimationFrame(rafId)
     // @ts-ignore
-    this.app && this.app.destroy()
+    this.app && this.app.stage && this.app.destroy()
   },
 })
 </script>

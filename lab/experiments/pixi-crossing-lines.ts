@@ -1,6 +1,11 @@
 import * as PIXI from 'pixi.js'
 import { ease, EaseDisplayObject, Ease } from 'pixi-ease'
-import { getDimensions, canvasEl, Point } from '../utils/screen'
+import {
+  getDimensions,
+  canvasEl,
+  Point,
+  resetCanvasCheck,
+} from '../utils/screen'
 import {
   getColorVariable,
   onColorChange,
@@ -8,23 +13,40 @@ import {
 } from '../utils/colors'
 import { createRandomizer, Randomizer } from '../utils/random'
 import nanoid from 'nanoid'
-import { memoize } from 'lodash-es'
+import { memoize, debounce } from 'lodash-es'
 
 let _context: Context | null = null
 let randomizer: Randomizer
+let seed = ''
 
 export interface Context {
-  random: Randomizer
   app: PIXI.Application
+}
+
+let isListening = false
+
+function restart() {
+  if (_context) _context.app.destroy()
+  resetCanvasCheck()
+  _context = null
+  start()
 }
 
 export function start() {
   if (_context) return _context
 
-  const seed = window.location.hash.slice(1) || nanoid()
-  console.log(`🌱using "${seed}" as seed`)
-  const random = createRandomizer(seed)
-  randomizer = random
+  if (!isListening) {
+    isListening = true
+    window.addEventListener('resize', debounce(restart, 800))
+
+    onColorChange(restart)
+  }
+
+  const size = getDimensions()
+
+  seed = seed || window.location.hash.slice(1) || nanoid()
+  console.log(`🌱using "${seed}" as seed, with size ${size.x}x${size.y}`)
+  randomizer = createRandomizer(seed)
 
   const colors = {
     bg: getHexColorVariable('bgColor'),
@@ -33,8 +55,6 @@ export function start() {
   }
 
   const drawingColorNames: Array<keyof typeof colors> = ['red', 'bg', 'bg']
-
-  const size = getDimensions()
 
   const app = new PIXI.Application({
     view: canvasEl,
@@ -105,7 +125,6 @@ export function start() {
   })
 
   _context = {
-    random,
     app,
   }
 
