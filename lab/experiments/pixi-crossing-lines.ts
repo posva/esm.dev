@@ -31,7 +31,7 @@ export function start() {
     red: getHexColorVariable('red'),
   }
 
-  const drawingColors: Array<keyof typeof colors> = ['red', 'bg', 'bg']
+  const drawingColorNames: Array<keyof typeof colors> = ['red', 'bg', 'bg']
 
   const size = getDimensions()
 
@@ -48,80 +48,82 @@ export function start() {
   const diameter = 200
   const lineWidth = diameter * 0.6
 
-  const polygons = createGrid(size.x, size.y, diameter, lineWidth)
+  const sprites = createGrid(
+    size.x,
+    size.y,
+    diameter,
+    lineWidth,
+    drawingColorNames.map((name) => colors[name])
+  )
 
-  console.log(polygons)
+  for (let { sprite, container, texture } of sprites) {
+    app.renderer.render(container, texture)
 
-  // draw polygon
+    sprite.interactive = true
+    sprite.on('pointerdown', () => {
+      sprite.angle += 60
+    })
 
-  for (let poly of polygons) {
-    // const path = poly.points.reduce((points, point) => {
-    //   points.push(point.x, point.y)
-    //   return points
-    // }, [] as number[])
-
-    // let graphics = new PIXI.Graphics()
-
-    // graphics.lineStyle(1, colors.accent, 1)
-    // graphics.drawPolygon(path)
-    // graphics.closePath()
-
-    // app.stage.addChild(graphics)
-
-    for (let path of poly.paths) {
-      drawingColors.forEach((colorName, i) => {
-        const bezier = new PIXI.Graphics()
-        bezier.lineStyle(lineWidth / Math.pow(2, i), colors[colorName], 1)
-
-        // bezier.moveTo(path[0].x, path[0].y)
-        // bezier.lineTo(poly.center.x, poly.center.y)
-        // bezier.lineTo(path[1].x, path[1].y)
-        // bezier.position.x = 0
-        // bezier.position.y = 0
-
-        const [p1, p2] = path
-        bezier.position.x = p1.x
-        bezier.position.y = p1.y
-        bezier.bezierCurveTo(
-          poly.center.x - p1.x,
-          poly.center.y - p1.y,
-          poly.center.x - p1.x,
-          poly.center.y - p1.y,
-          path[1].x - p1.x,
-          path[1].y - p1.y
-        )
-
-        app.stage.addChild(bezier)
-      })
-    }
+    app.stage.addChild(sprite)
   }
+
+  let elapsed = 0
+
+  app.ticker.add((delta: number) => {
+    elapsed += delta
+
+    if (elapsed > 100) {
+      sprites[Math.round(sprites.length / 2)].sprite.angle += 60
+      console.log('tick')
+      elapsed = 0
+    }
+  })
 
   _context = {
     random,
     app,
   }
 
-  return _context
+  return app
 }
 
 function createGrid(
   width: number,
   height: number,
   diameter: number,
-  lineWidth: number
+  lineWidth: number,
+  drawingColors: number[]
 ) {
   const sides = 6
   let radius = diameter / 2
   let center = { x: 0, y: 0 }
 
+  const basePolygon = createPolygon({ x: radius, y: radius }, diameter, sides)
+
   const polygons: Polygon[] = []
+  const sprites: Array<ReturnType<typeof createSpriteFromPaths>> = []
   let line = 0
   let i = 0
   console.time('computing')
   while (center.y - radius <= height) {
     i++
-    // if (i === 57 || i === 58)
-    polygons.push(createPolygon(center, diameter, sides))
+    // if (i === 57 || i === 58) {
+    const paths = createPolygonPaths(basePolygon.midpoints, sides)
+    const sprite = createSpriteFromPaths(
+      basePolygon,
+      paths,
+      lineWidth,
+      drawingColors
+    )
+    sprites.push(sprite)
+
+    sprite.sprite.position.x = center.x
+    sprite.sprite.position.y = center.y
+
+    // TODO: set sprite position and stuff
+    // }
+
+    // polygons.push(createPolygon(center, diameter, sides))
     center.x += Math.sqrt(3) * radius
     if (center.x - radius >= width) {
       if (line % 2) {
@@ -135,7 +137,7 @@ function createGrid(
   }
   console.timeEnd('computing')
 
-  return polygons
+  return sprites
 }
 
 export const isPixi = true
@@ -146,8 +148,6 @@ interface Polygon {
   center: Point
   points: Point[]
   midpoints: Point[]
-  paths: Point[][]
-  connectors: Point[]
 }
 
 const cos = memoize(Math.cos)
@@ -171,8 +171,6 @@ function createPolygon(
     },
   ]
   const midpoints: Point[] = []
-  const paths: Point[][] = []
-  const connectors: Point[] = []
 
   let p1 = points[0]
   // to prevent error down there
@@ -190,12 +188,20 @@ function createPolygon(
       y: (p1.y + p2.y) / 2,
     }
     midpoints.push(m)
-    connectors.push({
-      x: cos(angle + startAngle),
-      y: sin(angle + startAngle),
-    })
     p1 = p2
   }
+
+  return {
+    points,
+    midpoints,
+    sides,
+    diameter,
+    center: { ...center },
+  }
+}
+
+function createPolygonPaths(midpoints: Point[], sides: number) {
+  const paths: Point[][] = []
 
   let used = new Map<number, boolean>()
   let i = -1
@@ -211,13 +217,65 @@ function createPolygon(
     i = -1
   }
 
-  return {
-    points,
-    midpoints,
-    sides,
-    paths,
-    diameter,
-    center: { ...center },
-    connectors,
+  return paths
+}
+
+// TODO: drawing options refactored
+function createSpriteFromPaths(
+  polygon: Polygon,
+  paths: Point[][],
+  lineWidth: number,
+  drawingColors: number[]
+) {
+  const container = new PIXI.Container()
+
+  // const path = polygon.points.reduce((points, point) => {
+  //   points.push(point.x, point.y)
+  //   return points
+  // }, [] as number[])
+
+  // let graphics = new PIXI.Graphics()
+
+  // graphics.lineStyle(2, drawingColors[0], 1)
+  // graphics.drawPolygon(path)
+  // graphics.closePath()
+
+  // container.addChild(graphics)
+
+  for (let path of paths) {
+    drawingColors.forEach((color, i) => {
+      const bezier = new PIXI.Graphics()
+      bezier.lineStyle(lineWidth / Math.pow(2, i), color, 1)
+
+      const [p1, p2] = path
+      bezier.position.x = p1.x
+      bezier.position.y = p1.y
+      bezier.bezierCurveTo(
+        polygon.center.x - p1.x,
+        polygon.center.y - p1.y,
+        polygon.center.x - p1.x,
+        polygon.center.y - p1.y,
+        p2.x - p1.x,
+        p2.y - p1.y
+      )
+
+      container.addChild(bezier)
+    })
   }
+
+  const brt = new PIXI.BaseRenderTexture({
+    width: polygon.diameter,
+    height: polygon.diameter,
+    scaleMode: PIXI.SCALE_MODES.LINEAR,
+    // TODO: 2 makes it look better
+    resolution: 2,
+  })
+
+  const texture = new PIXI.RenderTexture(brt)
+  const sprite = new PIXI.Sprite(texture)
+
+  sprite.anchor.set(0.5)
+  container.pivot.set(0.5)
+
+  return { sprite, container, texture }
 }

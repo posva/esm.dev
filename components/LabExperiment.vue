@@ -44,7 +44,8 @@ export default Vue.extend({
 
     experiment().then((module) => {
       if (module.isPixi) {
-        module.start()
+        // @ts-ignore
+        this.app = module.start()
       } else {
         function update() {
           rafId = requestAnimationFrame((elapsed) => {
@@ -74,6 +75,8 @@ export default Vue.extend({
 
   destroyed() {
     cancelAnimationFrame(rafId)
+    // @ts-ignore
+    this.app && this.app.destroy()
   },
 })
 </script>
