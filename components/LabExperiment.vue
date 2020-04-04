@@ -20,6 +20,7 @@ export default Vue.extend({
       'maze',
       'coast',
       'crossing-lines',
+      'pixi-crossing-lines',
     ]
     const experimentId =
       this.labId == null
@@ -41,32 +42,34 @@ export default Vue.extend({
         )
       )
 
-    function update() {
-      rafId = requestAnimationFrame((elapsed) => {
-        stepper(elapsed)
-        update()
-      })
-    }
-
-    let experimentRender: ((...args: any[]) => void) | null = null
-
     experiment().then((module) => {
-      experimentRender = module.render
+      if (module.isPixi) {
+        module.start()
+      } else {
+        function update() {
+          rafId = requestAnimationFrame((elapsed) => {
+            stepper(elapsed)
+            update()
+          })
+        }
+
+        let experimentRender: ((...args: any[]) => void) | null = null
+        experimentRender = module.render
+        update()
+
+        let lastElapsed = 0
+        const BASE_DELTA = 1000 / 60 // 1s / 60 frames
+        let lastDelta = BASE_DELTA
+
+        function stepper(elapsed: number) {
+          lastDelta = elapsed - lastElapsed
+          lastElapsed = elapsed
+          const ratio = lastDelta / BASE_DELTA
+
+          experimentRender && experimentRender(ratio)
+        }
+      }
     })
-
-    update()
-
-    let lastElapsed = 0
-    const BASE_DELTA = 1000 / 60 // 1s / 60 frames
-    let lastDelta = BASE_DELTA
-
-    function stepper(elapsed: number) {
-      lastDelta = elapsed - lastElapsed
-      lastElapsed = elapsed
-      const ratio = lastDelta / BASE_DELTA
-
-      experimentRender && experimentRender(ratio)
-    }
   },
 
   destroyed() {

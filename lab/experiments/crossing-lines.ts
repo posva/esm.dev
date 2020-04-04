@@ -8,7 +8,7 @@ import {
 import { getColorVariable, onColorChange } from '../utils/colors'
 import { addTapListener } from '../utils/events'
 import { createRandomizer, Randomizer } from '../utils/random'
-import { memoize, size } from 'lodash-es'
+import { memoize } from 'lodash-es'
 
 let isListening = false
 

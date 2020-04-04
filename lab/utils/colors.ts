@@ -1,6 +1,24 @@
 const colorMap = new Map<string, string>()
 
+const RGB_RE = /^rgba?\((\d+), *(\d+), *(\d+)\)/
+export function getHexColorVariable(variable: string): number {
+  const rgb = getColorVariable(variable)
+  const matches = rgb.match(RGB_RE)
+  if (!matches || matches.length < 4) return 0
+
+  return parseInt(
+    matches
+      .slice(1)
+      .map((n) => Number(n).toString(16))
+      .join(''),
+    16
+  )
+}
+
 export function getColorVariable(variable: string): string {
+  // allow hex colors
+  if (variable.startsWith('#')) return variable
+
   const savedColor = colorMap.get(variable)
   if (savedColor) return savedColor
 
@@ -13,7 +31,7 @@ export function getColorVariable(variable: string): string {
   document.body.removeChild(el)
   colorMap.set(variable, color || '')
 
-  return color || variable
+  return color || ''
 }
 
 let mql: MediaQueryList
