@@ -55,8 +55,8 @@ export function render(ratio: number) {
 
   const { ctx } = context
 
-  const lineWidth = 30
-  const diameter = 70
+  const diameter = 50
+  const lineWidth = diameter * 0.6
   const sides = 6
   let radius = diameter / 2
   let center = { x: 0, y: 0 }
@@ -64,6 +64,7 @@ export function render(ratio: number) {
   const polygons: Polygon[] = []
   let line = 0
   let i = 0
+  console.time('computing')
   while (center.y - radius <= context.size.y) {
     i++
     // if (i === 57 || i === 58)
@@ -79,6 +80,7 @@ export function render(ratio: number) {
       center.y += (diameter * 3) / 4
     }
   }
+  console.timeEnd('computing')
 
   ctx.lineCap = 'butt'
   // ctx.lineJoin = 'round'
@@ -88,8 +90,11 @@ export function render(ratio: number) {
   //   drawPolygon(ctx, poly.points)
   // }
 
-  const colors = ['primary', 'secondary', 'color']
+  // const colors = ['bgColor', 'bgColor', 'secondary']
+  // const colors = ['secondary', 'bgColor', 'secondary']
+  const colors = ['red', 'bgColor', 'bgColor']
 
+  console.time('rendering')
   for (let poly of polygons) {
     // ctx.strokeStyle = getColorVariable('color')
     // ctx.lineWidth = 1
@@ -116,6 +121,7 @@ export function render(ratio: number) {
       })
     }
   }
+  console.timeEnd('rendering')
 }
 
 interface Polygon {
@@ -159,9 +165,6 @@ function createPolygon(
       y: center.y + radius * sin(angle),
     })
     p2 = points[i]
-
-    console.log(`${i}: ${angle} (${(angle * 180) / Math.PI})`, p1, p2)
-    console.log()
 
     let m = {
       x: (p1.x + p2.x) / 2,
