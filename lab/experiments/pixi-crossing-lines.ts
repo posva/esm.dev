@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js'
+import { ease, EaseDisplayObject, Ease } from 'pixi-ease'
 import { getDimensions, canvasEl, Point } from '../utils/screen'
 import {
   getColorVariable,
@@ -45,10 +46,10 @@ export function start() {
     resolution: window.devicePixelRatio || 1,
   })
 
-  const diameter = 200
+  const diameter = 50
   const lineWidth = diameter * 0.6
 
-  const sprites = createGrid(
+  const polygons = createGrid(
     size.x,
     size.y,
     diameter,
@@ -56,25 +57,49 @@ export function start() {
     drawingColorNames.map((name) => colors[name])
   )
 
-  for (let { sprite, container, texture } of sprites) {
-    app.renderer.render(container, texture)
-
-    sprite.interactive = true
-    sprite.on('pointerdown', () => {
-      sprite.angle += 60
+  for (let polygon of polygons) {
+    polygon.sprite.interactive = true
+    app.renderer.render(
+      polygon.container,
+      polygon.sprite.texture as PIXI.RenderTexture
+    )
+    polygon.sprite.on('pointerdown', () => {
+      rotatePolygon(polygon)
     })
 
-    app.stage.addChild(sprite)
+    app.stage.addChild(polygon.sprite)
   }
 
-  let elapsed = 0
+  function rotatePolygon(
+    polygon: Polygon,
+    options?: Parameters<Ease['add']>[2]
+  ) {
+    if (!polygon.easing) {
+      polygon.easing = ease.add(
+        polygon.sprite,
+        { angle: polygon.sprite.angle + (1 + (randomizer.int32() % 5)) * 60 },
+        { duration: 500, ease: 'easeOutQuad', ...options }
+      ) as EaseDisplayObject
+      polygon.easing.once('complete', () => {
+        polygon.easing = null
+      })
+    }
+  }
+
+  let elapsed = 300
 
   app.ticker.add((delta: number) => {
     elapsed += delta
 
-    if (elapsed > 100) {
-      sprites[Math.round(sprites.length / 2)].sprite.angle += 60
-      console.log('tick')
+    if (elapsed > 400) {
+      const length = Math.round(polygons.length / 4)
+      Array.from<number>({ length })
+        .fill(0)
+        .map(() => Math.abs(randomizer.int32()) % polygons.length)
+        .sort((a, b) => a - b)
+        .forEach((i, j) => {
+          rotatePolygon(polygons[i], { wait: (j * 800) / length })
+        })
       elapsed = 0
     }
   })
@@ -100,7 +125,6 @@ function createGrid(
 
   const basePolygon = createPolygon({ x: radius, y: radius }, diameter, sides)
 
-  const polygons: Polygon[] = []
   const sprites: Array<ReturnType<typeof createSpriteFromPaths>> = []
   let line = 0
   let i = 0
@@ -120,10 +144,8 @@ function createGrid(
     sprite.sprite.position.x = center.x
     sprite.sprite.position.y = center.y
 
-    // TODO: set sprite position and stuff
     // }
 
-    // polygons.push(createPolygon(center, diameter, sides))
     center.x += Math.sqrt(3) * radius
     if (center.x - radius >= width) {
       if (line % 2) {
@@ -142,7 +164,7 @@ function createGrid(
 
 export const isPixi = true
 
-interface Polygon {
+interface PolygonShape {
   sides: number
   diameter: number
   center: Point
@@ -161,7 +183,7 @@ function createPolygon(
   center: Point,
   diameter: number,
   sides: number
-): Polygon {
+): PolygonShape {
   if (sides % 2 !== 0) throw new Error('Must have a even number of sides')
   let radius = diameter / 2
   const points: Point[] = [
@@ -220,13 +242,20 @@ function createPolygonPaths(midpoints: Point[], sides: number) {
   return paths
 }
 
+interface Polygon {
+  sprite: PIXI.Sprite
+  container: PIXI.Container
+
+  easing: EaseDisplayObject | null
+}
+
 // TODO: drawing options refactored
 function createSpriteFromPaths(
-  polygon: Polygon,
+  polygon: PolygonShape,
   paths: Point[][],
   lineWidth: number,
   drawingColors: number[]
-) {
+): Polygon {
   const container = new PIXI.Container()
 
   // const path = polygon.points.reduce((points, point) => {
@@ -267,7 +296,7 @@ function createSpriteFromPaths(
     width: polygon.diameter,
     height: polygon.diameter,
     scaleMode: PIXI.SCALE_MODES.LINEAR,
-    // TODO: 2 makes it look better
+    // 2 makes it look much better
     resolution: 2,
   })
 
@@ -277,5 +306,5 @@ function createSpriteFromPaths(
   sprite.anchor.set(0.5)
   container.pivot.set(0.5)
 
-  return { sprite, container, texture }
+  return { sprite, container, easing: null }
 }
