@@ -1,39 +1,38 @@
 <template>
-  <div class="leading-tight" id="bio-container">
-    <h1 class="text-4xl font-bold my-3">Hi 👋</h1>
-    <p class="my-4">
-      <!-- <img src="assets/casual-me.jpg" alt="picture of myself" /> -->
-      I'm Eduardo,
-    </p>
-
-    <main id="main">
+  <div class="leading-tight max-w-full relative" id="bio-container">
+    <div id="content-backdrop" class="md:px-4 py-1 rounded shadow-lg">
+      <h1 class="text-4xl font-bold my-3">Hi 👋</h1>
       <p class="my-4">
-        a Frontend Nerd. I work as a consultant to help you keep your applications maintainable. I also give
-        <a
-          href="#TODO"
-        >Vue.js trainings</a> and
-        <a
-          href="https://www.youtube.com/results?search_query=eduardo+san+martin+morote"
-        >talk at conferences</a>. I write some
-        <a href="https://github.com/posva">useful libraries</a>,
-        mostly for Vue, but not only, and post them on Github. I may not
-        <i>
-          <a href="https://twitter.com/posva/status/1146415898967908352">take myself very seriously</a>
-        </i>
-        but take my job very seriously and loves solving problems instead of
-        complaining about them.
+        <!-- <img src="assets/casual-me.jpg" alt="picture of myself" /> -->
+        I'm Eduardo,
       </p>
-      <p class="my-4">
-        If you want to work together, please
-        <a
-          href="https://twitter.com/posva"
-        >send me a PM on Twitter</a>.
-      </p>
-    </main>
 
-    <div id="experiment-container">
-      <LabExperiment :labId="$route.query.i" />
+      <main id="main">
+        <p class="my-4">
+          a Frontend Nerd. I work as a consultant to help you keep your
+          applications maintainable. I also give
+          <a href="#TODO">Vue.js trainings</a> and
+          <a
+            href="https://www.youtube.com/results?search_query=eduardo+san+martin+morote"
+            >talk at conferences</a
+          >. I write some
+          <a href="https://github.com/posva">useful libraries</a>, mostly for
+          Vue, but not only, and post them on Github. I may not
+          <i>
+            <a href="https://twitter.com/posva/status/1146415898967908352"
+              >take myself very seriously</a
+            >
+          </i>
+          but take my job very seriously and loves solving problems instead of
+          complaining about them.
+        </p>
+        <p class="my-4">
+          If you want to work together, please
+          <a href="https://twitter.com/posva">send me a PM on Twitter</a>.
+        </p>
+      </main>
     </div>
+    <LabExperiment :labId="$route.query.i" />
   </div>
 </template>
 
@@ -47,7 +46,7 @@ export default {
   mounted() {
     let rafId: number
     function update() {
-      rafId = requestAnimationFrame(elapsed => {
+      rafId = requestAnimationFrame((elapsed) => {
         stepper(elapsed)
         update()
       })
@@ -63,7 +62,7 @@ export default {
       })
     }
 
-    document.querySelectorAll('a').forEach(link => {
+    document.querySelectorAll('a').forEach((link) => {
       link.dataset['text'] = link.innerText
     })
 
@@ -101,20 +100,32 @@ export default {
       lastMove = Date.now()
     }
     document.body.addEventListener('mousemove', mouseMoveListener)
-    // @ts-ignore
-    this.mouseMoveListener = mouseMoveListener
+    ;(this as any).mouseMoveListener = mouseMoveListener
   },
 
   destroyed() {
-    // @ts-ignore
-    document.body.removeEventListener(this.mouseMoveListener)
+    document.body.removeEventListener(
+      'mousemove',
+      (this as any).mouseMoveListener
+    )
   },
 }
 </script>
 
 <style>
 #bio-container {
-  position: relative;
-  padding: 5vh 10vw;
+  padding: 5vh 5vw;
+  width: 34rem;
+}
+
+@media (min-width: 768px) {
+  #bio-container {
+    padding-left: 10vw;
+    padding-right: 10vw;
+  }
+}
+
+#content-backdrop {
+  background-color: rgba(var(--bgColor), 0.75);
 }
 </style>

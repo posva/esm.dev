@@ -19,7 +19,8 @@ export default Vue.extend({
       'windmill-problem',
       'maze',
       'coast',
-      'crossing-lines',
+      // the one with pixi is heavier but so much better
+      // 'crossing-lines',
       'pixi-crossing-lines',
     ]
     const experimentId =

@@ -57,11 +57,6 @@ body.light {
   z-index: -1;
 }
 
-#main {
-  width: 28rem;
-  max-width: 100%;
-}
-
 html {
   font-size: calc(22px + 0.33vw);
 }
@@ -160,17 +155,7 @@ a:focus::after {
   background-color: rgba(var(--bgColor), 0.5);
   position: fixed;
   top: 0;
-  width: 0;
-  height: 0;
-}
-
-#experiment-container::after {
-  content: '';
-  position: fixed;
-  top: 0;
   left: 0;
-  z-index: -5;
-  background-color: inherit;
-  width: 100vw;
-  height: 100vh;
+  /* width: 0;
+  height: 0; */
 }
