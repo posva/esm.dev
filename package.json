@@ -22,7 +22,7 @@
     "@nuxtjs/tailwindcss": "^1.4.0",
     "@types/lodash-es": "^4.17.3",
     "@types/nanoid": "^2.1.0",
-    "@types/node": "^13.11.0",
+    "@types/node": "^13.11.1",
     "pixi-ease": "^2.4.2",
     "prettier": "^2.0.4"
   }
