@@ -6068,10 +6068,10 @@ pify@^4.0.1:
   resolved "https://registry.yarnpkg.com/pify/-/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
   integrity sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==
 
-pixi-ease@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/pixi-ease/-/pixi-ease-2.4.2.tgz#7421f40f76f0f655e5a16d04099d7793ed13d1cc"
-  integrity sha512-/eTAsDumiQpdlg/Um7FsQ4LaQOTKe676pzusSllr+2mzdrcRX3/13ram1yoGNL8r2vr2jQfc0XZMkg0/EUff4g==
+pixi-ease@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/pixi-ease/-/pixi-ease-3.0.0.tgz#a90b1985f5095fa1a11c4655312739dcedb1094a"
+  integrity sha512-kONhPd8ksDmshbo4RZpDrGb5YqopX+XK9SiGWdPgq9ij5d5wmb26IWWm4oAu8ofPOtJVV3orNIMvsyjSUgx4FQ==
   dependencies:
     eventemitter3 "^4.0.0"
     penner "^0.1.3"
