@@ -17,7 +17,7 @@
     "pixi.js": "^5.2.4"
   },
   "devDependencies": {
-    "@nuxt/typescript-build": "^1.0.2",
+    "@nuxt/typescript-build": "^1.0.3",
     "@nuxt/typescript-runtime": "^0.4.9",
     "@nuxtjs/tailwindcss": "^2.0.0",
     "@types/lodash-es": "^4.17.3",
