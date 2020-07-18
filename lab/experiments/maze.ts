@@ -1,5 +1,5 @@
 import { debounce } from 'lodash-es'
-import nanoid from 'nanoid'
+import { nanoid } from 'nanoid'
 import {
   getDimensions,
   canvasEl,

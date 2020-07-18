@@ -1,4 +1,4 @@
-import nanoid from 'nanoid'
+import { nanoid } from 'nanoid'
 import { debounce } from 'lodash-es'
 import { getDimensions, canvasEl, resetCanvasCheck } from '../utils/screen'
 import { getColorVariable, onColorChange } from '../utils/colors'

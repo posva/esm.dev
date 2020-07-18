@@ -1,6 +1,6 @@
 <template>
   <div class="leading-tight max-w-full relative" id="bio-container">
-    <div id="content-backdrop" class="md:px-4 py-1 rounded shadow-lg">
+    <div id="content-backdrop" class="px-1 md:px-4 py-1 rounded shadow-lg">
       <h1 class="text-4xl font-bold my-3">Hi 👋</h1>
       <p class="my-4">
         <!-- <img src="assets/casual-me.jpg" alt="picture of myself" /> -->

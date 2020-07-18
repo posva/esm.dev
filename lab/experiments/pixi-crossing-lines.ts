@@ -12,7 +12,7 @@ import {
   getHexColorVariable,
 } from '../utils/colors'
 import { createRandomizer, Randomizer } from '../utils/random'
-import nanoid from 'nanoid'
+import { nanoid } from 'nanoid'
 import { memoize, debounce } from 'lodash-es'
 
 let _context: Context | null = null
