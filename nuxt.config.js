@@ -1,9 +1,8 @@
-import { Configuration } from '@nuxt/types'
-
-const description = process.env.npm_package_description as string
+const description = process.env.npm_package_description
 const title = 'Eduardo San Martin Morote'
 
-const config: Configuration = {
+/** @type {import('@nuxt/types').NuxtConfig} */
+const config = {
   mode: 'universal',
 
   head: {
@@ -58,4 +57,4 @@ const config: Configuration = {
   ],
 }
 
-export default config
+module.exports = config

@@ -5,9 +5,9 @@
   "private": true,
   "author": "Eduardo San Martin Morote <posva13@gmail.com>",
   "scripts": {
-    "dev": "nuxt-ts",
+    "dev": "nuxt",
     "build": "yarn run generate",
-    "generate": "nuxt-ts generate",
+    "generate": "nuxt generate",
     "test": "yarn run build"
   },
   "dependencies": {
@@ -17,8 +17,8 @@
     "pixi.js": "^5.3.0"
   },
   "devDependencies": {
-    "@nuxt/typescript-build": "^1.0.3",
-    "@nuxt/typescript-runtime": "^0.4.10",
+    "@nuxt/types": "^2.13.3",
+    "@nuxt/typescript-build": "^2.0.0",
     "@nuxtjs/tailwindcss": "^2.0.0",
     "@types/lodash-es": "^4.17.3",
     "@types/nanoid": "^2.1.0",
