@@ -16,6 +16,7 @@ const config: Configuration = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'color-scheme', content: 'dark light' },
       {
         hid: 'description',
         name: 'description',
@@ -51,11 +52,23 @@ const config: Configuration = {
 
   css: ['~/assets/css/main.css'],
 
+  plugins: ['~/plugins/composition.ts'],
+
   buildModules: [
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
     '@nuxt/typescript-build',
   ],
+
+  build: {
+    extend(config) {
+      // ..
+      config.module!.rules.push({
+        test: /\.(ogg|mp3)$/,
+        loader: 'file-loader',
+      })
+    },
+  },
 }
 
 export default config
