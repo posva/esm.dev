@@ -21,7 +21,7 @@
     "@nuxt/typescript-build": "^2.0.2",
     "@nuxtjs/tailwindcss": "^2.1.1",
     "@types/lodash-es": "^4.17.3",
-    "@types/node": "^14.0.26",
+    "@types/node": "^14.0.27",
     "pixi-ease": "^3.0.0",
     "prettier": "^2.0.5"
   }
