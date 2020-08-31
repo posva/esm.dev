@@ -6804,10 +6804,10 @@ pify@^4.0.1:
   resolved "https://registry.yarnpkg.com/pify/-/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
   integrity sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==
 
-pixi-ease@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/pixi-ease/-/pixi-ease-3.0.0.tgz#a90b1985f5095fa1a11c4655312739dcedb1094a"
-  integrity sha512-kONhPd8ksDmshbo4RZpDrGb5YqopX+XK9SiGWdPgq9ij5d5wmb26IWWm4oAu8ofPOtJVV3orNIMvsyjSUgx4FQ==
+pixi-ease@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/pixi-ease/-/pixi-ease-3.0.4.tgz#1d939e0b7c3dcfbf4ca44015b8f3ab7047765dbb"
+  integrity sha512-WnMsWcJ6EXLZdrJx37C5LPXwbxreKd9bIeaAS2vLTF4v6X8IprNW6g5Yb26yjtdy8VwtTY/SMth4eFButyhLFg==
   dependencies:
     eventemitter3 "^4.0.0"
     penner "^0.1.3"
