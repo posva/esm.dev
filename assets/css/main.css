@@ -72,6 +72,28 @@ body {
   min-height: 100vh;
 }
 
+body::before {
+  content: '';
+  background-color: rgb(var(--bgColor));
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: block;
+  animation: fadeOut 1s ease-out 2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 ::selection {
   color: rgb(var(--bgColor));
   background-color: rgb(var(--textColor));
