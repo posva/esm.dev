@@ -562,7 +562,7 @@ export function render(ratio: number) {
     newMazeTimeout < 0 &&
       (newMazeTimeout = window.setTimeout(() => {
         // generate a new maze
-        // _context = null
+        _context = null
         newMazeTimeout = -1
       }, 5000))
   }
