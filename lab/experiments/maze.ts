@@ -44,6 +44,8 @@ interface MazeNode {
  * Creates a vertical or horizontal wall on the larger side
  * @param width > 1
  * @param height > 1
+ * @param start start of the labyrinth, must be on the left side and only one value (x or y) can be different from zero
+ * @param end start of the labyrinth, must be on the right side and only one value (x or y) can be different from the width or height
  */
 function createWall(
   x: number,
@@ -61,9 +63,11 @@ function createWall(
     }
   }
 
+  // split vertically or horizontally depending on which side is bigger
   const biggest = Math.max(width, height)
   const smallest = biggest === width ? height : width
   const wall = biggest === width ? WallType.vertical : WallType.horizontal
+
   const wallOffset = Math.floor(randomizer.double() * (biggest - 1)) + 1
   const doorOffset = Math.floor(randomizer.double() * smallest)
 
@@ -107,8 +111,8 @@ function dividePath(
   start: Point,
   end: Point
 ): Point[] {
-  if (isSamePoint(start, end)) return [start]
-  if (maze.wall === WallType.none) return [start, end]
+  if (isSamePoint(start, end)) return [{ ...start }]
+  if (maze.wall === WallType.none) return [{ ...start }, { ...end }]
 
   const isVertical = maze.wall === WallType.vertical
 
@@ -162,14 +166,12 @@ function dividePath(
   return startPath.concat(endPath)
 }
 
-export function solveMaze(maze: MazeNode): Point[] {
-  const left: Point = { x: 0, y: 0 }
-  const right: Point = { x: maze.width - 1, y: maze.height - 1 }
-  return dividePath(maze, left, right)
+export function solveMaze(maze: MazeNode, start: Point, end: Point): Point[] {
+  return dividePath(maze, start, end)
 }
 
 export function simplifyPath(points: Point[]): Point[] {
-  // begining of a path
+  // beginning of a path
   let initialPoint: Point = points[0]
   // current point
   let point: Point = points[1]
@@ -222,6 +224,13 @@ const defaultOffset = {
   y: defaultCellsize * 2,
 }
 
+function cropPoint(point: Point, width: number, height: number): Point {
+  return {
+    x: Math.max(0, Math.min(point.x, width - 1)),
+    y: Math.max(0, Math.min(point.y, height - 1)),
+  }
+}
+
 /**
  * Get current context or creates a new one
  * @param width size in px
@@ -233,7 +242,9 @@ function getContext(
   width: number,
   height: number,
   cellSize: number,
-  offset: Point
+  offset: Point,
+  start: Point = { x: 0, y: -1 },
+  end?: Point
 ): Context | null {
   if (_context) return _context
   resetCanvasCheck()
@@ -256,17 +267,24 @@ function getContext(
   const tree = generateMaze(width, height)
   // console.timeEnd('Maze Generation')
   // console.time('Maze solving')
-  let solutionUnoptimized = solveMaze(tree)
+  end = end || { x: tree.width - 1, y: tree.height }
+  let solutionUnoptimized = solveMaze(
+    tree,
+    cropPoint(start, tree.width, tree.height),
+    cropPoint(end, tree.width, tree.height)
+  )
   console.log(`🛣 Length of the path: ${solutionUnoptimized.length}`)
   // console.timeEnd('Maze solving')
   // add a small offset outside of the maze to make it look better
-  solutionUnoptimized.unshift({ x: 0, y: -1 })
-  solutionUnoptimized.push({ x: tree.width - 1, y: tree.height })
+
+  solutionUnoptimized.unshift(start)
+  solutionUnoptimized.push(end)
 
   // console.time('Path simplification')
   const solution = simplifyPath(solutionUnoptimized)
   // console.timeEnd('Path simplification')
   console.log(`🦾 Complexity of the path: ${solution.length}`)
+  console.log(solution)
 
   if (!isListeningForResize) {
     isListeningForResize = true
@@ -309,7 +327,7 @@ function getContext(
     width,
     height,
     state: 'start',
-    direction: 'y',
+    direction: getDirection(solution[0], solution[1]),
     position: { ...solution[0] },
     remaining: solution[1].y - solution[0].y,
     nextPoint: 1,
@@ -319,6 +337,10 @@ function getContext(
     cellSize,
     offset,
   })
+}
+
+function getDirection(from: Point, to: Point): 'x' | 'y' {
+  return from.x != to.x ? 'x' : 'y'
 }
 
 export function resetContext() {
@@ -361,21 +383,21 @@ function drawWall(context: Context) {
 
   ctx.moveTo(x, y)
   if (tree.wall === WallType.vertical) {
-    // do not draw emptylines
+    // do not draw empty lines
     if (tree.doorOffset) {
       ctx.lineTo(x, y + tree.doorOffset * cellSize)
     }
-    // do not draw emptylines
+    // do not draw empty lines
     if (tree.doorOffset < tree.height - 1) {
       ctx.moveTo(x, y + (tree.doorOffset + 1) * cellSize)
       ctx.lineTo(x, y + tree.height * cellSize)
     }
   } else {
-    // do not draw emptylines
+    // do not draw empty lines
     if (tree.doorOffset) {
       ctx.lineTo(x + tree.doorOffset * cellSize, y)
     }
-    // do not draw emptylines
+    // do not draw empty lines
     if (tree.doorOffset < tree.width - 1) {
       ctx.moveTo(x + (tree.doorOffset + 1) * cellSize, y)
       ctx.lineTo(x + tree.width * cellSize, y)
@@ -390,7 +412,7 @@ function drawWall(context: Context) {
 }
 
 function drawTree(context: Context) {
-  const { ctx, tree, offset, cellSize } = context
+  const { ctx, tree, offset, cellSize, solution } = context
 
   // TODO: animation effect gradient
   const width = tree.width * cellSize
@@ -402,15 +424,17 @@ function drawTree(context: Context) {
   // ctx.strokeStyle = 'crimson'
   ctx.lineWidth = cellSize / 8
   ctx.lineCap = 'square'
+
+  // draw the container box
   ctx.beginPath()
-  ctx.moveTo(offset.x + cellSize, offset.y)
+  ctx.moveTo(offset.x, offset.y)
   ctx.lineTo(offset.x + tree.width * cellSize, offset.y)
   ctx.lineTo(
     offset.x + tree.width * cellSize,
     offset.y + tree.height * cellSize
   )
   ctx.moveTo(
-    offset.x + (tree.width - 1) * cellSize,
+    offset.x + tree.width * cellSize,
     offset.y + tree.height * cellSize
   )
   ctx.lineTo(offset.x, offset.y + tree.height * cellSize)
@@ -418,7 +442,30 @@ function drawTree(context: Context) {
 
   ctx.stroke()
 
+  // erase the doors
+  ctx.fillStyle = getColorVariable('bgColor')
+
+  clearDoor(ctx, solution[0], context)
+  clearDoor(ctx, solution[solution.length - 1], context)
+
+  // draw the walls
   drawWall(context)
+}
+
+function clearDoor(ctx: CanvasRenderingContext2D, p: Point, context: Context) {
+  const { offset, tree, cellSize } = context
+  if (p.x < 0 || p.y < 0 || p.x >= tree.width || p.y >= tree.height) {
+    ctx.fillRect(
+      offset.x +
+        p.x * cellSize +
+        (p.x < 0 ? cellSize : p.x >= tree.width ? -cellSize : 0) / 2,
+      offset.y +
+        p.y * cellSize +
+        (p.y < 0 ? cellSize : p.y >= tree.height ? -cellSize : 0) / 2,
+      cellSize,
+      cellSize
+    )
+  }
 }
 
 const guyRadiusRatio = 2
@@ -515,7 +562,7 @@ export function render(ratio: number) {
     newMazeTimeout < 0 &&
       (newMazeTimeout = window.setTimeout(() => {
         // generate a new maze
-        _context = null
+        // _context = null
         newMazeTimeout = -1
       }, 5000))
   }

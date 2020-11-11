@@ -38,7 +38,11 @@ function getContext(): Context | null {
   setRandomizer(random)
 
   const tree = generateMaze(width, height)
-  let solutionUnoptimized = solveMaze(tree)
+  let solutionUnoptimized = solveMaze(
+    tree,
+    { x: 0, y: 0 },
+    { x: width - 1, y: height - 1 }
+  )
 
   // add a small offset outside of the maze to make it look better
   solutionUnoptimized.unshift({ x: 0, y: -1 })
