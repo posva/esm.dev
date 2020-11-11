@@ -257,6 +257,7 @@ function getContext(
   // console.timeEnd('Maze Generation')
   // console.time('Maze solving')
   let solutionUnoptimized = solveMaze(tree)
+  console.log(`🛣 Length of the path: ${solutionUnoptimized.length}`)
   // console.timeEnd('Maze solving')
   // add a small offset outside of the maze to make it look better
   solutionUnoptimized.unshift({ x: 0, y: -1 })
@@ -265,6 +266,7 @@ function getContext(
   // console.time('Path simplification')
   const solution = simplifyPath(solutionUnoptimized)
   // console.timeEnd('Path simplification')
+  console.log(`🦾 Complexity of the path: ${solution.length}`)
 
   if (!isListeningForResize) {
     isListeningForResize = true
@@ -326,7 +328,7 @@ export function resetContext() {
 function movePosition(context: Context, ratio: number) {
   const { position, direction, nextPoint } = context
   const point = context.solution[nextPoint]
-  const delta = (ratio * context.solution.length) / 10
+  const delta = (ratio * context.solution.length) / 30
   position[direction] +=
     (position[direction] < point[direction] ? 1 : -1) * delta
   context.remaining -= delta
