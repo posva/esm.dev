@@ -14,7 +14,7 @@
     "lodash-es": "^4.17.20",
     "nanoid": "^3.1.20",
     "nuxt": "2.14.12",
-    "pixi.js": "^5.3.7"
+    "pixi.js": "^5.3.8"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.12",
