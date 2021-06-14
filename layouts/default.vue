@@ -1,4 +1,3 @@
 <template>
   <nuxt />
 </template>
-

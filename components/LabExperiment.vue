@@ -31,16 +31,15 @@ export default Vue.extend({
         : Number(this.labId)
 
     const experiment = () =>
-      import(
-        `~/lab/experiments/${possibleExperiments[experimentId]}.ts`
-      ).catch((err) =>
-        import(
-          `~/lab/experiments/${
-            possibleExperiments[
-              Math.floor(Math.random() * possibleExperiments.length)
-            ]
-          }.ts`
-        )
+      import(`~/lab/experiments/${possibleExperiments[experimentId]}.ts`).catch(
+        (err) =>
+          import(
+            `~/lab/experiments/${
+              possibleExperiments[
+                Math.floor(Math.random() * possibleExperiments.length)
+              ]
+            }.ts`
+          )
       )
 
     experiment().then((module) => {

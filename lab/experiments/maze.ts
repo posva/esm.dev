@@ -485,15 +485,8 @@ function clearPlayer(context: Context) {
 }
 
 export function drawPath(context: Context) {
-  const {
-    offset,
-    cellSize,
-    ctx,
-    position,
-    solution,
-    nextPoint,
-    direction,
-  } = context
+  const { offset, cellSize, ctx, position, solution, nextPoint, direction } =
+    context
 
   // draw the path that has been traversed already
   let point = solution[0]

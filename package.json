@@ -8,6 +8,7 @@
     "dev": "nuxt",
     "build": "yarn run generate",
     "generate": "nuxt generate",
+    "lint": "prettier -c --write \"{pages,src,layouts,lab,components,assets}/**/*.{vue,js,ts,html}\"",
     "test": "yarn run build"
   },
   "dependencies": {

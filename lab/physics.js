@@ -29,7 +29,7 @@ window.addEventListener('resize', () => {
   // render.bounds = Matter.Bounds.create(Matter.Vertices.create())
 })
 
-document.addEventListener('click', event => {
+document.addEventListener('click', (event) => {
   // debugger
 })
 
