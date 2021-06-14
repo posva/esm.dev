@@ -20,8 +20,17 @@ const config = {
         name: 'description',
         content: description,
       },
-      // <meta name="theme-color" content="black" />
-      // <meta name="msapplication-navbutton-color" content="black" />
+      // these are for Safari 15 and Android Chrome
+      {
+        name: 'theme-color',
+        content: '#121314',
+        media: '(prefers-color-scheme: dark)',
+      },
+      {
+        name: 'theme-color',
+        content: '#efeeed',
+        media: '(prefers-color-scheme: light)',
+      },
       { name: 'apple-mobile-web-app-capable', content: 'yes' },
       // <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
