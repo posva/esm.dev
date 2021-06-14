@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js'
-import { ease, EaseDisplayObject, Ease } from 'pixi-ease'
+import { ease, Ease, Easing } from 'pixi-ease'
 import {
   getDimensions,
   canvasEl,
@@ -99,7 +99,7 @@ export function start() {
         polygon.sprite,
         { angle: polygon.sprite.angle + (1 + (randomizer.int32() % 5)) * 60 },
         { duration: 500, ease: 'easeOutQuad', ...options }
-      ) as EaseDisplayObject
+      )
       polygon.easing.once('complete', () => {
         polygon.easing = null
       })
@@ -265,7 +265,7 @@ interface Polygon {
   sprite: PIXI.Sprite
   container: PIXI.Container
 
-  easing: EaseDisplayObject | null
+  easing: Easing | null
 }
 
 // TODO: drawing options refactored
