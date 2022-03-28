@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "lodash-es": "^4.17.21",
-    "nanoid": "^3.3.1",
+    "nanoid": "^3.3.2",
     "nuxt": "2.15.8",
-    "pixi.js": "^5.3.11"
+    "pixi.js": "^5.3.12"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.8",
@@ -24,6 +24,6 @@
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^16.11.26",
     "pixi-ease": "^3.0.7",
-    "prettier": "^2.6.0"
+    "prettier": "^2.6.1"
   }
 }
