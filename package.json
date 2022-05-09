@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "lodash-es": "^4.17.21",
-    "nanoid": "^3.3.3",
+    "nanoid": "^3.3.4",
     "nuxt": "2.15.8",
     "pixi.js": "^5.3.12"
   },
