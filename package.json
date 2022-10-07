@@ -20,7 +20,7 @@
   "devDependencies": {
     "@nuxt/types": "^2.15.8",
     "@nuxt/typescript-build": "^2.1.0",
-    "@nuxtjs/tailwindcss": "^4.2.1",
+    "@nuxtjs/tailwindcss": "^5.3.5",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^16.11.59",
     "pixi-ease": "^3.0.7",
