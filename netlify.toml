@@ -4,4 +4,4 @@ NODE_VERSION = "16"
 [build]
 command = "pnpm run build"
 ignore = "git diff --quiet HEAD^ HEAD assets components lab layouts pages static package.json netlify.toml"
-publish = ".output/public"
+publish = "dist"
