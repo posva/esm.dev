@@ -5,7 +5,7 @@
   "private": true,
   "author": "Eduardo San Martin Morote <posva13@gmail.com>",
   "scripts": {
-    "build": "nuxt build",
+    "build": "nuxt generate",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
