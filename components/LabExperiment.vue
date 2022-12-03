@@ -3,11 +3,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-
 let rafId: number
 
-export default Vue.extend({
+export default defineComponent({
   props: {
     labId: {
       required: false,
@@ -73,7 +71,7 @@ export default Vue.extend({
     })
   },
 
-  destroyed() {
+  unmounted() {
     cancelAnimationFrame(rafId)
     // @ts-ignore
     this.app && this.app.stage && this.app.destroy()

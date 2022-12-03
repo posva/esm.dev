@@ -18,10 +18,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import LabExperiment from '~/components/LabExperiment.vue'
 
-export default Vue.extend({
+export default defineComponent({
   components: { LabExperiment },
 
   computed: {
@@ -34,7 +33,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-#lab >>> #experiment {
+#lab :deep(#experiment) {
   position: initial;
   /* width: 100%;
   height: 100%; */

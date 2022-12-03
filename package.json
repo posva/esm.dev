@@ -5,22 +5,22 @@
   "private": true,
   "author": "Eduardo San Martin Morote <posva13@gmail.com>",
   "scripts": {
-    "dev": "nuxt",
-    "build": "yarn run generate",
+    "build": "nuxt build",
+    "dev": "nuxt dev",
     "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
     "lint": "prettier -c --write \"{pages,src,layouts,lab,components,assets}/**/*.{vue,js,ts,html}\"",
-    "test": "yarn run build"
+    "test": "pnpm run build"
   },
   "dependencies": {
     "lodash-es": "^4.17.21",
     "nanoid": "^3.3.4",
-    "nuxt": "2.15.8",
+    "nuxt": "^3.0.0",
     "pixi.js": "^5.3.12"
   },
   "devDependencies": {
-    "@nuxt/types": "^2.15.8",
-    "@nuxt/typescript-build": "^2.1.0",
-    "@nuxtjs/tailwindcss": "^4.2.1",
+    "@nuxtjs/tailwindcss": "^6.1.3",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.11.10",
     "pixi-ease": "^3.0.7",

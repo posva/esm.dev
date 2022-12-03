@@ -1,7 +1,7 @@
 <template>
-  <div class="leading-tight max-w-full relative" id="bio-container">
-    <div id="content-backdrop" class="px-1 md:px-4 py-1 rounded shadow-lg">
-      <h1 class="text-4xl font-bold my-3">Hi 👋</h1>
+  <div class="relative max-w-full leading-tight" id="bio-container">
+    <div id="content-backdrop" class="px-1 py-1 rounded shadow-lg md:px-4">
+      <h1 class="my-3 text-4xl font-bold">Hi 👋</h1>
       <p class="my-4">
         <!-- <img src="assets/casual-me.jpg" alt="picture of myself" /> -->
         I'm Eduardo,
@@ -40,7 +40,7 @@
 import { rotateOffsets } from '~/lab/dom/links'
 import LabExperiment from '~/components/LabExperiment.vue'
 
-export default {
+export default defineComponent({
   components: { LabExperiment },
 
   mounted() {
@@ -103,13 +103,13 @@ export default {
     ;(this as any).mouseMoveListener = mouseMoveListener
   },
 
-  destroyed() {
+  unmounted() {
     document.body.removeEventListener(
       'mousemove',
       (this as any).mouseMoveListener
     )
   },
-}
+})
 </script>
 
 <style>

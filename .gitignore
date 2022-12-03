@@ -3,3 +3,7 @@ dist
 node_modules
 .nuxt
 .output
+*.log*
+.nitro
+.cache
+.env
