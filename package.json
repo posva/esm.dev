@@ -10,7 +10,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "prettier -c --write \"{pages,src,layouts,lab,components,assets}/**/*.{vue,js,ts,html}\"",
+    "lint": "prettier -c \"{pages,src,layouts,lab,components,assets}/**/*.{vue,js,ts,html}\"",
+    "lint:fix": "pnpm run lint --write",
     "test": "pnpm run build"
   },
   "dependencies": {
