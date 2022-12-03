@@ -1,3 +1,11 @@
+<script setup lang="ts">
+const route = useRoute()
+const labId = computed(() => {
+  const n = Number(route.params.id)
+  return Number.isNaN(n) ? null : n
+})
+</script>
+
 <template>
   <div id="lab" class="min-h-full">
     <LabExperiment :lab-id="labId" />
@@ -16,21 +24,6 @@
     </section>
   </div>
 </template>
-
-<script lang="ts">
-import LabExperiment from '~/components/LabExperiment.vue'
-
-export default defineComponent({
-  components: { LabExperiment },
-
-  computed: {
-    labId() {
-      const n = Number(this.$route.params.id)
-      return Number.isNaN(n) ? null : n
-    },
-  },
-})
-</script>
 
 <style scoped>
 #lab :deep(#experiment) {
