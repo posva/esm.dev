@@ -79,10 +79,9 @@ export function start() {
 
   for (let polygon of polygons) {
     polygon.sprite.interactive = true
-    app.renderer.render(
-      polygon.container,
-      polygon.sprite.texture as PIXI.RenderTexture
-    )
+    app.renderer.render(polygon.container, {
+      renderTexture: polygon.sprite.texture as PIXI.RenderTexture,
+    })
     polygon.sprite.on('pointerdown', () => {
       rotatePolygon(polygon)
     })
