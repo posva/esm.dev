@@ -25,6 +25,7 @@
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.11.19",
     "pixi-ease": "^3.0.7",
-    "prettier": "^2.8.3"
+    "prettier": "^2.8.3",
+    "nanoid": "^4.0.0"
   }
 }
