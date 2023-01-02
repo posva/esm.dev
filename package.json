@@ -23,7 +23,7 @@
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.2.0",
     "@types/lodash-es": "^4.17.6",
-    "@types/node": "^18.11.17",
+    "@types/node": "^18.11.18",
     "pixi-ease": "^3.0.7",
     "prettier": "^2.8.1"
   }
