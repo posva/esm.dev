@@ -8,21 +8,21 @@ specifiers:
   nanoid: ^4.0.0
   nuxt: ^3.0.0
   pixi-ease: ^3.0.7
-  pixi.js: ^7.0.5
-  prettier: ^2.8.1
+  pixi.js: ^7.1.1
+  prettier: ^2.8.3
 
 dependencies:
   lodash-es: 4.17.21
   nanoid: 4.0.0
   nuxt: 3.0.0_@types+node@18.11.18
-  pixi.js: 7.0.5
+  pixi.js: 7.1.1
 
 devDependencies:
   '@nuxtjs/tailwindcss': 6.2.0
   '@types/lodash-es': 4.17.6
   '@types/node': 18.11.18
-  pixi-ease: 3.0.7_pixi.js@7.0.5
-  prettier: 2.8.1
+  pixi-ease: 3.0.7_pixi.js@7.1.1
+  prettier: 2.8.3
 
 packages:
 
@@ -657,130 +657,131 @@ packages:
       - webpack
     dev: true
 
-  /@pixi/accessibility/7.0.5:
-    resolution: {integrity: sha512-+Wiwu7Vj19wa0CrtXlzmswtwNUGsjDCjtmI3HbKHQ3MphjHUKmgx3ga7NL1O53Mwr9XGhkHCOrZzW04fGCtXoA==}
+  /@pixi/accessibility/7.1.1:
+    resolution: {integrity: sha512-rI72Dz66LgT0FkOEzI5vJkh7J7xIW+D1gPqNxwIQgx7KUCXiQ6k/bmNOWzp1N3OR4AlVz+KiiYPba+FRTF6MGA==}
 
-  /@pixi/app/7.0.5:
-    resolution: {integrity: sha512-fLOJKywqwb4l9mJOE1tgfAhGxqhwb9/UlntivyXQXI6hTYDUivpzIWrWoV+mE09yAvwaw8PR1gnhPuagjrjDuQ==}
+  /@pixi/app/7.1.1:
+    resolution: {integrity: sha512-pl4YhH30stu7VULtp6yXEhYNhtyJVlpu/SCVB4P7v87uaosbdQoc9+5UUHtmhu82Y7I7LQzMubI/NlTAORy2zA==}
 
-  /@pixi/assets/7.0.5:
-    resolution: {integrity: sha512-GGFrFIAQRzSmmC9ZALSIwaGZNi10Rt0MbuedK+oGPKtSuvQJ37bNGL4sU7PXsTulBdBMUQgbIzmq6FBPnpV9kA==}
+  /@pixi/assets/7.1.1:
+    resolution: {integrity: sha512-WuVyVLrUFQkeuwzqTO1398a7wbW5eC53Ac+Aho6SA1kWz+zJALDfWAD7+DogVSyNOWkvN7p94+u0GKw5RkbxGQ==}
     dependencies:
       '@types/css-font-loading-module': 0.0.7
 
-  /@pixi/compressed-textures/7.0.5:
-    resolution: {integrity: sha512-OWEtcaPurtpYJLLzDZHq6wDI67ajPb4xl/t+O29Q3PrFSEmZXFfw5lMsDgh9MY4d62jpZwx2dH4QEBK1qjOBvQ==}
+  /@pixi/compressed-textures/7.1.1:
+    resolution: {integrity: sha512-poBBAxCijaFv1+ED4IUoyXUKpyOTvERsDMDvlCqvQLzTX5qRFIHwDHQWzbhfeJQLAa6w5c9D2GyVHDoq3Qy3Sg==}
 
-  /@pixi/constants/7.0.5:
-    resolution: {integrity: sha512-4u5UqLo+8uuUon2EBIjSxUo80r7eUr1gWpFAg2B9ziRJePl5Q75azYX+77uVp5cFnloYIcSuNyjtJFdQ/umDgg==}
+  /@pixi/constants/7.1.1:
+    resolution: {integrity: sha512-UwKsxsxUKrnlG58E3GsLHXx8h1fJkK5kQytEQwcwwWFwD+g7J3KxCkRzRZg3hMeKFhIbQsrNjRFM2ZjwypWyQQ==}
 
-  /@pixi/core/7.0.5:
-    resolution: {integrity: sha512-+7SgV45t7lw7r8XhtYMv+p0ehc7UPHv9qlMem7Cb/2cZqwxa9Z7TUzQlI9ENb/OsEqURSQ0PJ5ANgEOqQiciiA==}
+  /@pixi/core/7.1.1:
+    resolution: {integrity: sha512-rRkwbRGPwmUaJHqjOD5J36KmUtO6Zqg2z1/G60+VokCeiY50edkocAAD31+QeAo3ljHv+J54jZPg2Y6o2v18Rg==}
     dependencies:
-      '@pixi/constants': 7.0.5
-      '@pixi/extensions': 7.0.5
-      '@pixi/math': 7.0.5
-      '@pixi/runner': 7.0.5
-      '@pixi/settings': 7.0.5
-      '@pixi/ticker': 7.0.5
-      '@pixi/utils': 7.0.5
+      '@pixi/constants': 7.1.1
+      '@pixi/extensions': 7.1.1
+      '@pixi/math': 7.1.1
+      '@pixi/runner': 7.1.1
+      '@pixi/settings': 7.1.1
+      '@pixi/ticker': 7.1.1
+      '@pixi/utils': 7.1.1
       '@types/offscreencanvas': 2019.7.0
 
-  /@pixi/display/7.0.5:
-    resolution: {integrity: sha512-9sXXn7HMFJo5cb4KU3Bdzzhhler9KBuPotHG57gew1MbsMCP32+lvPzqMB1bj6OU0QLjknJxvON77j13CNBh+w==}
+  /@pixi/display/7.1.1:
+    resolution: {integrity: sha512-N/0/xAFNMp5zoHWJIHr2a3W5nQgj13MNxjdXUDbGGVbSlajUgXADAHte77xJ0MyapStXxXE950a7Hl0HXVYPXw==}
 
-  /@pixi/events/7.0.5:
-    resolution: {integrity: sha512-WKXSOvyfIl2RF5vFG3sT50gvBhH9SqiO4ymdX3GdRi2R+jB5Xo/vJBaBdZCC9sPqC5avhqj6oorQpcL3YoyJkg==}
+  /@pixi/events/7.1.1:
+    resolution: {integrity: sha512-tnSXcQe3YZ3yAnU6YcLiey/zxOx/d62RHHk4GwuXVFmoVsCZcEV2SD6THJRRHClZtGfhhPMazjcpvcZe+OsB9g==}
 
-  /@pixi/extensions/7.0.5:
-    resolution: {integrity: sha512-zCfhMPPZC5dhH0V/GDK1rUEVAT7Ju9K5bIfbd78hbqUZeK7eq8xA8TFEtPE2rdQJesvdDx+qLDv8QhywyR3Y8Q==}
+  /@pixi/extensions/7.1.1:
+    resolution: {integrity: sha512-fRtBl2v8W75FTbB1NEHTu/dMh3rIaNkX28XQhv4C59yTeH/RtArqzAB5S8RRt01qQnG6fFoBgi6SvpSyx4f41Q==}
 
-  /@pixi/extract/7.0.5:
-    resolution: {integrity: sha512-HMWTTpl/0IGGCWckpAQnXK+kcoLth2WApL3o9l21MeESbKWwbXk4HdiSM42naY651KWGkkdfP+EjLjXmGmlw5A==}
+  /@pixi/extract/7.1.1:
+    resolution: {integrity: sha512-25lc4wPzQP76jgjMpIxj4jia1u5dUcrpZ64uGNVAer5is2vZf+ERBybB0Bp3UwwgfDZn6q03KBIP8XTFmt8nSA==}
 
-  /@pixi/filter-alpha/7.0.5:
-    resolution: {integrity: sha512-c2ixjkApAXts0oPI//YP3i2OboxvGekGZHhKmDPuHflI2UoRM1Uy8LXMSNe7xOkSXEa/AkC28d9JQBb+6GZ5Fg==}
+  /@pixi/filter-alpha/7.1.1:
+    resolution: {integrity: sha512-CxYJgwlMAOfCCnkZTqy9+KQZR7B+tbRE9XqW8+/6zfhPv/UKhJ4ohBCj5Z3RknL/TLacRtT+C4NVRPvSEejiOw==}
 
-  /@pixi/filter-blur/7.0.5:
-    resolution: {integrity: sha512-YxncNFYZ/cVRmKVCn1giBiaFaBsYOW+nunx05RV4LJmX9tAxlRFPJLK8Rc1Cqnq5Rk3ZBW4PtXl2gtUIf12haA==}
+  /@pixi/filter-blur/7.1.1:
+    resolution: {integrity: sha512-jLkOHjvOoPna9vbmagsJBNJ4dv9gXmPJceJz174JIyagYR+n/1Cm/wXoWGOSiKfTRHI5kCHC5Nuz6n5v5fA0Ow==}
 
-  /@pixi/filter-color-matrix/7.0.5:
-    resolution: {integrity: sha512-sQX0PSsS6o3MgU/Oxr+S9zPMBk+Dxr9H5zgUVSkVcdZh++WQ1LYCPEBwKQFaSDkQ2M8Dxl/lzJgtA5bqpk6MCw==}
+  /@pixi/filter-color-matrix/7.1.1:
+    resolution: {integrity: sha512-a1QboNsW9CLn8axqwITzcxF/GlFoePX6306uIhT96sXnbfL0bdEI9ZetqbixQTqpJ40B+EBP5AOMzFjew9dNoQ==}
 
-  /@pixi/filter-displacement/7.0.5:
-    resolution: {integrity: sha512-5+34agfCpk+wT+uhrp0JK8/9EW/9llGaYl5IdJ1CsqOHdIQjFbhhqmzEs7U6pYeFbHjQ0ABclMsVZ4qc/rMoRw==}
+  /@pixi/filter-displacement/7.1.1:
+    resolution: {integrity: sha512-9T5tTWNM3IoA0HWS3cX9t/5WAg71K39r13WhYqaa/ob+i3z9hDObqh6HOWaJlqlzRD+KW+JdGbNo9fj9qmyTzQ==}
 
-  /@pixi/filter-fxaa/7.0.5:
-    resolution: {integrity: sha512-o84VCjAvPxGoP+4KehiVQn7v2sJGBvOX+Qxa48v+e/HdRQeuJ31At8XswW5oBAY/7tdM+fJWtNyVJTf2m6HsCQ==}
+  /@pixi/filter-fxaa/7.1.1:
+    resolution: {integrity: sha512-tDZMcn2l8KNhHDIgQRRQZl/kTi9zGbCrd7Xm+ARhe0vVw0l/wR0vhwT5eEMaQwKLEDF/CxcpJV4E6t3KBHcjBw==}
 
-  /@pixi/filter-noise/7.0.5:
-    resolution: {integrity: sha512-OSwd4jCihDlYCPGCv9pogVeehIYS1WbTxsFeWhMIZBc2sffEJeW3QzKKYzMO9c7sy6IljLEqZV7T3sYrmzA1WA==}
+  /@pixi/filter-noise/7.1.1:
+    resolution: {integrity: sha512-3A7Ok2TtFOHG3fY6GF+hgIPA4++W/OE8pxd9scmxziCOeKy2srsVBzYQj+A3T7MiQvrllGFG9erHvvmqy/RzLA==}
 
-  /@pixi/graphics/7.0.5:
-    resolution: {integrity: sha512-I5Y6IpntiEoJB0HOZ7nSw8r3ZHMyyeE8RMCc3Aud6j5B6CtBkpqCHyxOFNmDod2Ymznj/hWBhLl4ee8SJjRdWg==}
+  /@pixi/graphics/7.1.1:
+    resolution: {integrity: sha512-OxCSvANBp4CFvEg0OcU3iCgMPGjNwdwMX1+/ajukO60/jkcL+793CNY+5kep7COzkaI6D91iCX72uQpr1adqmw==}
 
-  /@pixi/math/7.0.5:
-    resolution: {integrity: sha512-v8OCcAL8oK8pf2jtsfHJebTdQ3IA5NI/mdv+Err3F3u4hJHSkDeag9woIBZNfim5ATV/1qriv4b1TT9J+uiL3A==}
+  /@pixi/math/7.1.1:
+    resolution: {integrity: sha512-SKLkKbLadsFM2IC+dlKfoevmD5mKooiVI01cyxdDD9W9IWQE6hOaOvyKjGrfSx/JwvoBtGFnBJTFGuKbNEDnPg==}
 
-  /@pixi/mesh-extras/7.0.5:
-    resolution: {integrity: sha512-+GW5XmavenmSPwZCJDxnXXrflshv0bQGa1gdD2s/T5RxVEP+GYBqPeW2L9fYPowr7070fzzuSVxmcU1yXpv3lw==}
+  /@pixi/mesh-extras/7.1.1:
+    resolution: {integrity: sha512-n3S6UxVb1r2EtP5nBCakp4dNbLXYGH9n9sPNdm0L6sotLl8RGfSR+53QkJdGhX2YGDL55t7/Uu5W87nO8tZVAA==}
 
-  /@pixi/mesh/7.0.5:
-    resolution: {integrity: sha512-PinHnPbxqou4G4WvwGmmwQAilGHTQd3vC6RlHIOBsxCK/9lw1cQ1Js9VAr0/3cy2Wf5or/AtKTwl0okzBf+4og==}
+  /@pixi/mesh/7.1.1:
+    resolution: {integrity: sha512-Z7KdsyM1JJuY2Uxgi9C7g4oQ080+QU6x3Rj3makS0Z5hxS6hiGo7zEjkGA40PMIooVO73ONxxvCaqBR7yJ9J2Q==}
 
-  /@pixi/mixin-cache-as-bitmap/7.0.5:
-    resolution: {integrity: sha512-XlSga7zNDWEzKkOJcifAlXg+FU97pnY9RWm6Gd9zFGY9AQCKWgE++if2/wXMk57pvcTPu3E+li6D3nRYihbVfg==}
+  /@pixi/mixin-cache-as-bitmap/7.1.1:
+    resolution: {integrity: sha512-eQLQ79y4PijbHq7bSrVbjVW9DFgR+f1T7DwKewRacEfc5yHORh8TmPhv8J0PEuAJoWTCDoZI0VQ543nSO78/fw==}
 
-  /@pixi/mixin-get-child-by-name/7.0.5:
-    resolution: {integrity: sha512-1uVSwlGHGubcaxbzdzWipHvz7DygHWgvxSTpQzSEs8+61EmcuwZHaDj/ceXC7Sir8iP4hp12ScWjii0grMHMfw==}
+  /@pixi/mixin-get-child-by-name/7.1.1:
+    resolution: {integrity: sha512-Pgsmo5csnoS6rAhSGKIHQIQz2B8asZQs4ZcqUHykH6PJYAg2DTkvxaaQxFLKn6M7ICsD9YZ4RZlAlsxhz+CgEg==}
 
-  /@pixi/mixin-get-global-position/7.0.5:
-    resolution: {integrity: sha512-Bnq7tZiViireQeLf+8hcuGNK8DuDZTt5AiEISIptqzy0wMOwoLXeBx7+qLwP8RPvImrGhifDotHxDRNB66psDw==}
+  /@pixi/mixin-get-global-position/7.1.1:
+    resolution: {integrity: sha512-Y9yXffI2jvNEGcErK6Ytzj0/q+m8J/0U6f6lFlJmp+JOBOAxukApMP9VlNbyTigSHBK4b4hs5Mbs6wqPb/PLvg==}
 
-  /@pixi/particle-container/7.0.5:
-    resolution: {integrity: sha512-1BIRunfi2kUe6fvrFWcYGlbEnqOCeK5hUza2aYyNZz/dSB8T6Zfs0SsBjIy5AfyZpyH8U6KJ4tP5qHp93xDlEw==}
+  /@pixi/particle-container/7.1.1:
+    resolution: {integrity: sha512-UtZcoR9a1LsNDJWlvb4OaNeMBsvSocryp3XpKsB+NnF3zI68y/DsPFppobvqL4weCbvTc1Ih1jCWD4AfnvOOKg==}
 
-  /@pixi/prepare/7.0.5:
-    resolution: {integrity: sha512-SdBj5RgXzzJZoIHFopdf5qUbEcNuJSSOOxU0K0WEcaZJH0MPSO5jaUbSKeF/p5C1WfRl2iRc/DzSfBaFBmA9vw==}
+  /@pixi/prepare/7.1.1:
+    resolution: {integrity: sha512-pdiViD4r8Oc70uCdWH1JGVeCujLTCiMtSFPgW0xyg/Fc7PfID7i6iiqKhYLMIva5nBAyPIKUo8IWFaoHjyiUHQ==}
 
-  /@pixi/runner/7.0.5:
-    resolution: {integrity: sha512-7Ym6FXwAv+5pM4oPCk4HNiSG7C69W69zZAuoRaz1hvFpu5fi6J4alhDBI1g3u5S+wyQb6ITuwUpNpDLduBuI5w==}
+  /@pixi/runner/7.1.1:
+    resolution: {integrity: sha512-5mDGUn9/8U6ncobrM7g6caSdftoqrEmL1qmGUObLeHeJ6ogT869kgigU0zav8SVsYdu+ZBplR36BAzpX4b/DgQ==}
 
-  /@pixi/settings/7.0.5:
-    resolution: {integrity: sha512-79cP7z4v47gCKecEU24dXL83hYZoXcv7xBG+sF0RQhsRyHoU2niCXukorgsKeMn0Gq/kA+UtWdV0tSCns9xjQQ==}
+  /@pixi/settings/7.1.1:
+    resolution: {integrity: sha512-HwSqrNcRj5ckOHlWpU5DKueUDOQ/wRmDxLSIfCg3Ub0Vlfie47gmprdD68Al5PC/rqXiGw3kRpYHYM6p111eDQ==}
     dependencies:
-      '@pixi/constants': 7.0.5
+      '@pixi/constants': 7.1.1
       '@types/css-font-loading-module': 0.0.7
 
-  /@pixi/sprite-animated/7.0.5:
-    resolution: {integrity: sha512-pV+3w3PXnrhvgAAle21ZsR+6o5A9Di1A/TrnrVqCCM2442rexjhwOUr+pHiXiogq1GjJaVFh2ULPzbuM2Ja9/Q==}
+  /@pixi/sprite-animated/7.1.1:
+    resolution: {integrity: sha512-L1l+ljLCz+IOg1Xx8Q+KjyWT3Fg3HWoxPgSpOcB3tcWWtNz5RDFH5UkFJyBmwNShWratwhTFgzy/ogTP3TeCdw==}
 
-  /@pixi/sprite-tiling/7.0.5:
-    resolution: {integrity: sha512-xpZhk8X5OfX40EYdyCUnX8kmwT7OLx0qXFanN6zvEngHC7Rjgc49Avi9urdCRpmr8USARTFjyxPXtAg5AnsUmQ==}
+  /@pixi/sprite-tiling/7.1.1:
+    resolution: {integrity: sha512-ccE//EM2cbIyktLiG2lrEsU3Jwp86iLxvT2/hky+RsSQuX52xjfccU9xUCuyJKSB9G1c4xlLYSl6h+OoZ1MDJg==}
 
-  /@pixi/sprite/7.0.5:
-    resolution: {integrity: sha512-cWcxz/aB76ZiasQyMa2nugHZn8PmMEk0kmYpdjLCzH+jPf1dpx7YuGuxqR73SbaNuv3sU7Z9BIGZZ7RWr4mpWQ==}
+  /@pixi/sprite/7.1.1:
+    resolution: {integrity: sha512-a50XhoOnmSV5J0D71tpFYHKGCdW5ST38lxIj9XVZrag31gXjHgj0ibzmUWfKPq1T+0up8QS81PkE8U0+6hAP4A==}
 
-  /@pixi/spritesheet/7.0.5:
-    resolution: {integrity: sha512-Wbvr73mKAB0X6fxPsQs3HduAtk5tTkBAvtAs5+NsSfkPLWjMU8HGpcEx/mr7rrGraw9DxGzZ4bwdeZuGjAWFyA==}
+  /@pixi/spritesheet/7.1.1:
+    resolution: {integrity: sha512-kzt6znlzbbMD63egY1vU75h3zFew1L2cSU1nxDV6Ixf4vMb5ZMYNtD6b9OqA3/BePCWrp32xBrZYfMnAMucycw==}
 
-  /@pixi/text-bitmap/7.0.5:
-    resolution: {integrity: sha512-Ee4apuf8riXQw5j97IyzElS5Vu9Dnk0TvXZQsqzZeZHbmwL5KVjrF4dnRQIL8FGFl1nrq/OpL0HWI83IxqwC6Q==}
+  /@pixi/text-bitmap/7.1.1:
+    resolution: {integrity: sha512-iWSIBNIvhkI6UZWw+qZu6SQ+sbYuL7pwRmdwxHKSAXqJV9UuI5UpiJ7gGWJMXCGUwkhewkKoINjeaBJUJVxEsA==}
 
-  /@pixi/text/7.0.5:
-    resolution: {integrity: sha512-B/yUUqUeqx/X0H3I33xalttBJ3KlkADJioDI+K3WW1D6ue6qENnWby/JKd/8ZiqRdQfyZ9jsmsldfR2OEzLIJA==}
+  /@pixi/text/7.1.1:
+    resolution: {integrity: sha512-wcCNMMkWQW6C8Ouv+9qe2ZQa/7itN84GTsxpP33em60ML2mgu9tj9ridRplknORXDTA6Mx6Mx6CWH8bQ9jFNKA==}
 
-  /@pixi/ticker/7.0.5:
-    resolution: {integrity: sha512-a/QIvInjKTK5HngkRXjA9EYEuDKkOwEQ4bAZZYx7bjJzFseWULkNsSAdnfqjny+BOLIKhF7u2Hf4n+ef1H2xMg==}
+  /@pixi/ticker/7.1.1:
+    resolution: {integrity: sha512-Ae3R5WPtLgyz8KLBbH2CAZx+NxQIX4Vqop6kAlKcoFahdmdQXLvmK35tziNmtD7wY81uZxVe5IlAYggKqGiu9A==}
     dependencies:
-      '@pixi/extensions': 7.0.5
-      '@pixi/settings': 7.0.5
+      '@pixi/extensions': 7.1.1
+      '@pixi/settings': 7.1.1
+      '@pixi/utils': 7.1.1
 
-  /@pixi/utils/7.0.5:
-    resolution: {integrity: sha512-aFweyXTC2dlsyVQNQarsPQXIuuQDIPSV5WI4unU3VpQ+SaKmH3LTHm4+75JgOweGwRclUw4c/kEYf92RmQBmHg==}
+  /@pixi/utils/7.1.1:
+    resolution: {integrity: sha512-A5mV5EipBk7tpxjrNBN1qoU/vuJNZCoRHHhDHBHnDKGxFO74BY6JHx1Ba5XJbRa+H54f1vIgP/5MinrsuP0CdA==}
     dependencies:
-      '@pixi/constants': 7.0.5
-      '@pixi/settings': 7.0.5
+      '@pixi/constants': 7.1.1
+      '@pixi/settings': 7.1.1
       '@types/earcut': 2.1.1
       earcut: 2.2.4
       eventemitter3: 4.0.7
@@ -3807,48 +3808,48 @@ packages:
     resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
     engines: {node: '>=0.10.0'}
 
-  /pixi-ease/3.0.7_pixi.js@7.0.5:
+  /pixi-ease/3.0.7_pixi.js@7.1.1:
     resolution: {integrity: sha512-ew1IzAi2layygHrk8+tk6XTuue3WM6Po5LsA46v+9BtQNMa2sX0PMLzQ4nq1UpTbLg4Dwqep9RTzDRsFhCYJJw==}
     peerDependencies:
       pixi.js: '>=4.6.0'
     dependencies:
       eventemitter3: 4.0.7
       penner: 0.1.3
-      pixi.js: 7.0.5
+      pixi.js: 7.1.1
     dev: true
 
-  /pixi.js/7.0.5:
-    resolution: {integrity: sha512-XCFSUojaIdDz745bvQDmyEsJ6A3eh7mCeGW+esukzLQFPnDP/NvPsJszJKhyRuoktyzJb5xsuV08Eh3Y7+VC3w==}
+  /pixi.js/7.1.1:
+    resolution: {integrity: sha512-Wb05G0bCh/icN+JOOvcmZhP/FmXxTV6unRhf+otNfGtYd9FAGFSBeQIGx8Ady2S9HlwEbrcBkG0Q8wtEhUm1MQ==}
     dependencies:
-      '@pixi/accessibility': 7.0.5
-      '@pixi/app': 7.0.5
-      '@pixi/assets': 7.0.5
-      '@pixi/compressed-textures': 7.0.5
-      '@pixi/core': 7.0.5
-      '@pixi/display': 7.0.5
-      '@pixi/events': 7.0.5
-      '@pixi/extensions': 7.0.5
-      '@pixi/extract': 7.0.5
-      '@pixi/filter-alpha': 7.0.5
-      '@pixi/filter-blur': 7.0.5
-      '@pixi/filter-color-matrix': 7.0.5
-      '@pixi/filter-displacement': 7.0.5
-      '@pixi/filter-fxaa': 7.0.5
-      '@pixi/filter-noise': 7.0.5
-      '@pixi/graphics': 7.0.5
-      '@pixi/mesh': 7.0.5
-      '@pixi/mesh-extras': 7.0.5
-      '@pixi/mixin-cache-as-bitmap': 7.0.5
-      '@pixi/mixin-get-child-by-name': 7.0.5
-      '@pixi/mixin-get-global-position': 7.0.5
-      '@pixi/particle-container': 7.0.5
-      '@pixi/prepare': 7.0.5
-      '@pixi/sprite': 7.0.5
-      '@pixi/sprite-animated': 7.0.5
-      '@pixi/sprite-tiling': 7.0.5
-      '@pixi/spritesheet': 7.0.5
-      '@pixi/text': 7.0.5
-      '@pixi/text-bitmap': 7.0.5
+      '@pixi/accessibility': 7.1.1
+      '@pixi/app': 7.1.1
+      '@pixi/assets': 7.1.1
+      '@pixi/compressed-textures': 7.1.1
+      '@pixi/core': 7.1.1
+      '@pixi/display': 7.1.1
+      '@pixi/events': 7.1.1
+      '@pixi/extensions': 7.1.1
+      '@pixi/extract': 7.1.1
+      '@pixi/filter-alpha': 7.1.1
+      '@pixi/filter-blur': 7.1.1
+      '@pixi/filter-color-matrix': 7.1.1
+      '@pixi/filter-displacement': 7.1.1
+      '@pixi/filter-fxaa': 7.1.1
+      '@pixi/filter-noise': 7.1.1
+      '@pixi/graphics': 7.1.1
+      '@pixi/mesh': 7.1.1
+      '@pixi/mesh-extras': 7.1.1
+      '@pixi/mixin-cache-as-bitmap': 7.1.1
+      '@pixi/mixin-get-child-by-name': 7.1.1
+      '@pixi/mixin-get-global-position': 7.1.1
+      '@pixi/particle-container': 7.1.1
+      '@pixi/prepare': 7.1.1
+      '@pixi/sprite': 7.1.1
+      '@pixi/sprite-animated': 7.1.1
+      '@pixi/sprite-tiling': 7.1.1
+      '@pixi/spritesheet': 7.1.1
+      '@pixi/text': 7.1.1
+      '@pixi/text-bitmap': 7.1.1
 
   /pkg-types/1.0.1:
     resolution: {integrity: sha512-jHv9HB+Ho7dj6ItwppRDDl0iZRYBD0jsakHXtFgoLr+cHSF6xC+QL54sJmWxyGxOLYSHm0afhXhXcQDQqH9z8g==}
@@ -4335,8 +4336,8 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.0.2
 
-  /prettier/2.8.1:
-    resolution: {integrity: sha512-lqGoSJBQNJidqCHE80vqZJHWHRFoNYsSpP9AjFhlhi9ODCJA541svILes/+/1GM3VaL/abZi7cpFzOpdR9UPKg==}
+  /prettier/2.8.3:
+    resolution: {integrity: sha512-tJ/oJ4amDihPoufT5sM0Z1SKEuKay8LfVAMlbbhnnkvt6BUserZylqo2PN+p9KeljLr0OHa2rXHU1T8reeoTrw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
