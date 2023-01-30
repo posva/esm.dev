@@ -17,11 +17,11 @@
   "dependencies": {
     "lodash-es": "^4.17.21",
     "nanoid": "^4.0.0",
-    "nuxt": "^3.0.0",
+    "nuxt": "^3.1.1",
     "pixi.js": "^7.1.1"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^6.2.0",
+    "@nuxtjs/tailwindcss": "^6.3.0",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.11.18",
     "pixi-ease": "^3.0.7",
