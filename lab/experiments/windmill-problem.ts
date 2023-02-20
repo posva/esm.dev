@@ -1,5 +1,5 @@
 /**
- * Insipired by https://www.youtube.com/watch?v=M64HUIJFTZM
+ * Inspired by https://www.youtube.com/watch?v=M64HUIJFTZM
  */
 
 import { debounce, throttle } from 'lodash-es'

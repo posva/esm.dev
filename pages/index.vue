@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { rotateOffsets } from '~/lab/dom/links'
+import { vMagnetic } from '@/directives/vMagnetic'
 
 let lastElapsed = 0
 const BASE_DELTA = 1000 / 60 // 1s / 60 frames
@@ -14,8 +15,9 @@ function stepper(elapsed: number) {
     mouseTravel = Math.max(0, mouseTravel - ratio * 70)
   }
 
+  const route = useRoute()
   // only on production because we add css variables on root and it's hard to debug
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' || route.query.links === 'no') {
     rotateOffsets(ratio, Math.max(1, Math.min(mouseTravel / 200, 10)))
   }
 }
@@ -51,9 +53,9 @@ onMounted(() => {
     })
   }
 
-  document.querySelectorAll('a').forEach((link) => {
-    link.dataset['text'] = link.innerText
-  })
+  // document.querySelectorAll('a').forEach((link) => {
+  //   link.dataset['text'] = link.innerText
+  // })
 
   update()
 
@@ -68,7 +70,9 @@ onUnmounted(() => {
 <template>
   <div class="relative max-w-full leading-tight" id="bio-container">
     <div id="content-backdrop" class="px-1 py-1 rounded shadow-lg md:px-4">
-      <h1 class="my-3 text-4xl font-bold">Hi 👋</h1>
+      <h1 class="my-3 text-4xl font-bold">
+        <span>Hi 👋</span>
+      </h1>
       <p class="my-4">
         <!-- <img src="assets/casual-me.jpg" alt="picture of myself" /> -->
         I'm Eduardo,
@@ -78,15 +82,18 @@ onUnmounted(() => {
         <p class="my-4">
           a Frontend Nerd. I work as a consultant to help you keep your
           applications maintainable. I also give
-          <a href="#TODO">Vue.js trainings</a> and
+          <a v-magnetic href="#TODO">Vue.js trainings</a> and
           <a
             href="https://www.youtube.com/results?search_query=eduardo+san+martin+morote"
+            v-magnetic
             >talk at conferences</a
           >. I write some
-          <a href="https://github.com/posva">useful libraries</a>, mostly for
-          Vue, but not only, and post them on Github. I may not
+          <a v-magnetic href="https://github.com/posva">useful libraries</a>,
+          mostly for Vue, but not only, and post them on Github. I may not
           <i>
-            <a href="https://twitter.com/posva/status/1146415898967908352"
+            <a
+              v-magnetic
+              href="https://twitter.com/posva/status/1146415898967908352"
               >take myself very seriously</a
             >
           </i>
@@ -95,12 +102,14 @@ onUnmounted(() => {
         </p>
         <p class="my-4">
           If you want to work together, please
-          <a href="https://twitter.com/posva">send me a PM on Twitter</a>.
+          <a v-magnetic href="https://twitter.com/posva"
+            >send me a PM on Twitter</a
+          >.
         </p>
       </main>
     </div>
 
-    <LabExperiment :labId="$route.query.i" />
+    <LabExperiment v-if="$route.query.lab !== 'no'" :labId="$route.query.i" />
     <div id="lab-cloak"></div>
   </div>
 </template>
