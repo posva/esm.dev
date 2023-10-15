@@ -6,7 +6,7 @@ specifiers:
   '@types/node': ^18.11.19
   '@vueuse/core': ^9.9.0
   lodash-es: ^4.17.21
-  nanoid: ^4.0.1
+  nanoid: ^5.0.2
   nuxt: ^3.1.2
   pixi-ease: ^3.0.7
   pixi.js: ^7.1.2
@@ -16,7 +16,7 @@ specifiers:
 dependencies:
   '@vueuse/core': 9.13.0
   lodash-es: 4.17.21
-  nanoid: 4.0.1
+  nanoid: 5.0.2
   nuxt: 3.2.2_@types+node@18.14.0
   pixi-ease: 3.0.7_pixi.js@7.1.2
   pixi.js: 7.1.2
@@ -3766,6 +3766,12 @@ packages:
   /nanoid/4.0.1:
     resolution: {integrity: sha512-udKGtCCUafD3nQtJg9wBhRP3KMbPglUsgV5JVsXhvyBs/oefqb4sqMEhKBBgqZncYowu58p1prsZQBYvAj/Gww==}
     engines: {node: ^14 || ^16 || >=18}
+    hasBin: true
+    dev: false
+
+  /nanoid/5.0.2:
+    resolution: {integrity: sha512-2ustYUX1R2rL/Br5B/FMhi8d5/QzvkJ912rBYxskcpu0myTHzSZfTr1LAS2Sm7jxRUObRrSBFoyzwAhL49aVSg==}
+    engines: {node: ^18 || >=20}
     hasBin: true
     dev: false
 
