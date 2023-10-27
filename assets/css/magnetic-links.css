@@ -1,0 +1,65 @@
+[data-magnetic] {
+  display: inline-block;
+  color: rgb(var(--blue));
+  position: relative;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 500ms linear 200ms;
+
+  /* border-bottom: rgb(var(--blue)) 1px solid; */
+}
+
+[data-magnetic]::before,
+[data-magnetic]::after {
+  transition:
+    transform 500ms ease-out,
+    opacity 500ms linear;
+  /* transition: opacity 300ms ease-out; */
+}
+
+[data-magnetic]::before,
+[data-magnetic]::after {
+  opacity: 0;
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+[data-magnetic]:hover::before,
+[data-magnetic]:hover::after {
+  opacity: 0.75;
+}
+
+[data-magnetic]::before {
+  color: rgb(var(--red));
+}
+
+[data-magnetic]::after {
+  color: rgb(var(--blue));
+}
+
+[data-magnetic]:hover,
+[data-magnetic]:focus {
+  color: rgb(var(--green));
+  transition-delay: 0s;
+}
+
+[data-magnetic]:hover::before,
+[data-magnetic]:focus::before {
+  transform: translate3d(
+    var(--moveX, var(--moveOffset)),
+    var(--moveY, var(--moveOffset)),
+    0
+  );
+}
+
+[data-magnetic]:hover::after,
+[data-magnetic]:focus::after {
+  color: rgb(var(--blue));
+  transform: translate3d(
+    calc(-1 * var(--moveX, var(--moveOffset))),
+    calc(-1 * var(--moveY, var(--moveOffset))),
+    0
+  );
+}

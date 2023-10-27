@@ -8,24 +8,6 @@ function getEffectScope() {
   return scope || (scope = effectScope(true))
 }
 
-function useMouse(el: HTMLElement) {
-  return getEffectScope().run(() => {
-    const target = reactive(_useMouse())
-    const mouse = _useSpring({ x: target.x, y: target.y })
-
-    watch(
-      target,
-      ({ x, y }) => {
-        mouse.x = x
-        mouse.y = y
-      },
-      { deep: true }
-    )
-
-    return mouse
-  })!
-}
-
 export interface VMagneticValue {
   maxDistance?: number
 }
@@ -40,6 +22,11 @@ let lastStop = noop
 
 export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
   {
+    getSSRProps(binding, el) {
+      return {
+        'data-magnetic': '',
+      }
+    },
     mounted(el, binding) {
       const options: Required<VMagneticValue> = Object.assign(
         {
@@ -51,6 +38,7 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
       const scope = effectScope(true)
       el.__scope = scope
       el.__children = []
+      el.dataset.magnetic = ''
 
       const trail = createCopyText(el)
       trail.style.color = 'rgba(var(--blue), 0.5)'
@@ -93,8 +81,8 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
           ({ x, y }) => {
             trail.style.transform = `translate(
                 ${0.7 * (x - center.x)}px, ${
-              0.7 * (y - center.y)
-            }px) scale(1.2)`
+                  0.7 * (y - center.y)
+                }px) scale(1.2)`
           },
           { deep: true }
         )
@@ -130,7 +118,7 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
 
               // const p = Math.log(1 + (200 * dist) / options.maxDistance) / 5
               // TODO: wrong distance, should be from center
-              const p = distance({ x, y }, center) / options.maxDistance
+              // const p = distance({ x, y }, center) / options.maxDistance
 
               el.style.transform = `translate(
                 ${0.7 * (x - center.x)}px, ${0.7 * (y - center.y)}px)`
@@ -185,7 +173,6 @@ function createCopyText(el: MagneticElement) {
   copyEl.style.top = rect.top + 'px'
   copyEl.style.left = rect.left + 'px'
   copyEl.style.opacity = '0'
-  copyEl.classList.add('haha')
 
   copyEl.style.transition = 'opacity 500ms linear'
 

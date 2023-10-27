@@ -1,3 +1,5 @@
+@import './magnetic-links.css';
+
 :root {
   --dark: 18, 19, 20;
   --light: 239, 238, 237;
@@ -84,70 +86,6 @@ body {
 ::selection {
   color: rgb(var(--bgColor));
   background-color: rgb(var(--textColor));
-}
-
-a {
-  display: inline-block;
-  color: rgb(var(--blue));
-  position: relative;
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 500ms linear 200ms;
-
-  /* border-bottom: rgb(var(--blue)) 1px solid; */
-}
-
-a::before,
-a::after {
-  transition: transform 500ms ease-out, opacity 500ms linear;
-  /* transition: opacity 300ms ease-out; */
-}
-
-a::before,
-a::after {
-  opacity: 0;
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-a:hover::before,
-a:hover::after {
-  opacity: 0.75;
-}
-
-a::before {
-  color: rgb(var(--red));
-}
-
-a::after {
-  color: rgb(var(--blue));
-}
-
-a:hover,
-a:focus {
-  color: rgb(var(--green));
-  transition-delay: 0s;
-}
-
-a:hover::before,
-a:focus::before {
-  transform: translate3d(
-    var(--moveX, var(--moveOffset)),
-    var(--moveY, var(--moveOffset)),
-    0
-  );
-}
-
-a:hover::after,
-a:focus::after {
-  color: rgb(var(--blue));
-  transform: translate3d(
-    calc(-1 * var(--moveX, var(--moveOffset))),
-    calc(-1 * var(--moveY, var(--moveOffset))),
-    0
-  );
 }
 
 #experiment {
