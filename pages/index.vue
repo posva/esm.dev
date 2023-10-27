@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { vMagnetic } from '@/directives/vMagnetic'
+
+definePageMeta({
+  layout: 'barebones',
+})
 </script>
 
 <template>
