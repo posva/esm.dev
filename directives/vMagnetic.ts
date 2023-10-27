@@ -1,4 +1,4 @@
-import { Directive, effectScope, EffectScope } from 'vue'
+import { type Directive, effectScope, EffectScope } from 'vue'
 import { useEventListener, useMouse as _useMouse } from '@vueuse/core'
 import { useSpring as _useSpring } from 'vue-use-spring'
 

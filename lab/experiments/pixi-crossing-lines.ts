@@ -3,7 +3,7 @@ import { ease, Ease, Easing } from 'pixi-ease'
 import {
   getDimensions,
   canvasEl,
-  Point,
+  type Point,
   resetCanvasCheck,
 } from '../utils/screen'
 import {
@@ -11,7 +11,7 @@ import {
   onColorChange,
   getHexColorVariable,
 } from '../utils/colors'
-import { createRandomizer, Randomizer } from '../utils/random'
+import { createRandomizer, type Randomizer } from '../utils/random'
 import { nanoid } from 'nanoid'
 import { memoize, debounce } from 'lodash-es'
 
@@ -78,7 +78,8 @@ export function start() {
   )
 
   for (let polygon of polygons) {
-    polygon.sprite.interactive = true
+    // polygon.sprite.interactive = true
+    polygon.sprite.eventMode = 'auto'
     app.renderer.render(polygon.container, {
       renderTexture: polygon.sprite.texture as PIXI.RenderTexture,
     })
