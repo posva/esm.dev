@@ -1,13 +1,7 @@
 import { nanoid } from 'nanoid'
-import {
-  getDimensions,
-  canvasEl,
-  resetCanvasCheck,
-  Point,
-} from '../utils/screen'
-import { getColorVariable, onColorChange } from '../utils/colors'
-import { addTapListener } from '../utils/events'
-import { createRandomizer, Randomizer } from '../utils/random'
+import { getDimensions, canvasEl, type Point } from '../utils/screen'
+import { getColorVariable } from '../utils/colors'
+import { createRandomizer, type Randomizer } from '../utils/random'
 import { memoize } from 'lodash-es'
 
 let isListening = false

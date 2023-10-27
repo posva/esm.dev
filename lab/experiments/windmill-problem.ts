@@ -5,7 +5,7 @@
 import { debounce, throttle } from 'lodash-es'
 
 import {
-  Point,
+  type Point,
   canvasEl,
   getDimensions,
   resetCanvasCheck,

@@ -45,7 +45,7 @@ export function onColorChange(listener: MqlListener): () => void {
   if (!mql) {
     mql = window.matchMedia('(prefers-color-scheme: light)')
     // old browsers need this one instead of the newer addEventListener
-    mql.addListener((event) => {
+    mql.addEventListener('change', (event) => {
       mqlListeners.forEach((listener) => listener(event))
     })
   }

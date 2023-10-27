@@ -3,12 +3,12 @@ import { nanoid } from 'nanoid'
 import {
   getDimensions,
   canvasEl,
-  Point,
+  type Point,
   isSamePoint,
   resetCanvasCheck,
 } from '../utils/screen'
 import { getColorVariable, onColorChange } from '../utils/colors'
-import { createRandomizer, Randomizer } from '../utils/random'
+import { createRandomizer, type Randomizer } from '../utils/random'
 
 const enum WallType {
   vertical,

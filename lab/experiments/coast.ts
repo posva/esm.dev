@@ -6,7 +6,7 @@ import {
   generateMaze,
   solveMaze,
   simplifyPath,
-  Context,
+  type Context,
   setRandomizer,
 } from './maze'
 import { addTapListener } from '../utils/events'
