@@ -4,7 +4,9 @@ import { vMagnetic } from '@/directives/vMagnetic'
 
 <template>
   <div class="relative max-w-full leading-tight" id="bio-container">
-    <div id="content-backdrop" class="px-1 py-1 rounded shadow-lg md:px-4">
+    <div
+      class="px-1 py-1 rounded shadow-lg md:px-4 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-80 bg-opacity-75"
+    >
       <h1 class="my-3 text-4xl font-bold">
         <span>Hi 👋</span>
       </h1>
@@ -60,10 +62,6 @@ import { vMagnetic } from '@/directives/vMagnetic'
     padding-left: 10vw;
     padding-right: 10vw;
   }
-}
-
-#content-backdrop {
-  background-color: rgba(var(--bgColor), 0.75);
 }
 
 #lab-cloak {
