@@ -8,11 +8,11 @@ const labId = computed(() => {
 
 <template>
   <div id="lab" class="min-h-full">
-  <LabExperiment :lab-id="labId" />
+    <LabExperiment :lab-id="labId" />
 
-  <!-- <div class="my-4"></div> -->
+    <!-- <div class="my-4"></div> -->
 
-  <!-- <section class="px-4">
+    <!-- <section class="px-4">
       <h1>Hey there</h1>
 
         <p>

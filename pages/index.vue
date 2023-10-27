@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { vMagnetic } from '@/directives/vMagnetic'
-
-
 </script>
 
 <template>
@@ -20,19 +18,28 @@ import { vMagnetic } from '@/directives/vMagnetic'
           a Frontend Nerd. I work as a consultant to help you keep your
           applications maintainable. I also give
           <a v-magnetic href="#TODO">Vue.js trainings</a> and
-          <a href="https://www.youtube.com/results?search_query=eduardo+san+martin+morote" v-magnetic>talk at
-            conferences</a>. I write some
+          <a
+            href="https://www.youtube.com/results?search_query=eduardo+san+martin+morote"
+            v-magnetic
+            >talk at conferences</a
+          >. I write some
           <a v-magnetic href="https://github.com/posva">useful libraries</a>,
           mostly for Vue, but not only, and post them on Github. I may not
           <i>
-            <a v-magnetic href="https://twitter.com/posva/status/1146415898967908352">take myself very seriously</a>
+            <a
+              v-magnetic
+              href="https://twitter.com/posva/status/1146415898967908352"
+              >take myself very seriously</a
+            >
           </i>
           but take my job very seriously and loves solving problems instead of
           complaining about them.
         </p>
         <p class="my-4">
           If you want to work together, please
-          <a v-magnetic href="https://twitter.com/posva">send me a PM on Twitter</a>.
+          <a v-magnetic href="https://twitter.com/posva"
+            >send me a PM on Twitter</a
+          >.
         </p>
       </main>
     </div>
