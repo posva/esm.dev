@@ -9,7 +9,7 @@ definePageMeta({
 <template>
   <div class="relative max-w-full leading-tight" id="bio-container">
     <div
-      class="px-1 py-1 rounded shadow-lg md:px-4 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-80 bg-opacity-75"
+      class="px-8 py-1 bg-opacity-75 shadow-lg rounded-xl md:px-4 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-80"
     >
       <h1 class="my-3 text-4xl font-bold">
         <span>Hi 👋</span>
@@ -57,8 +57,9 @@ definePageMeta({
 
 <style>
 #bio-container {
-  padding: 5vh 5vw;
-  width: 34rem;
+  padding: 1em;
+  font-size: calc(22px + 0.33vw);
+  width: 34em;
 }
 
 @media (min-width: 768px) {

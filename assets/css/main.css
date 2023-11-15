@@ -59,10 +59,6 @@ body.light {
   z-index: -1;
 }
 
-html {
-  font-size: calc(22px + 0.33vw);
-}
-
 body {
   box-sizing: border-box;
   font-family: -apple-system, 'Helvetica Neue', BlinkMacSystemFont, Cantarell,

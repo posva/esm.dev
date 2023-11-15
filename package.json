@@ -16,11 +16,13 @@
     "test": "pnpm run build"
   },
   "dependencies": {
+    "@giscus/vue": "^2.3.0",
     "@nuxt/content": "^2.9.0",
     "@vueuse/core": "^10.5.0",
     "lodash-es": "^4.17.21",
     "nanoid": "^5.0.2",
     "nuxt": "^3.8.0",
+    "nuxt-icon": "^0.6.5",
     "pixi-ease": "^3.0.7",
     "pixi.js": "^7.3.2",
     "vue-use-spring": "^0.3.1"

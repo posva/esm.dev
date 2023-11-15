@@ -52,6 +52,7 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
       }
 
       const mouse = getEffectScope().run(() => {
+        // FIXME: on resize recompute initialRect and center
         const target = reactive(_useMouse())
         const mouse = _useSpring({ ...center })
         const trailPos = _useSpring({ ...center })
