@@ -85,22 +85,4 @@ definePageMeta({
   animation: fadeOut 1s ease-out 2s;
   animation-fill-mode: forwards;
 }
-
-@keyframes waveAnimation {
-  0% {
-    transform: rotate(-15deg);
-  }
-  50% {
-    transform: rotate(15deg);
-  }
-  100% {
-    transform: rotate(-15deg);
-  }
-}
-
-.wave {
-  display: inline-block;
-  animation: waveAnimation 2s ease-in-out infinite alternate;
-  transform-origin: 70% 70%; /* Adjust the origin as needed */
-}
 </style>
