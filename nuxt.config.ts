@@ -3,7 +3,12 @@ export default defineNuxtConfig({
 
   css: ['@/assets/css/main.css'],
 
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/content', 'nuxt-icon', '@vueuse/nuxt'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    // '@nuxt/content',
+    'nuxt-icon',
+    '@vueuse/nuxt',
+  ],
 
   experimental: {
     typedPages: true,
