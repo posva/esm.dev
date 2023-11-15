@@ -9,18 +9,18 @@ definePageMeta({
 <template>
   <div class="relative max-w-full leading-tight" id="bio-container">
     <div
-      class="px-8 py-1 bg-opacity-75 shadow-lg rounded-xl md:px-4 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-80"
+      class="py-4 bg-opacity-75 shadow-lg rounded-xl md:px-6 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-80"
     >
-      <h1 class="my-3 text-4xl font-bold">
-        <span>Hi 👋</span>
+      <h1 class="my-3 font-bold">
+        Hi <span class="wave">👋</span>
       </h1>
-      <p class="my-4">
+      <p class="my-6">
         <!-- <img src="assets/casual-me.jpg" alt="picture of myself" /> -->
         I'm Eduardo,
       </p>
 
       <main id="main">
-        <p class="my-4">
+        <p class="my-6">
           a Frontend Nerd. I work as a consultant to help you keep your
           applications maintainable. I also give
           <a v-magnetic href="#TODO">Vue.js trainings</a> and
@@ -41,7 +41,7 @@ definePageMeta({
           but take my job very seriously and loves solving problems instead of
           complaining about them.
         </p>
-        <p class="my-4">
+        <p class="my-6">
           If you want to work together, please
           <a v-magnetic href="https://twitter.com/posva"
             >send me a PM on Twitter</a
@@ -57,9 +57,13 @@ definePageMeta({
 
 <style>
 #bio-container {
-  padding: 1em;
+  padding: 5vh 5vw;
   font-size: calc(22px + 0.33vw);
   width: 34em;
+}
+
+#bio-container h1 {
+  font-size: 2.25em;
 }
 
 @media (min-width: 768px) {
@@ -80,5 +84,23 @@ definePageMeta({
   display: block;
   animation: fadeOut 1s ease-out 2s;
   animation-fill-mode: forwards;
+}
+
+@keyframes waveAnimation {
+  0% {
+    transform: rotate(-15deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+  100% {
+    transform: rotate(-15deg);
+  }
+}
+
+.wave {
+  display: inline-block;
+  animation: waveAnimation 2s ease-in-out infinite alternate;
+  transform-origin: 70% 70%; /* Adjust the origin as needed */
 }
 </style>
