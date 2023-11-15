@@ -11,9 +11,7 @@ definePageMeta({
     <div
       class="py-4 bg-opacity-75 shadow-lg rounded-xl md:px-6 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-80"
     >
-      <h1 class="my-3 font-bold">
-        Hi <span class="wave">👋</span>
-      </h1>
+      <h1 class="my-3 font-bold">Hi <span class="wave">👋</span></h1>
       <p class="my-6">
         <!-- <img src="assets/casual-me.jpg" alt="picture of myself" /> -->
         I'm Eduardo,
