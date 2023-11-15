@@ -23,7 +23,7 @@
     "lodash-es": "^4.17.21",
     "nanoid": "^5.0.3",
     "nuxt": "^3.8.1",
-    "nuxt-icon": "^0.6.5",
+    "nuxt-icon": "^0.6.6",
     "pixi-ease": "^3.0.7",
     "pixi.js": "^7.3.2",
     "vue-use-spring": "^0.3.1"
@@ -31,7 +31,7 @@
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.9.4",
     "@types/lodash-es": "^4.17.11",
-    "@types/node": "^20.8.10",
+    "@types/node": "^20.9.0",
     "prettier": "^3.1.0"
   }
 }
