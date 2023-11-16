@@ -4,6 +4,37 @@ import { vMagnetic } from '@/directives/vMagnetic'
 definePageMeta({
   layout: 'barebones',
 })
+
+const title = 'Eduardo San Martin Morote'
+const description = 'Hello! I am Eduardo and this is my website 🙂'
+
+useHead({
+  title,
+  titleTemplate: '%s | Eduardo San Martin Morote',
+
+  meta: [
+    {
+      hid: 'description',
+      name: 'description',
+      content: description,
+    },
+    // <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    // Open Graph data
+    { property: 'og:title', content: title },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://esm.dev' },
+    { property: 'og:image', content: 'https://esm.dev/media-preview.jpg' },
+    { property: 'og:description', content: description },
+    // Twitter Card data
+    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:site', content: '@posva' },
+    { name: 'twitter:creator', content: '@posva' },
+    { name: 'twitter:title', content: title },
+    { name: 'twitter:description', content: description },
+    { name: 'twitter:image', content: 'https://esm.dev/media-preview.jpg' },
+  ],
+})
 </script>
 
 <template>
