@@ -22,7 +22,6 @@
     "@vueuse/nuxt": "^10.6.1",
     "lodash-es": "^4.17.21",
     "nanoid": "^5.0.3",
-    "nuxt": "^3.8.1",
     "nuxt-icon": "^0.6.6",
     "pixi-ease": "^3.0.7",
     "pixi.js": "^7.3.2",
@@ -32,6 +31,7 @@
     "@nuxtjs/tailwindcss": "^6.9.4",
     "@types/lodash-es": "^4.17.11",
     "@types/node": "^20.9.0",
+    "nuxt": "^3.8.1",
     "prettier": "^3.1.0"
   }
 }

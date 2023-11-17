@@ -40,16 +40,16 @@ useHead({
 <template>
   <div class="relative max-w-full leading-tight" id="bio-container">
     <div
-      class="py-4 bg-opacity-75 shadow-lg rounded-xl md:px-6 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-80"
+      class="p-2 pb-4 space-y-6 bg-opacity-75 shadow-lg md:py-4 rounded-xl md:px-6 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-80"
     >
-      <h1 class="my-3 font-bold">Hi <span class="wave">👋</span></h1>
-      <p class="my-6">
+      <h1 class="font-bold">Hi <span id="wave">👋</span></h1>
+      <p>
         <!-- <img src="assets/casual-me.jpg" alt="picture of myself" /> -->
         I'm Eduardo,
       </p>
 
-      <main id="main">
-        <p class="my-6">
+      <main id="main" class="space-y-4">
+        <p>
           a Frontend Nerd. I work as a consultant to help you keep your
           applications maintainable. I also give
           <a v-magnetic href="#TODO">Vue.js trainings</a> and
@@ -70,7 +70,7 @@ useHead({
           but take my job very seriously and loves solving problems instead of
           complaining about them.
         </p>
-        <p class="my-6">
+        <p>
           If you want to work together, please
           <a v-magnetic href="https://twitter.com/posva"
             >send me a PM on Twitter</a
@@ -79,7 +79,10 @@ useHead({
       </main>
     </div>
 
-    <LabExperiment v-if="$route.query.lab !== 'no'" :labId="$route.query.i" />
+    <LabExperiment
+      v-if="$route.query.lab !== 'no'"
+      :labId="$route.query.i || $route.query.lab"
+    />
     <div id="lab-cloak"></div>
   </div>
 </template>
@@ -113,5 +116,13 @@ useHead({
   display: block;
   animation: fadeOut 1s ease-out 2s;
   animation-fill-mode: forwards;
+}
+
+#wave {
+  transform: rotate(-15deg);
+  will-change: transform;
+  display: inline-block;
+  animation: waveAnimation 2s ease-in-out infinite alternate 2s;
+  transform-origin: 70% 70%; /* Adjust the origin as needed */
 }
 </style>

@@ -10,7 +10,6 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'icon', type: 'image/png', href: '/favicon.png' },
-        { rel: 'manifest', href: '/manifest.json' },
       ],
 
       // these are for Safari 15 and Android Chrome
@@ -36,7 +35,7 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxtjs/tailwindcss',
-    // '@nuxt/content',
+    '@nuxt/content',
     'nuxt-icon',
     '@vueuse/nuxt',
   ],

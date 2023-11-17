@@ -1,4 +1,5 @@
 @import './magnetic-links.css';
+@import './animations.css';
 
 :root {
   --dark: 18, 19, 20;
@@ -70,15 +71,6 @@ body {
   min-height: 100vh;
 }
 
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
 ::selection {
   color: rgb(var(--bgColor));
   background-color: rgb(var(--textColor));
@@ -91,22 +83,4 @@ body {
   z-index: -10;
   width: 100vw;
   height: 100vh;
-}
-
-@keyframes waveAnimation {
-  0% {
-    transform: rotate(-15deg);
-  }
-  50% {
-    transform: rotate(15deg);
-  }
-  100% {
-    transform: rotate(-15deg);
-  }
-}
-
-.wave {
-  display: inline-block;
-  animation: waveAnimation 2s ease-in-out infinite alternate;
-  transform-origin: 70% 70%; /* Adjust the origin as needed */
 }
