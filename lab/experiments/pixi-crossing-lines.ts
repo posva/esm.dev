@@ -19,6 +19,9 @@ let _context: Context | null = null
 let randomizer: Randomizer
 let seed = ''
 
+const PRECISION = 3
+const toFixed = (n: number) => Number(n.toFixed(PRECISION))
+
 export interface Context {
   app: PIXI.Application
 }
@@ -139,7 +142,7 @@ function createGrid(
   drawingColors: number[]
 ) {
   const sides = 6
-  let radius = diameter / 2
+  let radius = toFixed(diameter / 2)
   let center = { x: 0, y: 0 }
 
   const basePolygon = createPolygon({ x: radius, y: radius }, diameter, sides)
@@ -170,10 +173,10 @@ function createGrid(
       if (line % 2) {
         center.x = 0
       } else {
-        center.x = (-Math.sqrt(3) * radius) / 2
+        center.x = toFixed((-Math.sqrt(3) * radius) / 2)
       }
       line++
-      center.y += (diameter * 3) / 4
+      center.y += toFixed((diameter * 3) / 4)
     }
   }
   console.timeEnd('computing')
@@ -204,11 +207,11 @@ function createPolygon(
   sides: number
 ): PolygonShape {
   if (sides % 2 !== 0) throw new Error('Must have a even number of sides')
-  let radius = diameter / 2
+  let radius = toFixed(diameter / 2)
   const points: Point[] = [
     {
-      x: center.x + radius * cos(startAngle),
-      y: center.y + radius * sin(startAngle),
+      x: toFixed(center.x + radius * cos(startAngle)),
+      y: toFixed(center.y + radius * sin(startAngle)),
     },
   ]
   const midpoints: Point[] = []
@@ -219,14 +222,14 @@ function createPolygon(
   for (let i = 1; i <= sides; i++) {
     const angle = startAngle + (i * 2 * Math.PI) / sides
     points.push({
-      x: center.x + radius * cos(angle),
-      y: center.y + radius * sin(angle),
+      x: toFixed(center.x + radius * cos(angle)),
+      y: toFixed(center.y + radius * sin(angle)),
     })
     p2 = points[i]
 
     let m = {
-      x: (p1.x + p2.x) / 2,
-      y: (p1.y + p2.y) / 2,
+      x: toFixed((p1.x + p2.x) / 2),
+      y: toFixed((p1.y + p2.y) / 2),
     }
     midpoints.push(m)
     p1 = p2
@@ -268,6 +271,9 @@ interface Polygon {
   easing: Easing | null
 }
 
+// TODO: this creates an image with wholes. Instead try creating just one texture that is used as a map. This map could be generated with a for loop to generate all possible values and avoid duplicates (rotation). Still need to figure out a way to know if two images are the same with a rotation
+// const textureCache = new Map<string, PIXI.RenderTexture>()
+
 // TODO: drawing options refactored
 function createSpriteFromPaths(
   polygon: PolygonShape,
@@ -290,36 +296,51 @@ function createSpriteFromPaths(
 
   // container.addChild(graphics)
 
-  for (let path of paths) {
-    drawingColors.forEach((color, i) => {
-      const bezier = new PIXI.Graphics()
-      bezier.lineStyle(lineWidth / Math.pow(2, i), color, 1)
+  let texture: PIXI.RenderTexture | undefined
 
-      const [p1, p2] = path
-      bezier.position.x = p1.x
-      bezier.position.y = p1.y
-      bezier.bezierCurveTo(
-        polygon.center.x - p1.x,
-        polygon.center.y - p1.y,
-        polygon.center.x - p1.x,
-        polygon.center.y - p1.y,
-        p2.x - p1.x,
-        p2.y - p1.y
-      )
+  // const key = paths
+  //   .map((p) => p.map(({ x, y }) => `${x},${y}`).join(','))
+  //   .join(' ')
+  // texture = textureCache.get(key)
 
-      container.addChild(bezier)
+  if (!texture) {
+    // console.log(`Cache miss (${textureCache.size})`)
+    // console.log(`Position: ${polygon.center.x},${polygon.center.y} with ${key}`)
+    for (let path of paths) {
+      drawingColors.forEach((color, i) => {
+        const bezier = new PIXI.Graphics()
+        bezier.lineStyle(lineWidth / Math.pow(2, i), color, 1)
+
+        const [p1, p2] = path
+        bezier.position.x = p1.x
+        bezier.position.y = p1.y
+        bezier.bezierCurveTo(
+          // center should always be the same, diameter / 2
+          polygon.center.x - p1.x,
+          polygon.center.y - p1.y,
+          polygon.center.x - p1.x,
+          polygon.center.y - p1.y,
+          p2.x - p1.x,
+          p2.y - p1.y
+        )
+
+        container.addChild(bezier)
+      })
+    }
+
+    const brt = new PIXI.BaseRenderTexture({
+      width: polygon.diameter,
+      height: polygon.diameter,
+      scaleMode: PIXI.SCALE_MODES.LINEAR,
+      // 2 makes it look much better
+      resolution: 2,
     })
+
+    texture = new PIXI.RenderTexture(brt)
+    // textureCache.set(key, texture)
+    // console.log(`Saved cache (${textureCache.size})`)
   }
 
-  const brt = new PIXI.BaseRenderTexture({
-    width: polygon.diameter,
-    height: polygon.diameter,
-    scaleMode: PIXI.SCALE_MODES.LINEAR,
-    // 2 makes it look much better
-    resolution: 2,
-  })
-
-  const texture = new PIXI.RenderTexture(brt)
   const sprite = new PIXI.Sprite(texture)
 
   sprite.anchor.set(0.5)
