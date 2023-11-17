@@ -1,5 +1,10 @@
+# no netlify link lol
 https://esm.netlify.com/* https://esm.dev/:splat 301!
+
+# sponsor shortlinks
 /sponsorship   https://github.com/users/posva/sponsorship
 /sponsor   https://github.com/users/posva/sponsorship
 /donate   https://github.com/users/posva/sponsorship
+
+# FIXME: can be removed with nuxt now
 /*    /index.html   200

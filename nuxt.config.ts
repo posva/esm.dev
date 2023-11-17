@@ -34,6 +34,7 @@ export default defineNuxtConfig({
   css: ['@/assets/css/main.css'],
 
   modules: [
+    '@nuxt/devtools',
     '@nuxtjs/tailwindcss',
     '@nuxt/content',
     'nuxt-icon',
