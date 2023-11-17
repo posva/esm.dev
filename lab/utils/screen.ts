@@ -1,7 +1,15 @@
-export let canvasEl: HTMLCanvasElement
+export let canvasEl: HTMLCanvasElement | null
 // must be called when resizing
-// @ts-ignore
-export const resetCanvasCheck = () => (canvasEl = null)
+export const resetCanvasCheck = () => {
+  if (canvasEl) {
+    const el = document.createElement('canvas')
+    el.id = 'experiment'
+    // add the fresh canvas next to the old one
+    canvasEl.insertAdjacentElement('afterend', el)
+    canvasEl.remove()
+    canvasEl = null
+  }
+}
 let size: Point = { x: 0, y: 0 }
 
 export interface Point {
@@ -13,14 +21,14 @@ export function isSamePoint(a: Point, b: Point): boolean {
   return a.x === b.x && a.y === b.y
 }
 
-export function getDimensions(): Point {
+export function ensureCanvasWithSize(): [HTMLCanvasElement, Point] {
   const newCanvasEl = document.getElementById('experiment') as HTMLCanvasElement
 
   if (!newCanvasEl) {
     console.log('No Canvas element with id "experiment" found')
   }
 
-  if (newCanvasEl === canvasEl) return size
+  if (newCanvasEl === canvasEl) return [canvasEl, size]
   canvasEl = newCanvasEl
 
   const { width, height } = window.getComputedStyle(canvasEl)
@@ -28,5 +36,5 @@ export function getDimensions(): Point {
   canvasEl.setAttribute('width', '' + size.x)
   canvasEl.setAttribute('height', '' + size.y)
 
-  return size
+  return [canvasEl, size]
 }

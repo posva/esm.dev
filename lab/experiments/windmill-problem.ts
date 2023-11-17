@@ -6,9 +6,8 @@ import { debounce, throttle } from 'lodash-es'
 
 import {
   type Point,
-  canvasEl,
-  getDimensions,
   resetCanvasCheck,
+  ensureCanvasWithSize,
 } from '../utils/screen'
 import { getColorVariable } from '../utils/colors'
 
@@ -121,8 +120,8 @@ function globalClickHandler(event: MouseEvent | TouchEvent | PointerEvent) {
 }
 
 function start(seed: number, options: Options) {
-  resetCanvasCheck()
   if (context.seed !== seed) {
+    resetCanvasCheck()
     context = {
       seed,
       speed: 1,
@@ -140,7 +139,8 @@ function start(seed: number, options: Options) {
     }
   }
 
-  // @ts-ignore
+  // FIXME: can be set
+  // @ts-expect-error
   window.context = context
 
   if (!isListeningForResize) {
@@ -249,10 +249,11 @@ function setNextPoint(context: Context) {
 export function render(ratio: number) {
   // skip if too fast
   if (ratio > 2) return
-  const size = getDimensions()
-  if (!canvasEl) return
+  const [canvasEl, size] = ensureCanvasWithSize()
+
   canvasEl.width = size.x * window.devicePixelRatio
   canvasEl.height = size.y * window.devicePixelRatio
+
   const ctx = canvasEl.getContext('2d')
   if (!ctx) return // avoid errors if no supporting browser
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio)

@@ -1,11 +1,10 @@
 import { debounce } from 'lodash-es'
 import { nanoid } from 'nanoid'
 import {
-  getDimensions,
-  canvasEl,
   type Point,
   isSamePoint,
   resetCanvasCheck,
+  ensureCanvasWithSize,
 } from '../utils/screen'
 import { getColorVariable, onColorChange } from '../utils/colors'
 import { createRandomizer, type Randomizer } from '../utils/random'
@@ -293,7 +292,7 @@ function getContext(
       debounce(() => {
         const { cellSize, offset } = _context!
         _context = null
-        const size = getDimensions()
+        const [_canvasEl, size] = ensureCanvasWithSize()
         const width = Math.floor((size.x - offset.x * 2) / cellSize)
         const height = Math.floor((size.y - offset.y * 2) / cellSize)
         getContext(width, height, cellSize, offset)
@@ -315,7 +314,7 @@ function getContext(
     newMazeTimeout = -1
   }
 
-  const size = getDimensions()
+  const [canvasEl, size] = ensureCanvasWithSize()
   canvasEl.width = size.x * window.devicePixelRatio
   canvasEl.height = size.y * window.devicePixelRatio
   const ctx = canvasEl.getContext('2d')!
@@ -533,7 +532,7 @@ let newMazeTimeout = -1
 export function render(ratio: number) {
   if (ratio > 2) return
 
-  const size = getDimensions()
+  const [_canvasEl, size] = ensureCanvasWithSize()
 
   const context = getContext(size.x, size.y, defaultCellsize, defaultOffset)
   if (!context) return

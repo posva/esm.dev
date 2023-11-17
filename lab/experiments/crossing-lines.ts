@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid'
-import { getDimensions, canvasEl, type Point } from '../utils/screen'
+import { ensureCanvasWithSize, type Point } from '../utils/screen'
 import { getColorVariable } from '../utils/colors'
 import { createRandomizer, type Randomizer } from '../utils/random'
 import { memoize } from 'lodash-es'
@@ -23,7 +23,7 @@ function getContext(): Context | null {
   const random = createRandomizer(seed)
   randomizer = random
 
-  const size = getDimensions()
+  const [canvasEl, size] = ensureCanvasWithSize()
   canvasEl.width = size.x * window.devicePixelRatio
   canvasEl.height = size.y * window.devicePixelRatio
   const ctx = canvasEl.getContext('2d')!
