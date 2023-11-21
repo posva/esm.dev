@@ -10,10 +10,7 @@ export default defineNuxtConfig({
         lang: 'en',
       },
 
-      link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'icon', type: 'image/png', href: '/favicon.png' },
-      ],
+      link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
 
       // these are for Safari 15 and Android Chrome
       meta: [
