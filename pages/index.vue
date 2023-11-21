@@ -21,7 +21,7 @@ useHead({
     { property: 'og:title', content: title },
     { property: 'og:type', content: 'website' },
     { property: 'og:url', content: 'https://esm.dev' },
-    { property: 'og:image', content: 'https://esm.dev/media-preview.jpg' },
+    { property: 'og:image', content: 'https://esm.dev/media-preview.png' },
     { property: 'og:description', content: description },
     // Twitter Card data
     { name: 'twitter:card', content: 'summary' },
@@ -29,7 +29,7 @@ useHead({
     { name: 'twitter:creator', content: '@posva' },
     { name: 'twitter:title', content: title },
     { name: 'twitter:description', content: description },
-    { name: 'twitter:image', content: 'https://esm.dev/media-preview.jpg' },
+    { name: 'twitter:image', content: 'https://esm.dev/media-preview.png' },
   ],
 })
 </script>
