@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const route = useRoute()
+const route = useRoute('labs-id')
 const labId = computed(() => {
   const n = Number(route.params.id)
   return Number.isNaN(n) ? null : n
