@@ -6,5 +6,3 @@ https://esm.netlify.com/* https://esm.dev/:splat 301!
 /sponsor   https://github.com/users/posva/sponsorship
 /donate   https://github.com/users/posva/sponsorship
 
-# FIXME: can be removed with nuxt now
-/*    /index.html   200

@@ -1,5 +1,19 @@
+<script lang="ts" setup>
+import { vMagnetic } from '@/directives/vMagnetic'
+</script>
+
 <template>
-  <main class="prose lg:prose-xl dark:prose-invert prose-stone">
-    <ContentDoc />
+  <main
+    class="w-full max-w-xl pt-16 mx-auto prose lg:prose-xl dark:prose-invert prose-stone"
+  >
+    <ContentDoc>
+      <template #not-found>
+        <h1>Not found</h1>
+        <p>
+          Sorry, we couldn't find that page.
+          <RouterLink to="/" v-magnetic>Go Back Home</RouterLink>.
+        </p>
+      </template>
+    </ContentDoc>
   </main>
 </template>
