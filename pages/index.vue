@@ -9,9 +9,6 @@ const title = 'Eduardo San Martin Morote'
 const description = 'Hello! I am Eduardo and this is my website 🙂'
 
 useHead({
-  title,
-  titleTemplate: '%s | Eduardo San Martin Morote',
-
   meta: [
     {
       hid: 'description',

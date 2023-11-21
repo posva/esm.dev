@@ -1,8 +1,14 @@
 <script setup lang="ts">
+import { toMeroiticCursiveNumber } from '~/lab/utils/meroitic'
+
 const route = useRoute('labs-id')
 const labId = computed(() => {
   const n = Number(route.params.id)
   return Number.isNaN(n) ? null : n
+})
+
+useHead({
+  title: () => ` \u202a🧪 № ${toMeroiticCursiveNumber(Number(labId.value))}`,
 })
 </script>
 

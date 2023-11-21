@@ -3,6 +3,9 @@ export default defineNuxtConfig({
 
   app: {
     head: {
+      templateParams: { separator: '|' },
+      titleTemplate: '%s %separator Eduardo San Martin Morote',
+
       htmlAttrs: {
         lang: 'en',
       },

@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { vMagnetic } from '@/directives/vMagnetic'
+useHead({
+  title: 'Not Found',
+})
 </script>
 
 <template>
