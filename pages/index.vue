@@ -24,7 +24,7 @@ useHead({
     { property: 'og:image', content: 'https://esm.dev/media-preview.png' },
     { property: 'og:description', content: description },
     // Twitter Card data
-    { name: 'twitter:card', content: 'summary' },
+    { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:site', content: '@posva' },
     { name: 'twitter:creator', content: '@posva' },
     { name: 'twitter:title', content: title },
