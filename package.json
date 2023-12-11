@@ -19,21 +19,21 @@
     "@giscus/vue": "^2.3.0",
     "@nuxt/content": "^2.9.0",
     "@tailwindcss/typography": "^0.5.10",
-    "@vueuse/core": "^10.6.1",
-    "@vueuse/nuxt": "^10.6.1",
+    "@vueuse/core": "^10.7.0",
+    "@vueuse/nuxt": "^10.7.0",
     "lodash-es": "^4.17.21",
     "nanoid": "^5.0.4",
-    "nuxt-icon": "^0.6.6",
+    "nuxt-icon": "^0.6.7",
     "pixi-ease": "^3.0.7",
     "pixi.js": "^7.3.2",
     "vue-use-spring": "^0.3.1"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^1.0.4",
+    "@nuxt/devtools": "^1.0.5",
     "@nuxtjs/tailwindcss": "^6.10.1",
     "@types/lodash-es": "^4.17.12",
-    "@types/node": "^20.10.3",
+    "@types/node": "^20.10.4",
     "nuxt": "^3.8.2",
-    "prettier": "^3.1.0"
+    "prettier": "^3.1.1"
   }
 }
