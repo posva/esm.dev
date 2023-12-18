@@ -10,6 +10,11 @@ const footerSocials = [
     text: 'Github',
     url: 'https://github.com/posva',
   },
+  {
+    text: 'Twitch',
+    icon: 'ph:twitch-logo-duotone',
+    url: 'https://twitch.tv/posva13',
+  },
 ] satisfies Array<{
   icon: string
   text: string
