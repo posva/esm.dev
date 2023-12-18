@@ -188,6 +188,11 @@ function createCopyText(el: MagneticElement) {
   copyEl.innerHTML = el.innerHTML
   copyEl.style.pointerEvents = 'none'
 
+  if (el.tagName === 'A') {
+    copyEl.href = '#'
+    copyEl.rel = 'nofollow'
+  }
+
   const rect = el.getBoundingClientRect()
   copyEl.style.position = 'absolute'
   copyEl.style.top = rect.top + 'px'
