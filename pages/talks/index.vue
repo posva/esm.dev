@@ -12,6 +12,4 @@ useHead({
   >
     <ConferenceTalk v-for="talk in talks" :talk="talk" />
   </main>
-
-  <DiscussionComments />
 </template>

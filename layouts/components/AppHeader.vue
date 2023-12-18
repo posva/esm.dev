@@ -44,6 +44,7 @@ const navLinks = [
         :to="link.url"
         class="flex items-center space-x-1"
         :title="link.text"
+        exact-active-class="underline underline-offset-4"
       >
         <Icon :name="link.icon" />
         <span class="hidden sm:block">{{ link.text }}</span>

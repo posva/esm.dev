@@ -85,7 +85,6 @@ let isListeningForResize = false
 
 function globalClickHandler(event: MouseEvent | TouchEvent | PointerEvent) {
   let mousePoint: Point
-  console.log('click', event)
   if ('offsetX' in event) {
     mousePoint = {
       x: event.offsetX,

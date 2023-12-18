@@ -25,7 +25,7 @@ const footerSocials = [
           :href="social.url"
           target="_blank"
           rel="noopener noreferrer"
-          class="flex items-center space-x-1 transition-opacity opacity-50 hover:opacity-100"
+          class="flex items-center space-x-1 text-xl transition-opacity opacity-50 hover:opacity-100"
           v-for="social of footerSocials"
         >
           <Icon :name="social.icon" />
