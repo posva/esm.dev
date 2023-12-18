@@ -1,14 +1,28 @@
 <script setup lang="ts">
+import { experimentModuleList, experimentModuleMap } from '~/lab'
 import { toMeroiticCursiveNumber } from '~/lab/utils/meroitic'
 
 const route = useRoute('labs-id')
+
 const labId = computed(() => {
   const n = Number(route.params.id)
-  return Number.isNaN(n) ? null : n
+  if (!Number.isNaN(n)) return n
+
+  // try to deduce from
+  const index = experimentModuleList.findIndex(
+    (m) => m.name === route.params.id
+  )
+
+  console.log('index', index, experimentModuleList)
+
+  return index > -1 ? index : null
 })
 
 useHead({
-  title: () => ` \u202a🧪 № ${toMeroiticCursiveNumber(Number(labId.value))}`,
+  title: () =>
+    labId.value == null
+      ? `🧪 ???`
+      : ` \u202a🧪 № ${toMeroiticCursiveNumber(Number(labId.value + 1))}`,
 })
 </script>
 
