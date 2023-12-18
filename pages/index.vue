@@ -37,7 +37,7 @@ useHead({
 <template>
   <div class="relative max-w-full leading-tight" id="bio-container">
     <div
-      class="p-2 pb-4 space-y-6 bg-opacity-75 shadow-lg md:py-4 rounded-xl md:px-6 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-80"
+      class="px-3 py-2 pb-4 space-y-6 bg-opacity-75 shadow-lg md:py-4 rounded-xl md:px-6 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-80"
     >
       <h1 class="font-bold">Hi <span id="wave">👋</span></h1>
       <p>
@@ -49,7 +49,7 @@ useHead({
         <p>
           a Frontend Nerd. I work as a consultant to help you keep your
           applications maintainable. I also give
-          <a v-magnetic href="#TODO">Vue.js trainings</a> and
+          <NuxtLink v-magnetic to="/workshops">Vue.js trainings</NuxtLink> and
           <a
             href="https://www.youtube.com/results?search_query=eduardo+san+martin+morote"
             v-magnetic
@@ -86,7 +86,7 @@ useHead({
 
 <style>
 #bio-container {
-  padding: 5vh 5vw;
+  padding: 5vh 14px;
   font-size: calc(22px + 0.33vw);
   width: 34em;
 }
@@ -95,7 +95,7 @@ useHead({
   font-size: 2.25em;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   #bio-container {
     padding-left: 10vw;
     padding-right: 10vw;
@@ -120,6 +120,6 @@ useHead({
   will-change: transform;
   display: inline-block;
   animation: waveAnimation 2s ease-in-out infinite alternate 2s;
-  transform-origin: 70% 70%; /* Adjust the origin as needed */
+  transform-origin: 70% 70%;
 }
 </style>

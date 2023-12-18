@@ -3,11 +3,14 @@ import { vMagnetic } from '@/directives/vMagnetic'
 useHead({
   title: 'Not Found',
 })
+definePageMeta({
+  layout: 'default',
+})
 </script>
 
 <template>
   <main
-    class="w-full max-w-xl pt-16 mx-auto prose lg:prose-xl dark:prose-invert prose-stone"
+    class="w-full max-w-xl px-4 pt-16 mx-auto prose sm:px-0 lg:prose-xl dark:prose-invert prose-stone"
   >
     <ContentDoc>
       <template #not-found>
