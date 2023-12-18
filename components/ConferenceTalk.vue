@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { ConferenceTalk } from '~/talks/data'
 
-defineProps<{
+const props = defineProps<{
   talk: ConferenceTalk
 }>()
 
@@ -10,12 +10,19 @@ defineProps<{
  * - darker color if no video
  * - detail page to improve engagement
  */
+
+const langFlag = computed<string>(() => {
+  if (props.talk.language === 'es') return 'flag:es-4x3'
+  if (props.talk.language === 'fr') return 'flag:fr-4x3'
+
+  return 'flag:gb-4x3'
+})
 </script>
 
 <template>
   <article>
     <h3>{{ talk.title }}</h3>
-    <!-- TODO: do not display the whole, collapse -->
+    <!-- TODO: do not display by default, collapse -->
     <p>{{ talk.description }}</p>
     <time :datetime="talk.date">{{ talk.date }}</time>
     <span>{{ talk.conference }}</span>
@@ -26,7 +33,8 @@ defineProps<{
     <time v-if="talk.duration" :datetime="`PT0H${talk.duration}M00S`"
       >{{ talk.duration }}m</time
     >
-    <span>{{ talk.language || 'en' }}</span>
+    <Icon :name="langFlag" />
+    <span class="sr-only"> {{ talk.language || 'en' }}</span>
     <div>
       <a v-if="talk.videoURL" :href="talk.videoURL">
         <Icon name="icon-park-twotone:play" />
