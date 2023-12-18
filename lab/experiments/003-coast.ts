@@ -8,7 +8,7 @@ import {
   simplifyPath,
   type Context,
   setRandomizer,
-} from './maze'
+} from './002-maze'
 import { addTapListener } from '../utils/events'
 import { createRandomizer } from '../utils/random'
 

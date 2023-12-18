@@ -85,15 +85,22 @@ let isListeningForResize = false
 
 function globalClickHandler(event: MouseEvent | TouchEvent | PointerEvent) {
   let mousePoint: Point
-  if ('clientX' in event) {
+  console.log('click', event)
+  if ('offsetX' in event) {
     mousePoint = {
-      x: event.clientX,
-      y: event.clientY,
+      x: event.offsetX,
+      y: event.offsetY,
     }
   } else {
+    const touch = event.touches[0]
+    if (!touch) {
+      console.error('No touch points')
+      return
+    }
+
     mousePoint = {
-      x: event.touches[0].clientX,
-      y: event.touches[0].clientY,
+      x: touch.clientX,
+      y: -(touch.target as HTMLCanvasElement).offsetTop + touch.pageY,
     }
   }
 
@@ -162,9 +169,11 @@ function start(seed: number, options: Options) {
     const throttledClick = throttle(globalClickHandler, 100)
     if ('PointerEvent' in window)
       document.body.addEventListener('pointerdown', throttledClick)
-    else document.body.addEventListener('mousedown', throttledClick)
-    // touch devices
-    document.body.addEventListener('touchstart', throttledClick)
+    else {
+      document.body.addEventListener('mousedown', throttledClick)
+      // touch devices
+      document.body.addEventListener('touchstart', throttledClick)
+    }
   }
 
   return context
