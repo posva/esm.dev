@@ -45,10 +45,18 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
       trail.style.zIndex = '10'
 
       let isMagnetized = false
-      const initialRect = el.getBoundingClientRect()
-      const center = {
+      let initialRect = el.getBoundingClientRect()
+      let center = {
         x: initialRect.x + initialRect.width / 2,
         y: initialRect.y + initialRect.height / 2,
+      }
+
+      function computeSizes() {
+        initialRect = el.getBoundingClientRect()
+        center = {
+          x: initialRect.x + initialRect.width / 2,
+          y: initialRect.y + initialRect.height / 2,
+        }
       }
 
       const mouse = getEffectScope().run(() => {
@@ -138,7 +146,20 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
         // el.style.position = ''
       }
 
-      scope.run(() => useEventListener(el, 'mouseenter', magnetize))
+      scope.run(() =>
+        useEventListener(el, 'mouseenter', magnetize, { passive: true })
+      )
+      scope.run(() =>
+        useEventListener(
+          window,
+          'resize',
+          () => {
+            computeSizes()
+            updateCopyTextPosition(el)
+          },
+          { passive: true }
+        )
+      )
 
       scope.run(() => {
         onScopeDispose(() => {
@@ -146,8 +167,6 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
           el.__children.forEach((child) => {
             child.remove()
           })
-
-          console.log('out')
 
           // @ts-expect-error: not optional
           delete el.__children
@@ -182,6 +201,14 @@ function createCopyText(el: MagneticElement) {
   el.__children.push(copyEl)
 
   return copyEl
+}
+
+function updateCopyTextPosition(el: MagneticElement) {
+  el.__children.forEach((child) => {
+    const rect = el.getBoundingClientRect()
+    child.style.top = rect.top + 'px'
+    child.style.left = rect.left + 'px'
+  })
 }
 
 interface Point {
