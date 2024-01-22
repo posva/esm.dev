@@ -30,10 +30,10 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "^1.0.8",
-    "@nuxtjs/tailwindcss": "^6.10.4",
+    "@nuxtjs/tailwindcss": "^6.11.0",
     "@types/lodash-es": "^4.17.12",
-    "@types/node": "^20.11.1",
-    "nuxt": "^3.9.1",
-    "prettier": "^3.2.2"
+    "@types/node": "^20.11.5",
+    "nuxt": "^3.9.3",
+    "prettier": "^3.2.4"
   }
 }
