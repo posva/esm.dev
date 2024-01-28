@@ -39,7 +39,12 @@ export default defineNuxtConfig({
     '@nuxt/content',
     'nuxt-icon',
     '@vueuse/nuxt',
+    'nuxt-fathom',
   ],
+
+  fathom: {
+    siteId: 'YQGQXJOE',
+  },
 
   experimental: {
     typedPages: true,
