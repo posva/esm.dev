@@ -16,7 +16,7 @@
     "test": "pnpm run build"
   },
   "dependencies": {
-    "@giscus/vue": "^2.4.0",
+    "@giscus/vue": "^3.0.0",
     "@nuxt/content": "^2.12.0",
     "@tailwindcss/typography": "^0.5.10",
     "@vueuse/core": "^10.8.0",
