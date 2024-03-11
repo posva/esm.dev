@@ -3,10 +3,10 @@ import {
   Container,
   Graphics,
   RenderTexture,
-  SCALE_MODES,
   Sprite,
+  Texture,
 } from 'pixi.js'
-import { ease, Ease, Easing } from 'pixi-ease'
+import { ease, Ease, Easing } from '../../pixi-ease'
 import {
   type Point,
   resetCanvasCheck,
@@ -43,7 +43,7 @@ async function restart() {
   start()
 }
 
-export function start() {
+export async function start() {
   if (_context) return _context
 
   if (!isListening) {
@@ -67,8 +67,10 @@ export function start() {
 
   const drawingColorNames: Array<keyof typeof colors> = ['red', 'bg', 'bg']
 
-  const app = new Application({
-    view: canvasEl,
+  const app = new Application()
+
+  await app.init({
+    canvas: canvasEl,
     width: size.x,
     height: size.y,
     backgroundColor: colors.bg,
@@ -91,8 +93,9 @@ export function start() {
   for (let polygon of polygons) {
     // polygon.sprite.interactive = true
     polygon.sprite.eventMode = 'auto'
-    app.renderer.render(polygon.container, {
-      renderTexture: polygon.sprite.texture as RenderTexture,
+    app.renderer.render({
+      container: polygon.container,
+      target: polygon.sprite.texture as RenderTexture,
     })
     polygon.sprite.on('pointerdown', () => {
       rotatePolygon(polygon)
@@ -119,7 +122,7 @@ export function start() {
 
   let elapsed = 300
 
-  app.ticker.add((delta: number) => {
+  app.ticker.add(({ deltaTime: delta }) => {
     elapsed += delta
 
     if (elapsed > 400) {
@@ -304,7 +307,7 @@ function createSpriteFromPaths(
 
   // container.addChild(graphics)
 
-  let texture: RenderTexture | undefined
+  let texture: Texture | undefined
 
   // const key = paths
   //   .map((p) => p.map(({ x, y }) => `${x},${y}`).join(','))
@@ -317,7 +320,6 @@ function createSpriteFromPaths(
     for (let path of paths) {
       drawingColors.forEach((color, i) => {
         const bezier = new Graphics()
-        bezier.lineStyle(lineWidth / Math.pow(2, i), color, 1)
 
         const [p1, p2] = path
         bezier.position.x = p1.x
@@ -331,6 +333,7 @@ function createSpriteFromPaths(
           p2.x - p1.x,
           p2.y - p1.y
         )
+        bezier.stroke({ width: lineWidth / Math.pow(2, i), color, alpha: 1 })
 
         container.addChild(bezier)
       })
@@ -339,7 +342,7 @@ function createSpriteFromPaths(
     const brt = RenderTexture.create({
       width: polygon.diameter,
       height: polygon.diameter,
-      scaleMode: SCALE_MODES.LINEAR,
+      scaleMode: 'linear',
       // 2 makes it look much better
       resolution: 2,
     })
