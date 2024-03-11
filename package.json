@@ -25,7 +25,7 @@
     "nanoid": "^5.0.6",
     "nuxt-icon": "^0.6.8",
     "pixi-ease": "^3.0.7",
-    "pixi.js": "^7.4.0",
+    "pixi.js": "^8.0.1",
     "vue-use-spring": "^0.3.1"
   },
   "devDependencies": {
