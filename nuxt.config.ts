@@ -50,5 +50,9 @@ export default defineNuxtConfig({
     typedPages: true,
   },
 
+  typescript: {
+    strict: true,
+  },
+
   content: {},
 })

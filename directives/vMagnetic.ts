@@ -44,7 +44,8 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
       const trail = createCopyText(el)
       trail.style.color = 'rgba(var(--blue), 0.5)'
       trail.style.zIndex = '10'
-      trail.style.fontSize = '1em'
+      trail.style.fontSize = '2em'
+      trail.style.filter = 'blur(2px)'
 
       let isMagnetized = false
       let initialRect = el.getBoundingClientRect()
@@ -91,10 +92,13 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
         watch(
           trailPos,
           ({ x, y }) => {
+            console.log({
+              x,
+              y,
+              center,
+            })
             trail.style.transform = `translate(
-                ${0.4 * (x - center.x)}px, ${
-                  0.4 * (y - center.y)
-                }px) scale(2.2)`
+                ${x - center.x}px, ${y - center.y}px) scale(1.2)`
           },
           { deep: true }
         )
@@ -113,6 +117,7 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
         stopWatcher()
         isMagnetized = true
         trail.style.opacity = '1'
+        trail.style.filter = 'blur(1px)'
         stopWatcher = scope.run(() =>
           watch(
             mouse,
@@ -146,6 +151,7 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
         mouse.x = center.x
         mouse.y = center.y
         trail.style.opacity = '0'
+        trail.style.filter = 'blur(4px)'
         // el.style.position = ''
       }
 
@@ -210,7 +216,7 @@ function createCopyText(el: MagneticElement) {
   copyEl.style.left = rect.left + 'px'
   copyEl.style.opacity = '0'
 
-  copyEl.style.transition = 'opacity 500ms linear'
+  copyEl.style.transition = 'opacity 1000ms linear, filter 500ms linear'
 
   document.body.appendChild(copyEl)
 
