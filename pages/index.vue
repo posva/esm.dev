@@ -8,6 +8,8 @@ definePageMeta({
 const title = 'Eduardo San Martin Morote'
 const description = 'Hello! I am Eduardo and this is my website 🙂'
 
+const route = useRoute('index')
+
 useHead({
   meta: [
     {
@@ -41,8 +43,11 @@ useHead({
     >
       <h1 class="font-bold">Hi <span id="wave">👋</span></h1>
       <p>
-        <!-- <img src="assets/casual-me.jpg" alt="picture of myself" /> -->
-        I'm Eduardo,
+        I'm
+        <span id="my-name">
+          <img src="/avatar.jpg" alt="picture of myself" />
+          Eduardo</span
+        >,
       </p>
 
       <main id="main" class="space-y-4">
@@ -77,8 +82,8 @@ useHead({
     </div>
 
     <LabExperiment
-      v-if="$route.query.lab !== 'no'"
-      :labId="$route.query.i || $route.query.lab"
+      v-if="route.query.lab !== 'no'"
+      :labId="route.query.i || route.query.lab"
     />
     <div id="lab-cloak"></div>
   </div>
@@ -121,5 +126,16 @@ useHead({
   display: inline-block;
   animation: waveAnimation 2s ease-in-out infinite alternate 2s;
   transform-origin: 70% 70%;
+}
+
+#my-name {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+#my-name > img {
+  height: 1em;
+  border-radius: 100%;
+  margin-right: 0.24em;
 }
 </style>

@@ -39,10 +39,12 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
       el.__scope = scope
       el.__children = []
       el.dataset.magnetic = ''
+      el.dataset.text = el.innerText
 
       const trail = createCopyText(el)
       trail.style.color = 'rgba(var(--blue), 0.5)'
       trail.style.zIndex = '10'
+      trail.style.fontSize = '1em'
 
       let isMagnetized = false
       let initialRect = el.getBoundingClientRect()
@@ -61,13 +63,14 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
 
       const mouse = getEffectScope().run(() => {
         // FIXME: on resize recompute initialRect and center
-        const target = reactive(_useMouse())
+        // const target = reactive(_useMouse())
+        const { x: mouseX, y: mouseY } = _useMouse()
         const mouse = _useSpring({ ...center })
         const trailPos = _useSpring({ ...center })
 
         watch(
-          target,
-          ({ x, y }) => {
+          [mouseX, mouseY],
+          ([x, y]) => {
             if (!isMagnetized) return
             mouse.x = x
             mouse.y = y
@@ -89,9 +92,9 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
           trailPos,
           ({ x, y }) => {
             trail.style.transform = `translate(
-                ${0.7 * (x - center.x)}px, ${
-                  0.7 * (y - center.y)
-                }px) scale(1.2)`
+                ${0.4 * (x - center.x)}px, ${
+                  0.4 * (y - center.y)
+                }px) scale(2.2)`
           },
           { deep: true }
         )
@@ -174,6 +177,11 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
       })
     },
 
+    updated(el) {
+      el.dataset.magnetic = ''
+      el.dataset.text = el.innerText
+    },
+
     unmounted(el, binding) {
       if (el.__scope) {
         el.__scope.stop()
@@ -183,12 +191,15 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
     },
   }
 
+const isAnchor = (el: HTMLElement): el is HTMLAnchorElement =>
+  el.tagName === 'A'
+
 function createCopyText(el: MagneticElement) {
   const copyEl = document.createElement(el.tagName)
   copyEl.innerHTML = el.innerHTML
   copyEl.style.pointerEvents = 'none'
 
-  if (el.tagName === 'A') {
+  if (isAnchor(copyEl)) {
     copyEl.href = '#'
     copyEl.rel = 'nofollow'
   }

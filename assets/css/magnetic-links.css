@@ -5,6 +5,7 @@
   font-weight: 500;
   text-decoration: none;
   transition: color 500ms linear 200ms;
+  z-index: 2;
 
   /* border-bottom: rgb(var(--blue)) 1px solid; */
 }
@@ -21,7 +22,9 @@
 [data-magnetic]::after {
   opacity: 0;
   content: attr(data-text);
+  filter: blur(3px);
   position: absolute;
+  z-index: -1;
   top: 0;
   left: 0;
 }
