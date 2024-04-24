@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 const navLinks = [
   {
-    text: 'Labs',
-    icon: 'icon-park-twotone:experiment',
-    url: '/labs',
+    text: 'OSS',
+    icon: 'icon-park-twotone:planet',
+    url: '/open-source',
   },
   {
     icon: 'icon-park-twotone:notebook',
@@ -19,6 +19,11 @@ const navLinks = [
     icon: 'icon-park-twotone:microphone-one',
     text: 'Talks',
     url: '/talks',
+  },
+  {
+    text: 'Labs',
+    icon: 'icon-park-twotone:experiment',
+    url: '/labs',
   },
 ] satisfies Array<{
   icon: string

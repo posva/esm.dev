@@ -92,11 +92,6 @@ export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
         watch(
           trailPos,
           ({ x, y }) => {
-            console.log({
-              x,
-              y,
-              center,
-            })
             trail.style.transform = `translate(
                 ${x - center.x}px, ${y - center.y}px) scale(1.2)`
           },
