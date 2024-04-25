@@ -15,6 +15,11 @@ const footerSocials = [
     icon: 'ph:twitch-logo-duotone',
     url: 'https://twitch.tv/posva13',
   },
+  {
+    text: 'YouTube',
+    icon: 'line-md:youtube',
+    url: 'https://www.youtube.com/channel/UCUOmDgABNrxj_hWT_a_e2pQ',
+  },
 ] satisfies Array<{
   icon: string
   text: string

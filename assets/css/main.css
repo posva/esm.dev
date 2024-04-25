@@ -84,3 +84,48 @@ body {
   width: 100vw;
   height: 100vh;
 }
+
+.wave,
+.wiggle {
+  transform: rotate(-15deg);
+  will-change: transform;
+  display: inline-block;
+  animation: waveAnimation 2s ease-in-out infinite alternate 2s;
+}
+
+.spin {
+  will-change: transform;
+  display: inline-block;
+  animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.wave {
+  transform-origin: 70% 70%;
+}
+
+.handshake {
+  will-change: transform;
+  display: inline-block;
+  animation: handshake 3s infinite;
+}
+
+@keyframes handshake {
+  0%,
+  100% {
+    transform: translateY(-10%);
+    animation-timing-function: ease-in-out;
+  }
+  50% {
+    transform: translateY(10%);
+    animation-timing-function: ease-in-out;
+  }
+}

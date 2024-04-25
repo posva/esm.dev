@@ -41,7 +41,7 @@ useHead({
     <div
       class="px-3 py-2 pb-4 space-y-6 bg-opacity-75 shadow-lg md:py-4 rounded-xl md:px-6 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-80"
     >
-      <h1 class="font-bold">Hi <span id="wave">👋</span></h1>
+      <h1 class="font-bold">Hi <span class="wave">👋</span></h1>
       <p>
         I'm
         <span id="my-name">
@@ -118,14 +118,6 @@ useHead({
   display: block;
   animation: fadeOut 1s ease-out 2s;
   animation-fill-mode: forwards;
-}
-
-#wave {
-  transform: rotate(-15deg);
-  will-change: transform;
-  display: inline-block;
-  animation: waveAnimation 2s ease-in-out infinite alternate 2s;
-  transform-origin: 70% 70%;
 }
 
 #my-name {
