@@ -17,9 +17,8 @@ const entries = [
       'Some time-zones can be challenging for me to cover 😅. Send me a message on 𝕏 or Discord.',
   },
   {
-    question: 'What languages do you speak?',
-    answer:
-      'I can work in English, French, and Spanish. I speak other languages too but not fluently enough to work in them.',
+    question: 'What languages do you work in?',
+    answer: 'I can work in English, French, and Spanish.',
   },
 ] satisfies Array<{ question: string; answer: string }>
 
@@ -28,12 +27,12 @@ const isOpen = ref(true)
 
 <template>
   <div
-    class="relative w-full overflow-hidden rounded-lg chat-container bg-slate-300/20 dark:bg-slate-700/20"
+    class="relative mx-auto max-w-full w-[576px] h-[800px] overflow-hidden rounded-lg chat-container bg-slate-300/20 dark:bg-slate-700/20"
   >
     <Transition name="message-list">
       <div v-if="isOpen" class="w-full conversation">
         <header
-          class="flex items-start w-full py-2 align-middle border-b-2 rounded-t-lg bg-slate-300/30 border-b-slate-400/20 dark:bg-slate-800/30 dark:border-b-slate-600/30"
+          class="flex items-start w-full py-2 align-middle border-b-2 rounded-t-lg bg-slate-300/30 border-b-slate-400/20 dark:bg-slate-800/30 dark:border-b-slate-600/30 backdrop-blur-lg z-10 mb-[-86px] h-[86px] relative"
         >
           <div class="mx-4 mt-2">
             <button @click="isOpen = false">
@@ -59,7 +58,9 @@ const isOpen = ref(true)
           </div>
         </header>
 
-        <main class="px-2 py-5">
+        <main
+          class="px-2 py-5 overflow-y-scroll pt-[86px] pb-[68px] h-[800px] flex flex-col justify-end"
+        >
           <FaqEntry v-for="entry in entries">
             <p>{{ entry.question }}</p>
 
@@ -70,7 +71,7 @@ const isOpen = ref(true)
         </main>
 
         <footer
-          class="flex items-center w-full py-2 align-middle rounded-b-lg bg-slate-200/70 backdrop-blur-lg border-b-slate-800/20 dark:bg-slate-800/30 dark:border-b-slate-800/20"
+          class="flex items-center w-full py-2 align-middle rounded-b-lg bg-slate-200/70 backdrop-blur-lg border-b-slate-800/20 dark:bg-slate-800/30 dark:border-b-slate-800/20 mt-[-68px] h-[68px]"
         >
           <div
             class="flex items-center justify-center mx-2 rounded-full select-none w-9 h-9 bg-neutral-200/20"
@@ -116,7 +117,7 @@ const isOpen = ref(true)
 
           <div class="flex flex-col pl-6 mt-4 space-y-2 message-list">
             <div class="flex items-center" v-for="i in 4">
-              <div class="w-24">
+              <div class="w-16">
                 <img
                   src="/logos/vuefire.svg"
                   class="object-contain rounded-full"
@@ -128,9 +129,9 @@ const isOpen = ref(true)
                 <p
                   class="pb-2 pr-6 text-sm leading-tight border-b text-neutral-700 dark:text-neutral-400 border-b-slate-500/30 dark:border-b-slate-300/30 text-ellipsis"
                 >
-                  Hi! I'm Eduardo, your personal assistant. How can I help you?
-                  Helaueo sntah oeustnh asntoteuh stnaouh etnshaoe utnsuh
-                  aotnseuh asoethn utsnahauoe aoetnutnh aoestnuh aeostnh
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Deserunt cupiditate quidem exercitationem omnis natus alias
+                  quo delectus dolorem repellat, deleniti, ...
                 </p>
               </div>
             </div>

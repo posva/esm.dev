@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { useSpring } from 'vue-use-spring'
 import { clamp } from '@vueuse/core'
+// import { isTouchEvent } from '../utils/touch'
+// import { round, adjust } from '../utils/math'
 
 const props = withDefaults(
   defineProps<{
+    tier: string
+    price: string
     width?: number | string
     height?: number | string
-    src: string
-    backSrc?: string
     rotateMultiplier?: number | { x: number; y: number }
     blend?:
       | 'normal'
@@ -37,9 +39,6 @@ const props = withDefaults(
     // overlay is nice for colored cards,
     // for black/white cards (like cards against humanity, hard-light works better)
     blend: 'soft-light',
-    backSrc:
-      // 'https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/f/f8/Magic_card_back.jpg',
-      'https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/f/f8/Magic_card_back.jpg',
   }
 )
 
@@ -110,25 +109,6 @@ function onMouseOut() {
   springBackground.y = 50
   springScale.v = 1
 }
-
-// css variables
-
-//   --pointer-x: v-bind('springGlare.x + "%"');
-// --pointer-y: v-bind('springGlare.y + "%"');
-// --rotate-x: v-bind('springRotate.x + springRotateDelta.x + "deg"');
-// --rotate-y: v-bind('springRotate.y + springRotateDelta.y + "deg"');
-// --background-x: v-bind('springBackground.x + "%"');
-// --background-y: v-bind('springBackground.y + "%"');
-// --translate-x: v-bind('springTranslate.x + "px"');
-// --translate - y: v-bind('springTranslate.y + "px"');
-const cssPointerX = computed(() => `${springGlare.x}%`)
-const cssPointerY = computed(() => `${springGlare.y}%`)
-const cssRotateX = computed(() => `${springRotate.x + springRotateDelta.x}deg`)
-const cssRotateY = computed(() => `${springRotate.y + springRotateDelta.y}deg`)
-const cssBackgroundX = computed(() => `${springBackground.x}%`)
-const cssBackgroundY = computed(() => `${springBackground.y}%`)
-const cssTranslateX = computed(() => `${springTranslate.x}px`)
-const cssTranslateY = computed(() => `${springTranslate.y}px`)
 </script>
 
 <template>
@@ -143,24 +123,13 @@ const cssTranslateY = computed(() => `${springTranslate.y}px`)
         @focus="interacting = true"
         @blur="interacting = false"
       >
-        <img
-          class="select-none card_back"
-          :src="backSrc"
-          loading="lazy"
-          :width="width"
-          :height="height"
-          style="margin: 0"
-        />
-        <div class="select-none card_front">
-          <img
-            :src="src"
-            loading="lazy"
-            :width="width"
-            :height="height"
-            style="margin: 0"
-          />
+        <section class="select-none card_back">
+          <slot name="back">Back</slot>
+        </section>
+        <section class="select-none card_front">
+          <slot name="front">Front</slot>
           <div class="card_glare"></div>
-        </div>
+        </section>
       </button>
     </div>
   </div>
@@ -181,6 +150,12 @@ button.card_rotator {
 }
 
 .card {
+  --card-aspect: 0.718;
+  --card-radius: 4.55% / 3.5%;
+  --card-edge: hsl(47, 100%, 78%);
+  --card-back: hsl(205, 100%, 25%);
+  --card-glow: hsl(175, 100%, 90%);
+
   /* place the card on a new transform layer and
   make sure it has hardware acceleration. Not needed in all browsers though */
   transform: translate3d(0px, 0px, 0.01px);
@@ -285,12 +260,12 @@ button.card_rotator {
   overflow: hidden;
 }
 
-.card_rotator img {
+.card_rotator section {
   height: auto;
   transform: translate3d(0px, 0px, 0.01px);
 }
 
-.card_back.card_back {
+.card_back {
   background-color: var(--card-back);
   transform: rotateY(180deg) translateZ(1px);
   backface-visibility: visible;
@@ -334,37 +309,21 @@ Shine & Glare Effects
     hsla(0, 0%, 0%, 0.5) 90%
   );
 
-  /* background-image: linear-gradient(
-    128deg,
-    rgba(0, 0, 0, 1) 20%,
-    rgba(255, 255, 255, 1) 25%,
-    rgba(0, 0, 0, 1) 30%,
-    rgba(0, 0, 0, 1) 35%,
-    rgba(255, 255, 255, 1) 38%,
-    rgba(0, 0, 0, 1) 40%
-  ); */
-
   opacity: var(--card-opacity);
 
   mix-blend-mode: v-bind('blend');
 }
 
 .card {
-  --card-aspect: 0.718;
-  --card-radius: 4.55% / 3.5%;
-  --card-edge: hsl(47, 100%, 78%);
-  --card-back: hsl(205, 100%, 25%);
-  --card-glow: hsl(175, 100%, 90%);
-
-  --card-scale: v-bind('springScale.v');
+  --pointer-x: v-bind('springGlare.x + "%"');
+  --pointer-y: v-bind('springGlare.y + "%"');
   --card-opacity: v-bind('springGlare.o');
-  --pointer-x: v-bind(cssPointerX);
-  --pointer-y: v-bind(cssPointerY);
-  --rotate-x: v-bind(cssRotateX);
-  --rotate-y: v-bind(cssRotateY);
-  --background-x: v-bind(cssBackgroundX);
-  --background-y: v-bind(cssBackgroundY);
-  --translate-x: v-bind(cssTranslateX);
-  --translate-y: v-bind(cssTranslateY);
+  --rotate-x: v-bind('springRotate.x + springRotateDelta.x + "deg"');
+  --rotate-y: v-bind('springRotate.y + springRotateDelta.y + "deg"');
+  --background-x: v-bind('springBackground.x + "%"');
+  --background-y: v-bind('springBackground.y + "%"');
+  --card-scale: v-bind('springScale.v');
+  --translate-x: v-bind('springTranslate.x + "px"') --translate-y:
+    v-bind('springTranslate.y + "px"');
 }
 </style>

@@ -10,6 +10,7 @@
 <style scoped>
 .scrolling-list {
   overflow: hidden;
+  position: relative;
   --duration: 30s;
   height: 300px;
   mask: linear-gradient(0deg, #0000, #000 5% 95%, #0000);
