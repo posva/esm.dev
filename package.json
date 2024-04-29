@@ -3,7 +3,7 @@
   "description": "Hello! I am Eduardo and this is my website 🙂",
   "version": "1.0.0",
   "private": true,
-  "packageManager": "pnpm@9.0.5",
+  "packageManager": "pnpm@9.0.6",
   "type": "module",
   "author": "Eduardo San Martin Morote <posva13@gmail.com>",
   "scripts": {
@@ -19,7 +19,7 @@
   "dependencies": {
     "@giscus/vue": "^3.0.0",
     "@nuxt/content": "^2.12.1",
-    "@tailwindcss/typography": "^0.5.12",
+    "@tailwindcss/typography": "^0.5.13",
     "@vueuse/core": "^10.9.0",
     "@vueuse/nuxt": "^10.9.0",
     "eventemitter3": "^5.0.1",
