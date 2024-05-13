@@ -7,7 +7,7 @@ I have been contributing to the :chip-link{ text="Vue.js" img="/logos/vue.svg" u
 
 Open Source is **only a small part of my life**, [I also work as a freelance consultant]{.bg-gradient-to-r.dark:from-purple-300.from-purple-700.to-purple-500.dark:to-purple-200.bg-clip-text.text-transparent.font-bold}, helping companies build better Vue.js applications.
 
-But every day, I wish [I could spend more time on my Open Source projects]{.bg-gradient-to-r.dark:from-rose-300.from-rose-700.to-rose-500.dark:to-rose-200.bg-clip-text.text-transparent.font-bold}:
+But every day, I wish [I could spend more time on my Open Source projects]{.bg-gradient-to-r.dark:from-rose-300.from-rose-700.to-rose-500.dark:to-rose-200.bg-clip-text.text-transparent.font-bold} instead of figuring out how to make a living for my family and I:
 
 ::scrolling-list
 

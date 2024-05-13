@@ -1,10 +1,6 @@
 <script lang="ts" setup>
 import FaqMessages from '~/components/content/FaqMessages.vue'
 
-const { data } = await useAsyncData('oss-main', () =>
-  queryContent('/open-source/_main').findOne()
-)
-
 const tiers = [
   {
     tier: 'Diamond',
@@ -16,7 +12,15 @@ const tiers = [
     text: '#000',
     shine: 'crosses',
     description:
-      'I will dedicate a full day per month to help you with your projects.',
+      'You are all-in on Vue and its ecosystem! You want to get some exposure in Vue Router and Pinia docs. I will dedicate a full day per month to assist you with in your projects.',
+    spots: 'Limited spots!',
+    perks: [
+      'Prioritized issues',
+      '1 full day of dedicated consultancy work per month',
+      'Big logo placement on Vue Router and Pinia docs (>3M impressions)',
+      'Access to a private Discord',
+      'My eternal appreciation for your support ❤',
+    ],
   },
 
   {
@@ -28,7 +32,16 @@ const tiers = [
     secondary: '#AE9B3C',
     // secondary: '#c5b358',
     text: '#000',
-    description: 'Prioritize your issues and get help with your projects.',
+    description:
+      'You really bet on Vue ecosystem and you could use some expert help in your projects. Prioritize your issues and get help with your projects.',
+    spots: 'Limited spots!',
+    perks: [
+      'Prioritized issues',
+      '1 hour of dedicated consultancy work per month',
+      'Medium logo placement on Vue Router and Pinia docs (>3M impressions)',
+      'Access to a private Discord',
+      'My eternal appreciation for your support ❤',
+    ],
   },
 
   {
@@ -39,7 +52,16 @@ const tiers = [
     primary: '#838996',
     secondary: '#a2a9a9',
     text: '#000',
-    description: 'Let me help you occasionally with your projects.',
+    description:
+      'You run a business using Vue and other open-source software I contribute to. Let me help you occasionally with your projects.',
+    spots: 'Limited spots!',
+    perks: [
+      'Prioritized issues',
+      '45 minutes of dedicated consultancy work per month',
+      'Logo placement on Vue Router and Pinia docs (>3M impressions)',
+      'Access to a private Discord',
+      'My eternal appreciation for your support ❤',
+    ],
   },
 
   {
@@ -51,7 +73,12 @@ const tiers = [
     secondary: '#A59264',
     text: '#fff',
     description:
-      'As a Freelancer or Developer, you use Vue, you make decent money thanks to it and you want to give back.',
+      'You use Vue, you make decent money thanks to it and you want to give back.',
+    perks: [
+      'Logo placement on the readmes of my projects (Includes Vue Router and Pinia)',
+      'Access to a private Discord',
+      'My eternal appreciation for your support ❤',
+    ],
   },
 
   {
@@ -66,12 +93,18 @@ const tiers = [
     text: '#000',
     shine: 'spot',
     description: 'Give back to the Open Source you use and love.',
+    perks: [
+      'Access to a private Discord',
+      'My eternal appreciation for your support ❤',
+    ],
   },
 ] satisfies Array<{
   height: number
   tier: string
   price: number
   icon: string
+  spots?: string | null
+  perks?: string[]
   primary?: string
   secondary?: string
   text: string
@@ -108,6 +141,7 @@ const tiers = [
           :price="tier.price"
           :height="tier.height"
           :icon="tier.icon"
+          :spots="tier.spots"
           :primary="tier.primary"
           :secondary="tier.secondary"
           :shine="tier.shine"
@@ -117,19 +151,39 @@ const tiers = [
           ]"
         >
           <template #back>
-            <ul class="ml-2 leading-tight">
-              <li>Perk 1</li>
-              <li>Perk 2</li>
-              <li>Perk 3</li>
-            </ul>
+            <div class="not-prose">
+              <ul class="ml-6 leading-tight list-disc" v-if="tier.perks">
+                <li v-for="perk in tier.perks">{{ perk }}</li>
+              </ul>
+            </div>
           </template>
           <template #front>{{ tier.description }}</template>
         </PricingCard>
       </div>
 
-      <h2 id="faq">F.A.Q.</h2>
+      <h3 id="faq">F.A.Q.</h3>
 
       <FaqMessages />
+
+      <h2 id="for-individuals">For individuals 🧑‍💻</h2>
+
+      <ContentQuery
+        path="/open-source/_for-individuals"
+        find="one"
+        v-slot="{ data }"
+      >
+        <ContentRenderer :value="data" />
+      </ContentQuery>
+
+      <h2 id="working-now">What are you working on right now?</h2>
+
+      <ContentQuery
+        path="/open-source/_working-now"
+        find="one"
+        v-slot="{ data }"
+      >
+        <ContentRenderer :value="data" />
+      </ContentQuery>
 
       <h3>Thank you!</h3>
 

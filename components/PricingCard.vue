@@ -4,11 +4,16 @@ import { clamp } from '@vueuse/core'
 // import { isTouchEvent } from '../utils/touch'
 // import { round, adjust } from '../utils/math'
 
+const { open: openCal } = useCalButton()
+
 const props = withDefaults(
   defineProps<{
     tier: string
     price: number | string
     icon: string
+    spots?: string | null
+
+    // styling
     shine?: 'lines' | 'spot' | 'crosses' | 'rainbow'
     primary?: string
     secondary?: string
@@ -65,7 +70,11 @@ const springTranslate = useSpring({ x: 0, y: 0 })
 const springScale = useSpring({ v: 1 })
 const linesPos = useSpring({ v: -50 })
 
-const card =ref<HTMLElement>()
+function toggle() {
+  springRotateDelta.y = springRotateDelta.y > 90 ? 0 : 180
+}
+
+const card = ref<HTMLElement>()
 
 function onMouseMove(e: MouseEvent | TouchEvent) {
   let clientX: number
@@ -77,7 +86,6 @@ function onMouseMove(e: MouseEvent | TouchEvent) {
     clientX = e.clientX
     clientY = e.clientY
   }
-
 
   const $el = card.value
   if (!$el) return
@@ -158,22 +166,32 @@ const cssLinesPos = computed(() => `${linesPos.v}%`)
         @blur="interacting = false"
       >
         <section
-          class="flex flex-col px-4 pt-1 pb-3 border-4 select-none card_back"
+          class="flex flex-col px-4 pt-3 pb-3 border-4 select-none card_back"
         >
-          <h4 class="font-mono text-xl">Perks</h4>
+          <h4 class="mb-4 font-mono text-xl">Perks</h4>
 
           <div class="flex-grow pb-4 text-sm">
             <slot name="back">Back</slot>
           </div>
 
-          <button
-            class="mx-auto btn secondary"
-            @click="springRotateDelta.y = springRotateDelta.y > 90 ? 0 : 180"
+          <div class="flex justify-between w-full mx-auto">
+            <button class="btn secondary" @click="toggle()">
+              <span>
+                <Icon name="material-symbols:arrow-back-ios-new" /> Back
+              </span>
+            </button>
+
+            <button class="btn" @click="openCal('posva/sponsor')">
+              <span> <Icon name="material-symbols:call" /> Let's talk </span>
+            </button>
+          </div>
+
+          <div
+            class="absolute right-0 pl-4 pr-1 overflow-hidden font-mono rounded-l-full top-4 bg-neutral-300/20"
           >
-            <span>
-              <Icon name="material-symbols:arrow-back-ios-new" /> Back
-            </span>
-          </button>
+            <span>{{ price }}€</span><span class="text-xs">/mo</span>
+            <div class="card_glare spot"></div>
+          </div>
 
           <div class="card_glare spot"></div>
         </section>
@@ -181,7 +199,7 @@ const cssLinesPos = computed(() => `${linesPos.v}%`)
         <section
           class="relative flex flex-col p-4 border-4 select-none card_front"
         >
-          <h4 class="flex items-baseline font-mono text-2xl">
+          <h4 class="flex items-center font-mono text-2xl">
             <span
               class="relative block w-10 h-10 mr-2 overflow-hidden text-center border border-current rounded-full bg-slate-400/30"
             >
@@ -191,7 +209,7 @@ const cssLinesPos = computed(() => `${linesPos.v}%`)
           </h4>
 
           <div
-            class="absolute right-0 pl-4 pr-1 overflow-hidden font-mono rounded-l-full top-6 bg-neutral-300/20"
+            class="absolute right-0 pl-4 pr-1 overflow-hidden font-mono rounded-l-full top-4 bg-neutral-300/20"
           >
             <span>{{ price }}€</span><span class="text-xs">/mo</span>
             <div class="card_glare spot"></div>
@@ -213,11 +231,13 @@ const cssLinesPos = computed(() => `${linesPos.v}%`)
               </span>
               <div class="card_glare spot"></div>
             </button>
-            <button class="btn secondary">
-              <Transition name="slide-vertical">
-                <span class="text-xs">3 slots left</span>
-              </Transition>
-            </button>
+            <span v-if="spots !== null" class="font-mono text-xs">
+              <span v-if="!spots"><Icon name="ion:infinite" /> spots</span>
+              <span v-else>{{ spots }}</span>
+            </span>
+            <!-- <button class="btn secondary">
+              Let's talk <Icon name="material-symbols:call" />
+            </button> -->
           </div>
         </section>
       </div>
@@ -295,15 +315,6 @@ button.card_rotator {
 .card_rotator {
   width: 100%;
   height: 100%;
-}
-
-.card h1,
-.card h2,
-.card h3,
-.card h4,
-.card h5,
-.card h6 {
-  margin: 0;
 }
 
 .card {

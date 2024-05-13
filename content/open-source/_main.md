@@ -37,7 +37,7 @@ I believe it's possible to make a living out of [Open Source]{.text-rose-700.dar
 
 As a company using Vue.js, I can offer you Freelancing services if you **fund my work** [💰]{.wiggle}. You can do this in twodifferent ways:
 
-- [🤝]{.handshake} **One Time help**: :cal-schedule-button - Schedule a call together to
+- [🤝]{.handshake} **One Time help**: :cal-schedule-button - Schedule a call so I can provide you with personalized assistance
 - [🔄️]{.spin} **Recurring help**: Let's setup a contract, similar to :chip-link{text="GitHub Sponsors" icon="bxl:github" url="https://github.com/sponsors/posva"} but adapted to companies.
 
 ### Tiers

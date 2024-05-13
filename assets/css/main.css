@@ -93,10 +93,21 @@ body {
   animation: waveAnimation 2s ease-in-out infinite alternate 2s;
 }
 
+.heartbeat {
+  /* transform: scale(1.2); */
+  will-change: transform;
+  display: inline-block;
+  animation: heartbeat 2s ease-in-out infinite alternate;
+}
+
 .spin {
   will-change: transform;
   display: inline-block;
   animation: spin 10s linear infinite;
+}
+
+.spin.reverse {
+  animation-direction: reverse;
 }
 
 @keyframes spin {
@@ -127,5 +138,14 @@ body {
   50% {
     transform: translateY(10%);
     animation-timing-function: ease-in-out;
+  }
+}
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.4);
   }
 }
