@@ -12,6 +12,11 @@ const entries = [
   },
 
   {
+    question: 'What kind of contracts do you work with?',
+    answer: `It's usually written and customized by the company I work for. I provide quotes and invoices.`,
+  },
+
+  {
     question: 'None of the slots work for me, what can I do?',
     answer:
       'Some time-zones can be challenging for me to cover 😅. Send me a message on 𝕏 or Discord.',
