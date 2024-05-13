@@ -28,6 +28,58 @@ const entries = [
 ] satisfies Array<{ question: string; answer: string }>
 
 const isOpen = ref(true)
+
+const searchText = ref('')
+const { results: qaList } = useFuse(searchText, entries, {
+  matchAllWhenSearchEmpty: true,
+  fuseOptions: {
+    keys: ['question', 'answer'],
+    includeMatches: true,
+    minMatchCharLength: 2,
+    threshold: 0.5,
+  },
+})
+
+const highlightedResults = computed(() => {
+  return (
+    qaList.value
+      .map(({ item, matches }) => {
+        if (!matches?.length) return item
+
+        const result = {
+          question: '',
+          answer: '',
+        }
+
+        for (const match of matches) {
+          const { key, indices, value } = match as {
+            key: 'answer' | 'question'
+            indices: [start: number, end: number][]
+            value: string
+          }
+          let currentIndex = 0
+          // add the highlighted parts as <mark>
+          for (const index of indices) {
+            const [start, end] = index
+            result[key] += value.slice(currentIndex, start)
+            result[key] += `<mark>${value.slice(start, end + 1)}</mark>`
+            currentIndex = end + 1
+          }
+          // add the rest of the string
+          if (currentIndex < value.length) {
+            result[key] += value.slice(currentIndex)
+          }
+        }
+
+        return {
+          question: result.question || item.question,
+          answer: result.answer || item.answer,
+        }
+      })
+      // to have the best matches in the end
+      .reverse()
+  )
+})
 </script>
 
 <template>
@@ -66,11 +118,11 @@ const isOpen = ref(true)
         <main
           class="px-2 py-5 overflow-y-scroll pt-[86px] pb-[68px] h-[800px] flex flex-col justify-end"
         >
-          <FaqEntry v-for="entry in entries">
-            <p>{{ entry.question }}</p>
+          <FaqEntry v-for="{ question, answer } in highlightedResults">
+            <p v-html="question"></p>
 
             <template #answer>
-              <p>{{ entry.answer }}</p>
+              <p v-html="answer"></p>
             </template>
           </FaqEntry>
         </main>
@@ -89,6 +141,7 @@ const isOpen = ref(true)
             >
               <input
                 type="text"
+                v-model="searchText"
                 placeholder="Ask a question"
                 class="flex-grow block bg-transparent border-none focus-visible:outline-none"
               />
