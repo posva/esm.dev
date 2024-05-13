@@ -53,44 +53,41 @@ const { results: qaList } = useFuse(searchText, entries, {
 })
 
 const highlightedResults = computed(() => {
-  return (
-    qaList.value
-      .map(({ item, matches }) => {
-        if (!matches?.length) return item
+  if (searchText.value.length < 3) return entries
 
-        const result = {
-          question: '',
-          answer: '',
-        }
+  return qaList.value.map(({ item, matches }) => {
+    if (!matches?.length) return item
 
-        for (const match of matches) {
-          const { key, indices, value } = match as {
-            key: 'answer' | 'question'
-            indices: [start: number, end: number][]
-            value: string
-          }
-          let currentIndex = 0
-          // add the highlighted parts as <mark>
-          for (const index of indices) {
-            const [start, end] = index
-            result[key] += value.slice(currentIndex, start)
-            result[key] += `<mark>${value.slice(start, end + 1)}</mark>`
-            currentIndex = end + 1
-          }
-          // add the rest of the string
-          if (currentIndex < value.length) {
-            result[key] += value.slice(currentIndex)
-          }
-        }
+    const result = {
+      question: '',
+      answer: '',
+    }
 
-        return {
-          question: result.question || item.question,
-          answer: result.answer || item.answer,
-        }
-      })
-      // to have the best matches in the end
-      .reverse()
-  )
+    for (const match of matches) {
+      const { key, indices, value } = match as {
+        key: 'answer' | 'question'
+        indices: [start: number, end: number][]
+        value: string
+      }
+      let currentIndex = 0
+      // add the highlighted parts as <mark>
+      for (const index of indices) {
+        const [start, end] = index
+        result[key] += value.slice(currentIndex, start)
+        result[key] += `<mark>${value.slice(start, end + 1)}</mark>`
+        currentIndex = end + 1
+      }
+      // add the rest of the string
+      if (currentIndex < value.length) {
+        result[key] += value.slice(currentIndex)
+      }
+    }
+
+    return {
+      question: result.question || item.question,
+      answer: result.answer || item.answer,
+    }
+  })
 })
 
 const submitQuestionLink = ref<HTMLAnchorElement>()
@@ -109,9 +106,12 @@ function submitQuestion() {
     class="relative mx-auto max-w-full w-[576px] h-[800px] rounded-lg chat-container bg-slate-300/20 dark:bg-slate-700/20 not-prose overflow-hidden"
   >
     <Transition name="message-list">
-      <div v-if="isOpen" class="w-full conversation">
+      <div
+        v-if="isOpen"
+        class="w-full conversation h-[800px] overflow-y-auto relative border border-transparent"
+      >
         <header
-          class="flex items-start w-full py-2 align-middle border-b-2 rounded-t-lg bg-slate-300/30 border-b-slate-400/20 dark:bg-slate-800/30 dark:border-b-slate-600/30 backdrop-blur-lg z-10 mb-[-86px] h-[86px] relative"
+          class="flex items-start w-full py-2 align-middle border-b-2 rounded-t-lg bg-slate-300/30 border-b-slate-400/20 dark:bg-slate-800/30 dark:border-b-slate-600/30 backdrop-blur-lg z-10 mb-[-86px] h-[86px] sticky top-0"
         >
           <div class="mx-4 mt-2">
             <button @click="isOpen = false">
@@ -138,7 +138,7 @@ function submitQuestion() {
         </header>
 
         <main
-          class="px-2 overflow-y-scroll pt-[86px] pb-[68px] h-[800px] flex flex-col justify-end"
+          class="px-2 pt-[86px] pb-[68px] flex flex-col-reverse justify-start min-h-[800px]"
         >
           <FaqEntry v-for="{ question, answer } in highlightedResults">
             <p v-html="question"></p>
@@ -150,7 +150,7 @@ function submitQuestion() {
         </main>
 
         <footer
-          class="flex items-center w-full py-2 align-middle rounded-b-lg bg-slate-200/70 backdrop-blur-lg border-b-slate-800/20 dark:bg-slate-800/30 dark:border-b-slate-800/20 mt-[-68px] h-[68px]"
+          class="flex items-center w-full py-2 align-middle rounded-b-lg bg-slate-200/70 backdrop-blur-lg border-b-slate-800/20 dark:bg-slate-800/30 dark:border-b-slate-800/20 mt-[-68px] h-[70px] sticky bottom-0"
         >
           <div
             class="flex items-center justify-center mx-2 rounded-full select-none w-9 h-9 bg-neutral-200/20"
