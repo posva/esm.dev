@@ -138,7 +138,7 @@ function submitQuestion() {
         </header>
 
         <main
-          class="px-2 py-5 overflow-y-scroll pt-[86px] pb-[68px] h-[800px] flex flex-col justify-end"
+          class="px-2 overflow-y-scroll pt-[86px] pb-[68px] h-[800px] flex flex-col justify-end"
         >
           <FaqEntry v-for="{ question, answer } in highlightedResults">
             <p v-html="question"></p>
