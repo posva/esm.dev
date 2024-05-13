@@ -21,6 +21,18 @@ const entries = [
     answer:
       'Some time-zones can be challenging for me to cover 😅. Send me a message on 𝕏 or Discord.',
   },
+
+  {
+    question: 'Can I book a slot for a team?',
+    answer:
+      'Yes, you can book a slot for a team. You can be as many as you want in the call.',
+  },
+
+  {
+    question: 'Can we talk about something else than Vue?',
+    answer: `Yes, we can talk about anything you want, it doesn't have to be Vue. It could for example be about JavaScript, TypeScript, or even your career.`,
+  },
+
   {
     question: 'What languages do you work in?',
     answer: 'I can work in English, French, and Spanish.',
@@ -80,11 +92,21 @@ const highlightedResults = computed(() => {
       .reverse()
   )
 })
+
+const submitQuestionLink = ref<HTMLAnchorElement>()
+const newQuestionLink = computed(
+  () =>
+    `https://github.com/posva/posva/discussions/new?category=q-a&labels=from-esm.dev&body=%3C!--%20add%20any%20extra%20information%20here%20--%3E&title=${encodeURIComponent(searchText.value)}`
+)
+
+function submitQuestion() {
+  submitQuestionLink.value?.click()
+}
 </script>
 
 <template>
   <div
-    class="relative mx-auto max-w-full w-[576px] h-[800px] overflow-hidden rounded-lg chat-container bg-slate-300/20 dark:bg-slate-700/20"
+    class="relative mx-auto max-w-full w-[576px] h-[800px] rounded-lg chat-container bg-slate-300/20 dark:bg-slate-700/20 not-prose overflow-hidden"
   >
     <Transition name="message-list">
       <div v-if="isOpen" class="w-full conversation">
@@ -143,11 +165,18 @@ const highlightedResults = computed(() => {
                 type="text"
                 v-model="searchText"
                 placeholder="Ask a question"
+                @keypress.enter.exact="submitQuestion"
                 class="flex-grow block bg-transparent border-none focus-visible:outline-none"
               />
-              <button class="block w-8 h-8 ml-1 text-3xl rounded-full send">
+              <a
+                class="block w-8 h-8 ml-1 text-3xl rounded-full send"
+                :href="newQuestionLink"
+                ref="submitQuestionLink"
+                target="_blank"
+                rel="noopener"
+              >
                 <Icon name="material-symbols:arrow-upward-alt-rounded" />
-              </button>
+              </a>
             </div>
           </div>
         </footer>
@@ -173,7 +202,9 @@ const highlightedResults = computed(() => {
             </button>
           </div>
 
-          <div class="flex flex-col pl-6 mt-4 space-y-2 message-list">
+          <div
+            class="flex flex-col pl-6 mt-4 space-y-2 overflow-hidden message-list"
+          >
             <div class="flex items-center" v-for="i in 4">
               <div class="w-16">
                 <img
@@ -201,14 +232,6 @@ const highlightedResults = computed(() => {
 </template>
 
 <style scoped>
-/* resets */
-:deep(img),
-h2,
-h3,
-p {
-  margin: 0;
-}
-
 .message-list-enter-active,
 .message-list-leave-active {
   --duration: 300ms;
@@ -240,7 +263,6 @@ p {
 
 .message-list {
   height: 200px;
-  overflow: hidden;
   mask: linear-gradient(180deg, #0000, #000 0% 80%, #0000);
 }
 
