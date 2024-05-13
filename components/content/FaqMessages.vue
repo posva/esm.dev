@@ -150,7 +150,7 @@ function submitQuestion() {
         </main>
 
         <footer
-          class="flex items-center w-full py-2 align-middle rounded-b-lg bg-slate-200/70 backdrop-blur-lg border-b-slate-800/20 dark:bg-slate-800/30 dark:border-b-slate-800/20 mt-[-68px] h-[70px] sticky bottom-0"
+          class="flex items-center w-full py-2 align-middle rounded-b-lg bg-slate-200/70 backdrop-blur-lg border-b-slate-800/20 dark:bg-slate-800/30 dark:border-b-slate-800/20 mt-[-68px] h-[68px] sticky bottom-0"
         >
           <div
             class="flex items-center justify-center mx-2 rounded-full select-none w-9 h-9 bg-neutral-200/20"
