@@ -54,13 +54,13 @@ useHead({
         <p>
           a Frontend Nerd. I work as a consultant to help you keep your
           applications maintainable. I also give
-          <NuxtLink v-magnetic to="/workshops">Vue.js trainings</NuxtLink> and
+          <NuxtLink v-magnetic to="/open-source">Vue.js trainings</NuxtLink> and
           <a
             href="https://www.youtube.com/results?search_query=eduardo+san+martin+morote"
             v-magnetic
             >talk at conferences</a
           >. I write some
-          <a v-magnetic href="https://github.com/posva">useful libraries</a>,
+          <NuxtLink v-magnetic to="/open-source">useful libraries</NuxtLink>,
           mostly for Vue, but not only, and post them on Github. I may not
           <i>
             <a
