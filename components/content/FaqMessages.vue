@@ -241,7 +241,11 @@ function submitQuestion() {
               v-for="conversation in conversalionList"
             >
               <div class="w-16 h-16 py-2">
-                <img :src="conversation.img" class="block w-full h-full" />
+                <img
+                  :src="conversation.img"
+                  class="block w-full h-full"
+                  :alt="conversation.title"
+                />
               </div>
 
               <div class="flex-grow ml-2 select-none">

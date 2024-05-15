@@ -23,9 +23,9 @@ defineProps<{
           media="(prefers-color-scheme: dark), (prefers-color-scheme: no-preference)"
         />
         <source :srcset="img[0]" media="(prefers-color-scheme: light)" />
-        <img class="w-4 h-4" :src="img[1]" />
+        <img class="w-4 h-4" :src="img[1]" :alt="text" />
       </template>
-      <img class="w-4 h-4 my-0" v-else :src="img" />
+      <img :alt="text" class="w-4 h-4 my-0" v-else :src="img" />
     </picture>
     <Icon
       v-else-if="icon"
