@@ -7,6 +7,7 @@ const props = withDefaults(
     width?: number | string
     height?: number | string
     src: string
+    glow?: boolean
     backSrc?: string
     rotateMultiplier?: number | { x: number; y: number }
     blend?:
@@ -132,7 +133,7 @@ const cssTranslateY = computed(() => `${springTranslate.y}px`)
 </script>
 
 <template>
-  <div class="card" :class="{ interacting }">
+  <div class="card" :class="{ interacting, glow }">
     <div class="card_translater">
       <button
         class="card_rotator"
@@ -262,7 +263,7 @@ button.card_rotator {
   box-shadow: 0px 30px 100px -10px rgba(0, 0, 0, 0.4);
 }
 
-.card .card_rotator:focus {
+.card.glow .card_rotator:focus {
   box-shadow:
     0 0 3px -1px white,
     0 0 3px 1px var(--card-edge),
@@ -352,9 +353,9 @@ Shine & Glare Effects
 .card {
   --card-aspect: 0.718;
   --card-radius: 4.55% / 3.5%;
-  --card-edge: hsl(47, 100%, 78%);
+  --card-edge: hsla(0, 0%, 97%, 0.455);
   --card-back: hsl(205, 100%, 25%);
-  --card-glow: hsl(175, 100%, 90%);
+  --card-glow: hsla(0, 0%, 100%, 0.234);
 
   --card-scale: v-bind('springScale.v');
   --card-opacity: v-bind('springGlare.o');

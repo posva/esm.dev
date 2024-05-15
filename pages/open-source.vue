@@ -187,13 +187,7 @@ const tiers = [
 
       <h3>Thank you!</h3>
 
-      <p>Thank you for getting til the very bottom of the page.</p>
-
-      <div class="mx-auto max-w-full w-[400px]">
-        <PlayableCard
-          src="https://cdn.pastemagazine.com/www/articles/Gimme%20Five%20magic%20preview%20card.jpg"
-        />
-      </div>
+      <p>Thank you for getting til the very bottom of the page!</p>
     </div>
   </main>
 </template>

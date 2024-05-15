@@ -25,6 +25,7 @@ But every day, I wish [I could spend more time on my Open Source projects]{.bg-g
 - Bulid an :chip-link{text="ESLint" icon="logos:eslint" url="https://eslint.org"} plugin for :chip-link{text="Pinia" img="/logos/pinia.svg" url="https://pinia.vuejs.org"}
 - Handle more Hot Module Replacement cases in :chip-link{text="Pinia" img="/logos/pinia.svg" url="https://pinia.vuejs.org"}
 - Build better migration tools for :chip-link{text="Vue Router" img="/logos/vue.svg" url="https://router.vuejs.org"}
+- Make Vue.js Terminal Applications possible with :chip-link{text="Vue TermUI" img="/logos/vue-termui.svg" url="https://vue-termui.dev"}
 
 ::
 

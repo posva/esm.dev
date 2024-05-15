@@ -37,7 +37,38 @@ const entries = [
     question: 'What languages do you work in?',
     answer: 'I can work in English, French, and Spanish.',
   },
+
+  {
+    question: `If we don't book a slot in a month, do we lose it or do they accumulate for the next month?`,
+    answer: `They accumulate for one month only. If you don't book a slot in a month, the next month you can book a slot that is twice as long but if you don't, the following month you will only be able to book a slot that is twice as long rather than three times as long.`,
+  },
 ] satisfies Array<{ question: string; answer: string }>
+
+const conversalionList = [
+  {
+    img: '/logos/vue.svg',
+    title: 'Vue.js',
+    preview: `Vue.js is a progressive framework for building user interfaces. Unlike other monolithic frameworks, Vue is designed from the ground up...`,
+  },
+
+  {
+    img: '/logos/pinia.svg',
+    title: 'Pinia',
+    preview: `Pinia is the official state management solution for Vue. It's designed to be easy to use and understand while providing the necessary tools...`,
+  },
+
+  {
+    img: '/logos/vuefire.svg',
+    title: 'VueFire',
+    preview: `VueFire is the official Firebase library for Vue.js. It also includes a Nuxt module that automatically...`,
+  },
+
+  {
+    img: '/logos/vue-termui.svg',
+    title: 'Vue TermUI',
+    preview: `Vue TermUI is a Vue 3 custom renderer to build Terminal applications in Vue!`,
+  },
+] satisfies Array<{ img: string; title: string; preview: string }>
 
 const isOpen = ref(true)
 
@@ -205,22 +236,22 @@ function submitQuestion() {
           <div
             class="flex flex-col pl-6 mt-4 space-y-2 overflow-hidden message-list"
           >
-            <div class="flex items-center" v-for="i in 4">
-              <div class="w-16">
-                <img
-                  src="/logos/vuefire.svg"
-                  class="object-contain rounded-full"
-                />
+            <div
+              class="grid grid-flow-row h-[62px]"
+              v-for="conversation in conversalionList"
+            >
+              <div class="w-16 h-16 py-2">
+                <img :src="conversation.img" class="block w-full h-full" />
               </div>
 
               <div class="flex-grow ml-2 select-none">
-                <h3 class="font-bold message-number">+33 7 44 89 00 77</h3>
+                <h3 class="font-bold message-number">
+                  {{ conversation.title }}
+                </h3>
                 <p
                   class="pb-2 pr-6 text-sm leading-tight border-b text-neutral-700 dark:text-neutral-400 border-b-slate-500/30 dark:border-b-slate-300/30 text-ellipsis"
                 >
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Deserunt cupiditate quidem exercitationem omnis natus alias
-                  quo delectus dolorem repellat, deleniti, ...
+                  {{ conversation.preview }}
                 </p>
               </div>
             </div>
@@ -261,9 +292,9 @@ function submitQuestion() {
   font-size: 1rem;
 }
 
-.message-list {
-  height: 200px;
-  mask: linear-gradient(180deg, #0000, #000 0% 80%, #0000);
+.message-list > div {
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto;
 }
 
 .chat-container {
