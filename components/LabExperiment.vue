@@ -11,6 +11,8 @@ const props = defineProps<{
   labId?: number | string | unknown
 }>()
 
+let stop: (() => void) | undefined
+
 onMounted(() => {
   const experimentId =
     props.labId == null
@@ -24,12 +26,14 @@ onMounted(() => {
       ].module) as Promise<{
       isPixi?: boolean
       start: () => any
+      stop?: () => void
       render: (...args: any[]) => void
     }>
 
   experiment().then((module) => {
     if (module.isPixi) {
       app = module.start()
+      stop = module.stop
     } else {
       function update() {
         rafId = requestAnimationFrame((elapsed) => {
@@ -62,6 +66,7 @@ onUnmounted(() => {
   if (app?.stage) {
     app.destroy()
   }
+  stop?.()
 })
 </script>
 
