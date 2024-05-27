@@ -5,6 +5,8 @@ definePageMeta({
   layout: 'barebones',
 })
 
+const { open: openCal } = useCalButton()
+
 const title = 'Eduardo San Martin Morote'
 const description = 'Hello! I am Eduardo and this is my website 🙂'
 
@@ -52,30 +54,34 @@ useHead({
 
       <main id="main" class="space-y-4">
         <p>
-          a Frontend Nerd. I work as a consultant to help you keep your
-          applications maintainable. I also give
-          <NuxtLink v-magnetic to="/open-source">Vue.js trainings</NuxtLink> and
+          an independent <b>Frontend Developer</b> deeply invested in
+          <NuxtLink v-magnetic to="/open-source"><b>Open Source</b></NuxtLink
+          >.
+          <br />
+          I'm part of the <Icon name="logos:vue" /> Vue.js Core Team, the author
+          of <Icon name="logos:pinia" /> Pinia and Vue Router.
+        </p>
+
+        <p>
+          You can find me giving
           <a
             href="https://www.youtube.com/results?search_query=eduardo+san+martin+morote"
             v-magnetic
-            >talk at conferences</a
-          >. I write some
+            >talks at conferences</a
+          >. and writing
           <NuxtLink v-magnetic to="/open-source">useful libraries</NuxtLink>,
-          mostly for Vue, but not only, and post them on Github. I may not
-          <i>
-            <a
-              v-magnetic
-              href="https://twitter.com/posva/status/1146415898967908352"
-              >take myself very seriously</a
-            >
-          </i>
-          but take my job very seriously and loves solving problems instead of
-          complaining about them.
+          mostly for Vue, but not only, on
+          <a v-magnetic href="https://github.com/posva">GitHub</a>.
         </p>
+
         <p>
           If you want to work together, please
           <a v-magnetic href="https://twitter.com/posva"
-            >send me a PM on Twitter</a
+            >message me on Twitter</a
+          >
+          or
+          <a href="#" v-magnetic @click.prevent="openCal('posva/consultancy')"
+            >book a call</a
           >.
         </p>
       </main>
@@ -93,7 +99,13 @@ useHead({
 #bio-container {
   padding: 5vh 14px;
   font-size: calc(22px + 0.33vw);
-  width: 34em;
+  width: max(640px, 73vw);
+  /* max-width: min(100%, 1400px); */
+}
+
+#bio-container .icon {
+  /* fixes alignment of <Icon /> */
+  vertical-align: text-top;
 }
 
 #bio-container h1 {
@@ -104,6 +116,7 @@ useHead({
   #bio-container {
     padding-left: 10vw;
     padding-right: 10vw;
+    max-width: calc(800px + 20vw);
   }
 }
 
