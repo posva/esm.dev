@@ -6,9 +6,15 @@ const entries = [
     question: 'What is the timezone you work in?',
     answer: 'Paris, France (CET/CEST).',
   },
+
   {
     question: 'Can you issue invoices?',
     answer: 'Yes, I have a French company for my freelancing.',
+  },
+
+  {
+    question: `Is it better to sponsor multiple people for less or a single person for more?`,
+    answer: `It depends on your goal and the amount. For the long term, it's better to sponsor more people for less. In ther short term, it's better to sponsor a single person for more as that would allow them to dedicate more time to Open Source.`,
   },
 
   {

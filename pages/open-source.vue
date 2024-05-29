@@ -12,7 +12,7 @@ const tiers = [
     text: '#000',
     shine: 'crosses',
     description:
-      'You are all-in on Vue and its ecosystem! You want to get some exposure in Vue Router and Pinia docs. I will dedicate a full day per month to assist you with in your projects.',
+      'You are all-in on Vue and its ecosystem! You want to get a lot exposure in Vue Router and Pinia docs. I will dedicate a full day per month to assist you with in your projects.',
     spots: 'Limited spots!',
     perks: [
       'Prioritized issues',
@@ -92,7 +92,8 @@ const tiers = [
     // secondary: '#3b82f6',
     text: '#000',
     shine: 'spot',
-    description: 'Give back to the Open Source you use and love.',
+    description:
+      'Give back to the Open Source you use and love. Simple and accessible, yet effective.',
     perks: [
       'Access to a private Discord',
       'My eternal appreciation for your support ❤',
@@ -160,6 +161,14 @@ const tiers = [
           <template #front>{{ tier.description }}</template>
         </PricingCard>
       </div>
+
+      <ContentQuery
+        path="/open-source/_for-companies-after"
+        find="one"
+        v-slot="{ data }"
+      >
+        <ContentRenderer :value="data" />
+      </ContentQuery>
 
       <h3 id="faq">F.A.Q.</h3>
 

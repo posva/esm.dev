@@ -7,7 +7,7 @@ I have been contributing to the :chip-link{ text="Vue.js" img="/logos/vue.svg" u
 
 Open Source is **only a small part of my life**, [I also work as a freelance consultant]{.bg-gradient-to-r.dark:from-purple-300.from-purple-700.to-purple-500.dark:to-purple-200.bg-clip-text.text-transparent.font-bold}, helping companies build better Vue.js applications.
 
-But every day, I wish [I could spend more time on my Open Source projects]{.bg-gradient-to-r.dark:from-rose-300.from-rose-700.to-rose-500.dark:to-rose-200.bg-clip-text.text-transparent.font-bold} instead of figuring out how to make a living for my family and I:
+But every day, I wish [I could spend more time on my Open Source projects]{.bg-gradient-to-r.dark:from-rose-300.from-rose-700.to-rose-500.dark:to-rose-200.bg-clip-text.text-transparent.font-bold} instead of figuring out how to make a living for my family and I and have more time to:
 
 ::scrolling-list
 
@@ -28,6 +28,8 @@ But every day, I wish [I could spend more time on my Open Source projects]{.bg-g
 - Make Vue.js Terminal Applications possible with :chip-link{text="Vue TermUI" img="/logos/vue-termui.svg" url="https://vue-termui.dev"}
 
 ::
+
+Not every person doing Open Source wants to go full time on it, some people prefer having a stable job and doing Open Source on the side and that's totally fine. But **I do want to go full time on it**.
 
 I believe it's possible to make a living out of [Open Source]{.text-rose-700.dark:text-rose-200.font-bold} at the same time I bring more value to the community and the companies using my libraries [🤝]{.handshake}.
 
