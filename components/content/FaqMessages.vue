@@ -18,6 +18,11 @@ const entries = [
   },
 
   {
+    question: `Why are tiers different between GitHub Sponsors and this page?`,
+    answer: `With GitHub Sponsors I have different taxes than when I invoice you directly. For me, it's better if you sponsor through Freelancing (prices in this page).`,
+  },
+
+  {
     question: 'What kind of contracts do you work with?',
     answer: `It's usually written and customized by the company I work for. I provide quotes and invoices.`,
   },
