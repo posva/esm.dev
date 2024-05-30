@@ -52,6 +52,16 @@ const entries = [
     question: `If we don't book a slot in a month, do we lose it or do they accumulate for the next month?`,
     answer: `They accumulate for one month only. If you don't book a slot in a month, the next month you can book a slot that is twice as long but if you don't, the following month you will only be able to book a slot that is twice as long rather than three times as long.`,
   },
+
+  {
+    question: `Why don't you get a full-time job and work on Open Source on the side?`,
+    answer: `I would if the libraries I created didn't require so much time to maintain. Going full-time on Open Source allows me to give them the attention they need.`,
+  },
+
+  {
+    question: `What about other means of funding like a course, building a product, or ads?`,
+    answer: `I have tried all of these, most have failed or haven't been as successful as I would have liked. I will likely build new things in the future again as it's still compatible with sponsorships.`,
+  },
 ] satisfies Array<{ question: string; answer: string }>
 
 const conversalionList = [
