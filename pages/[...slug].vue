@@ -17,7 +17,7 @@ definePageMeta({
         <h1>Not found</h1>
         <p>
           Sorry, we couldn't find that page.
-          <RouterLink to="/" v-magnetic>Go Back Home</RouterLink>.
+          <NuxtLink to="/" v-magnetic>Go Back Home</NuxtLink>.
         </p>
       </template>
     </ContentDoc>

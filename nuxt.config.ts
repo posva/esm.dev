@@ -33,8 +33,11 @@ export default defineNuxtConfig({
 
   css: ['@/assets/css/main.css'],
 
+  devtools: {
+    enabled: false,
+  },
+
   modules: [
-    '@nuxt/devtools',
     '@nuxtjs/tailwindcss',
     '@nuxt/content',
     'nuxt-icon',

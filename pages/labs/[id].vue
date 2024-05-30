@@ -13,8 +13,6 @@ const labId = computed(() => {
     (m) => m.name === route.params.id
   )
 
-  console.log('index', index, experimentModuleList)
-
   return index > -1 ? index : null
 })
 

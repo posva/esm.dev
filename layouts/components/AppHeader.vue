@@ -1,24 +1,29 @@
 <script lang="ts" setup>
 const navLinks = [
   {
+    text: 'OSS',
+    icon: 'icon-park-twotone:planet',
+    url: '/open-source',
+  },
+  // {
+  //   icon: 'icon-park-twotone:notebook',
+  //   text: 'Blog',
+  //   url: '/blog',
+  // },
+  // {
+  //   icon: 'icon-park-twotone:collect-laptop',
+  //   text: 'Uses',
+  //   url: '/uses',
+  // },
+  // {
+  //   icon: 'icon-park-twotone:microphone-one',
+  //   text: 'Talks',
+  //   url: '/talks',
+  // },
+  {
     text: 'Labs',
     icon: 'icon-park-twotone:experiment',
     url: '/labs',
-  },
-  {
-    icon: 'icon-park-twotone:notebook',
-    text: 'Blog',
-    url: '/blog',
-  },
-  {
-    icon: 'icon-park-twotone:collect-laptop',
-    text: 'Uses',
-    url: '/uses',
-  },
-  {
-    icon: 'icon-park-twotone:microphone-one',
-    text: 'Talks',
-    url: '/talks',
   },
 ] satisfies Array<{
   icon: string

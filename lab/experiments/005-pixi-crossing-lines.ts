@@ -43,6 +43,13 @@ async function restart() {
   start()
 }
 
+export async function stop() {
+  if (_context) {
+    _context.app.destroy(false, true)
+    _context = null
+  }
+}
+
 export async function start() {
   if (_context) return _context
 
@@ -104,11 +111,14 @@ export async function start() {
     app.stage.addChild(polygon.sprite)
   }
 
-  function rotatePolygon(
+  async function rotatePolygon(
     polygon: Polygon,
-    options?: Parameters<Ease['add']>[2]
+    options?: Parameters<Ease['add']>[2] & { wait?: number }
   ) {
     if (!polygon.easing) {
+      if (options?.wait) {
+        await new Promise((resolve) => setTimeout(resolve, options.wait))
+      }
       polygon.easing = ease.add(
         polygon.sprite,
         { angle: polygon.sprite.angle + (1 + (randomizer.int32() % 5)) * 60 },
@@ -132,7 +142,9 @@ export async function start() {
         .map(() => Math.abs(randomizer.int32()) % polygons.length)
         .sort((a, b) => a - b)
         .forEach((i, j) => {
-          rotatePolygon(polygons[i], { wait: (j * 800) / length })
+          rotatePolygon(polygons[i], {
+            wait: (j * 800) / length,
+          })
         })
       elapsed = 0
     }
