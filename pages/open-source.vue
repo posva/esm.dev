@@ -196,21 +196,25 @@ const tiers = [
 
       <h3>Thank you!</h3>
 
-      <!-- TODO: make it interactive -->
+      <section class="text-center">
+        <!-- TODO: make it interactive -->
 
-      <a
-        href="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static/sk/circles.svg"
-      >
-        <img
-          src="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static/sk/circles.svg"
-          alt="posva's sponsors"
-        />
-      </a>
+        <!-- <SponsorsCircles /> -->
 
-      <p>
-        Thanks to all my sponsors and to <b>you</b> for getting til the bottom
-        of the page!
-      </p>
+        <a
+          href="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static/sk/circles.svg"
+        >
+          <img
+            src="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static/sk/circles.svg"
+            alt="posva's sponsors"
+          />
+        </a>
+
+        <p>
+          Thanks to all my sponsors and to <b>you</b> for getting til the bottom
+          of the page!
+        </p>
+      </section>
     </div>
   </main>
 </template>

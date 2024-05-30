@@ -3,26 +3,6 @@ const { open: openCal } = useCalButton()
 
 const entries = [
   {
-    question: 'What is the timezone you work in?',
-    answer: 'Paris, France (CET/CEST).',
-  },
-
-  {
-    question: 'Can you issue invoices?',
-    answer: 'Yes, I have a French company for my freelancing.',
-  },
-
-  {
-    question: `Is it better to sponsor multiple people for less or a single person for more?`,
-    answer: `It depends on your goal and the amount. For the long term, it's better to sponsor more people for less. In ther short term, it's better to sponsor a single person for more as that would allow them to dedicate more time to Open Source.`,
-  },
-
-  {
-    question: `Why are tiers different between GitHub Sponsors and this page?`,
-    answer: `With GitHub Sponsors I have different taxes than when I invoice you directly. For me, it's better if you sponsor through Freelancing (prices in this page).`,
-  },
-
-  {
     question: 'What kind of contracts do you work with?',
     answer: `It's usually written and customized by the company I work for. I provide quotes and invoices.`,
   },
@@ -37,6 +17,25 @@ const entries = [
     question: 'Can I book a slot for a team?',
     answer:
       'Yes, you can book a slot for a team. You can be as many as you want in the call.',
+  },
+  {
+    question: 'Can you issue invoices?',
+    answer: 'Yes, I have a French company for my freelancing.',
+  },
+
+  {
+    question: 'What is the timezone you work in?',
+    answer: 'Paris, France (CET/CEST).',
+  },
+
+  {
+    question: `Is it better to sponsor multiple people for less or a single person for more?`,
+    answer: `It depends on your goal and the amount. For the long term, it's better to sponsor more people for less. In ther short term, it's better to sponsor a single person for more as that would allow them to dedicate more time to Open Source.`,
+  },
+
+  {
+    question: `Why are tiers different between GitHub Sponsors and this page?`,
+    answer: `With GitHub Sponsors I have different taxes than when I invoice you directly. For me, it's better if you sponsor through Freelancing (prices in this page).`,
   },
 
   {
