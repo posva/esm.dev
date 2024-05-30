@@ -196,7 +196,21 @@ const tiers = [
 
       <h3>Thank you!</h3>
 
-      <p>Thank you for getting til the very bottom of the page!</p>
+      <!-- TODO: make it interactive -->
+
+      <a
+        href="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static/sk/circles.svg"
+      >
+        <img
+          src="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static/sk/circles.svg"
+          alt="posva's sponsors"
+        />
+      </a>
+
+      <p>
+        Thanks to all my sponsors and to <b>you</b> for getting til the bottom
+        of the page!
+      </p>
     </div>
   </main>
 </template>
