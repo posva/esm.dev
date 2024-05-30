@@ -41,7 +41,7 @@ useHead({
 <template>
   <div class="relative max-w-full leading-tight" id="bio-container">
     <div
-      class="px-3 py-2 pb-4 space-y-6 bg-opacity-75 shadow-lg md:py-4 rounded-xl md:px-6 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-80"
+      class="px-3 py-2 pb-4 space-y-6 shadow-lg bg-opacity-70 md:py-4 rounded-xl md:px-6 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-70 backdrop-blur-md"
     >
       <h1 class="font-bold">Hi <span class="wave">👋</span></h1>
       <p>
