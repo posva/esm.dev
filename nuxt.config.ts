@@ -43,6 +43,7 @@ export default defineNuxtConfig({
     'nuxt-icon',
     '@vueuse/nuxt',
     'nuxt-fathom',
+    '@nuxt/image'
   ],
 
   fathom: {
@@ -58,4 +59,5 @@ export default defineNuxtConfig({
   },
 
   content: {},
+  compatibilityDate: '2024-07-18',
 })
