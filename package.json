@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@giscus/vue": "^3.0.0",
-    "@nuxt/content": "2.13.0",
+    "@nuxt/content": "^2.13.1",
     "@tailwindcss/typography": "^0.5.13",
     "@vueuse/core": "^10.11.0",
     "@vueuse/nuxt": "^10.11.0",
