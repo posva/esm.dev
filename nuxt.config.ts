@@ -46,6 +46,12 @@ export default defineNuxtConfig({
     '@nuxt/image'
   ],
 
+  nitro: {
+    prerender: {
+      routes: ['/'],
+    },
+  },
+
   fathom: {
     siteId: 'YQGQXJOE',
   },
