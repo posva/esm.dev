@@ -20,7 +20,7 @@
     "@giscus/vue": "^3.0.0",
     "@nuxt/content": "^2.13.2",
     "@tailwindcss/typography": "^0.5.14",
-    "@vueuse/core": "^10.11.1",
+    "@vueuse/core": "^11.0.0",
     "@vueuse/nuxt": "^10.11.1",
     "eventemitter3": "^5.0.1",
     "fuse.js": "^7.0.0",
