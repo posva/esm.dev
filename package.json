@@ -3,7 +3,7 @@
   "description": "Hello! I am Eduardo and this is my website 🙂",
   "version": "1.0.0",
   "private": true,
-  "packageManager": "pnpm@9.11.0",
+  "packageManager": "pnpm@9.12.0",
   "type": "module",
   "author": "Eduardo San Martin Morote <posva13@gmail.com>",
   "scripts": {
@@ -33,8 +33,8 @@
     "vue-use-spring": "^0.3.3"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^1.5.1",
-    "@nuxt/image": "^1.8.0",
+    "@nuxt/devtools": "^1.5.2",
+    "@nuxt/image": "^1.8.1",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@types/d3-hierarchy": "^3.1.7",
     "@types/lodash-es": "^4.17.12",
