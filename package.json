@@ -3,7 +3,7 @@
   "description": "Hello! I am Eduardo and this is my website 🙂",
   "version": "1.0.0",
   "private": true,
-  "packageManager": "pnpm@9.12.3",
+  "packageManager": "pnpm@9.13.2",
   "type": "module",
   "author": "Eduardo San Martin Morote <posva13@gmail.com>",
   "scripts": {
