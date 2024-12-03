@@ -40,10 +40,10 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/content',
-    'nuxt-icon',
     '@vueuse/nuxt',
     'nuxt-fathom',
-    '@nuxt/image'
+    '@nuxt/image',
+    '@nuxt/icon',
   ],
 
   nitro: {
@@ -67,3 +67,4 @@ export default defineNuxtConfig({
   content: {},
   compatibilityDate: '2024-07-18',
 })
+

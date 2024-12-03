@@ -1,9 +1,14 @@
 <script lang="ts" setup>
 const footerSocials = [
   {
-    icon: 'line-md:twitter-x',
+    icon: 'line-md:twitter-x-alt',
     text: 'X',
     url: 'https://twitter.com/posva',
+  },
+  {
+    text: 'Bluesky',
+    icon: 'simple-icons:bluesky',
+    url: 'https://bsky.app/profile/esm.dev',
   },
   {
     icon: 'line-md:github-loop',
@@ -17,7 +22,7 @@ const footerSocials = [
   },
   {
     text: 'YouTube',
-    icon: 'line-md:youtube',
+    icon: 'line-md:youtube-filled',
     url: 'https://www.youtube.com/channel/UCUOmDgABNrxj_hWT_a_e2pQ',
   },
 ] satisfies Array<{

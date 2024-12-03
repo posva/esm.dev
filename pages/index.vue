@@ -58,8 +58,8 @@ useHead({
           <NuxtLink v-magnetic to="/open-source"><b>Open Source</b></NuxtLink
           >.
           <br />
-          I'm part of the <Icon name="logos:vue" /> Vue.js Core Team, the author
-          of <Icon name="logos:pinia" /> Pinia and Vue Router.
+          I'm part of the <Icon name="logos:vue" size="0.85em" /> Vue.js Core
+          Team, the author of <Icon name="logos:pinia" /> Pinia and Vue Router.
         </p>
 
         <p>
