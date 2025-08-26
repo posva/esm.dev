@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { experimentModuleList } from '~/lab'
 
-const experimentId = useHead({
+useHead({
   title: '🧪 Labs',
 })
 </script>

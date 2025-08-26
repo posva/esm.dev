@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import FaqMessages from '~/components/content/FaqMessages.vue'
 
+useHead({
+  title: '🌐 Open Source',
+})
+
 const tiers = [
   {
     tier: 'Diamond',
@@ -117,17 +121,32 @@ const { data: contentIntro } = await useAsyncData('intro', () => {
   return queryCollection('content').path('/open-source/_intro').first()
 })
 
-const { data: contentForCompanies } = await useAsyncData('for-companies', () => {
-  return queryCollection('content').path('/open-source/_for-companies').first()
-})
+const { data: contentForCompanies } = await useAsyncData(
+  'for-companies',
+  () => {
+    return queryCollection('content')
+      .path('/open-source/_for-companies')
+      .first()
+  }
+)
 
-const { data: contentForCompaniesAfter } = await useAsyncData('for-companies-after', () => {
-  return queryCollection('content').path('/open-source/_for-companies-after').first()
-})
+const { data: contentForCompaniesAfter } = await useAsyncData(
+  'for-companies-after',
+  () => {
+    return queryCollection('content')
+      .path('/open-source/_for-companies-after')
+      .first()
+  }
+)
 
-const { data: contentForIndividuals } = await useAsyncData('for-individuals', () => {
-  return queryCollection('content').path('/open-source/_for-individuals').first()
-})
+const { data: contentForIndividuals } = await useAsyncData(
+  'for-individuals',
+  () => {
+    return queryCollection('content')
+      .path('/open-source/_for-individuals')
+      .first()
+  }
+)
 
 const { data: contentWorkingNow } = await useAsyncData('working-now', () => {
   return queryCollection('content').path('/open-source/_working-now').first()
@@ -145,7 +164,10 @@ const { data: contentWorkingNow } = await useAsyncData('working-now', () => {
 
       <h2 id="for-companies">For Companies 🏢</h2>
 
-      <ContentRenderer v-if="contentForCompanies" :value="contentForCompanies" />
+      <ContentRenderer
+        v-if="contentForCompanies"
+        :value="contentForCompanies"
+      />
 
       <div class="grid w-full grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-4">
         <PricingCard
@@ -174,7 +196,10 @@ const { data: contentWorkingNow } = await useAsyncData('working-now', () => {
         </PricingCard>
       </div>
 
-      <ContentRenderer v-if="contentForCompaniesAfter" :value="contentForCompaniesAfter" />
+      <ContentRenderer
+        v-if="contentForCompaniesAfter"
+        :value="contentForCompaniesAfter"
+      />
 
       <h3 id="faq">F.A.Q.</h3>
 
@@ -182,7 +207,10 @@ const { data: contentWorkingNow } = await useAsyncData('working-now', () => {
 
       <h2 id="for-individuals">For individuals 🧑‍💻</h2>
 
-      <ContentRenderer v-if="contentForIndividuals" :value="contentForIndividuals" />
+      <ContentRenderer
+        v-if="contentForIndividuals"
+        :value="contentForIndividuals"
+      />
 
       <h2 id="working-now">What are you working on right now?</h2>
 
