@@ -23,7 +23,7 @@ useHead({
       content: '#efeeed',
       media: '(prefers-color-scheme: light)',
     },
-    { name: 'apple-mobile-web-app-capable', content: 'yes' },
+    { name: 'mobile-web-app-capable', content: 'yes' },
   ],
 })
 </script>
