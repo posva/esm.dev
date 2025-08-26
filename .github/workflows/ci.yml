@@ -1,4 +1,4 @@
-name: test
+name: ci
 
 on:
   push:
@@ -14,12 +14,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - run: corepack enable
-      - name: Install Node.js
-        uses: actions/setup-node@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: 'pnpm'
+          cache: pnpm
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm run lint
