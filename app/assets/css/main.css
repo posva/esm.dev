@@ -62,8 +62,9 @@ body.light {
 
 body {
   box-sizing: border-box;
-  font-family: -apple-system, 'Helvetica Neue', BlinkMacSystemFont, Cantarell,
-    'Open Sans', sans-serif;
+  font-family:
+    -apple-system, 'Helvetica Neue', BlinkMacSystemFont, Cantarell, 'Open Sans',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   background-color: rgb(var(--bgColor));
   color: rgb(var(--textColor));
@@ -148,4 +149,62 @@ body {
   100% {
     transform: scale(1.4);
   }
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Light mode - minimal scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Firefox light mode */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.4);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Firefox dark mode */
+  html {
+    scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+  }
+}
+
+/* Manual dark mode class if needed */
+.dark-mode ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.dark-mode {
+  scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
 }

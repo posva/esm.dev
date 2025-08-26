@@ -113,8 +113,24 @@ const tiers = [
   description?: string
 }>
 
-const { data: data_intro } = await useAsyncData('intro', () => {
+const { data: contentIntro } = await useAsyncData('intro', () => {
   return queryCollection('content').path('/open-source/_intro').first()
+})
+
+const { data: contentForCompanies } = await useAsyncData('for-companies', () => {
+  return queryCollection('content').path('/open-source/_for-companies').first()
+})
+
+const { data: contentForCompaniesAfter } = await useAsyncData('for-companies-after', () => {
+  return queryCollection('content').path('/open-source/_for-companies-after').first()
+})
+
+const { data: contentForIndividuals } = await useAsyncData('for-individuals', () => {
+  return queryCollection('content').path('/open-source/_for-individuals').first()
+})
+
+const { data: contentWorkingNow } = await useAsyncData('working-now', () => {
+  return queryCollection('content').path('/open-source/_working-now').first()
 })
 </script>
 
@@ -125,17 +141,11 @@ const { data: data_intro } = await useAsyncData('intro', () => {
     >
       <h1>Open Source Software</h1>
 
-      <ContentRenderer v-if="data_intro" :value="data_intro" />
+      <ContentRenderer v-if="contentIntro" :value="contentIntro" />
 
       <h2 id="for-companies">For Companies 🏢</h2>
 
-      <ContentQuery
-        path="/open-source/_for-companies"
-        find="one"
-        v-slot="{ data }"
-      >
-        <ContentRenderer :value="data" />
-      </ContentQuery>
+      <ContentRenderer v-if="contentForCompanies" :value="contentForCompanies" />
 
       <div class="grid w-full grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-4">
         <PricingCard
@@ -164,13 +174,7 @@ const { data: data_intro } = await useAsyncData('intro', () => {
         </PricingCard>
       </div>
 
-      <ContentQuery
-        path="/open-source/_for-companies-after"
-        find="one"
-        v-slot="{ data }"
-      >
-        <ContentRenderer :value="data" />
-      </ContentQuery>
+      <ContentRenderer v-if="contentForCompaniesAfter" :value="contentForCompaniesAfter" />
 
       <h3 id="faq">F.A.Q.</h3>
 
@@ -178,23 +182,11 @@ const { data: data_intro } = await useAsyncData('intro', () => {
 
       <h2 id="for-individuals">For individuals 🧑‍💻</h2>
 
-      <ContentQuery
-        path="/open-source/_for-individuals"
-        find="one"
-        v-slot="{ data }"
-      >
-        <ContentRenderer :value="data" />
-      </ContentQuery>
+      <ContentRenderer v-if="contentForIndividuals" :value="contentForIndividuals" />
 
       <h2 id="working-now">What are you working on right now?</h2>
 
-      <ContentQuery
-        path="/open-source/_working-now"
-        find="one"
-        v-slot="{ data }"
-      >
-        <ContentRenderer :value="data" />
-      </ContentQuery>
+      <ContentRenderer v-if="contentWorkingNow" :value="contentWorkingNow" />
 
       <h3>Thank you!</h3>
 
