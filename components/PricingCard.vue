@@ -255,8 +255,9 @@ button.card_rotator {
 }
 
 .card_glare {
-  will-change: transform, opacity, background-image, background-size,
-    background-position, background-blend-mode, filter;
+  will-change:
+    transform, opacity, background-image, background-size, background-position,
+    background-blend-mode, filter;
 }
 
 .card_front,
@@ -514,7 +515,8 @@ Shine & Glare Effects
   /* --space: 200px; */
   /* --hue: 50; */
   --imgsize: cover;
-  background-image: radial-gradient(
+  background-image:
+    radial-gradient(
       farthest-corner ellipse at calc(((var(--pointer-x)) * 0.5) + 25%)
         calc(((var(--pointer-y)) * 0.5) + 25%),
       hsl(283, 82%, 80%) 20%,
@@ -601,7 +603,8 @@ Shine & Glare Effects
   --sunpillar-clr-5: var(--sunpillar-5);
   --sunpillar-clr-6: var(--sunpillar-6);
 
-  background-image: var(--grain),
+  background-image:
+    var(--grain),
     repeating-linear-gradient(
       0deg,
       var(--sunpillar-clr-1) calc(var(--space) * 1),

@@ -177,8 +177,9 @@ button.card_rotator {
 }
 
 .card_glare {
-  will-change: transform, opacity, background-image, background-size,
-    background-position, background-blend-mode, filter;
+  will-change:
+    transform, opacity, background-image, background-size, background-position,
+    background-blend-mode, filter;
 }
 
 .card {

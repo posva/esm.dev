@@ -323,8 +323,9 @@ function submitQuestion() {
 
 .chat-container {
   --c-blue: rgb(25 139 254);
-  font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
-    'Arial', sans-serif;
+  font-family:
+    'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial',
+    sans-serif;
   font-size: 18px;
   line-height: 1.43;
   font-weight: 400;
