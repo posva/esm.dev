@@ -48,6 +48,42 @@ importers:
         specifier: ^0.3.3
         version: 0.3.3(vue@3.5.20(typescript@5.9.2))
     devDependencies:
+      '@iconify-json/bxl':
+        specifier: ^1.2.2
+        version: 1.2.2
+      '@iconify-json/icon-park-twotone':
+        specifier: ^1.2.4
+        version: 1.2.4
+      '@iconify-json/iconamoon':
+        specifier: ^1.2.2
+        version: 1.2.2
+      '@iconify-json/ion':
+        specifier: ^1.2.6
+        version: 1.2.6
+      '@iconify-json/line-md':
+        specifier: ^1.2.11
+        version: 1.2.11
+      '@iconify-json/material-symbols':
+        specifier: ^1.2.33
+        version: 1.2.33
+      '@iconify-json/mdi':
+        specifier: ^1.2.3
+        version: 1.2.3
+      '@iconify-json/octicon':
+        specifier: ^1.2.11
+        version: 1.2.11
+      '@iconify-json/pepicons-pop':
+        specifier: ^1.2.3
+        version: 1.2.3
+      '@iconify-json/ph':
+        specifier: ^1.2.2
+        version: 1.2.2
+      '@iconify-json/simple-icons':
+        specifier: ^1.2.49
+        version: 1.2.49
+      '@iconify-json/streamline':
+        specifier: ^1.2.5
+        version: 1.2.5
       '@nuxt/devtools':
         specifier: ^1.7.0
         version: 1.7.0(rollup@4.48.1)(vite@7.1.3(@types/node@22.18.0)(jiti@2.5.1)(terser@5.43.1)(yaml@2.8.1))(vue@3.5.20(typescript@5.9.2))
@@ -598,6 +634,42 @@ packages:
     resolution: {integrity: sha512-ZoSUmlc3ee2a+kdumCaXFDZaB4h9b1BYWzsmmRP7zoGEQKYopdAnzGvJK7RdvrYGAzNqZtGUxI0NnBl8/UA6bQ==}
     peerDependencies:
       vue: '>=3.2.0'
+
+  '@iconify-json/bxl@1.2.2':
+    resolution: {integrity: sha512-+cSX1abFQ2Q8jK9IdLHC05luZYq3zgNFqXsiEcKyigUdIEmGQNQp4xjnsCUmOYFvHrV7C1/D0wr/Lm/stAD3tw==}
+
+  '@iconify-json/icon-park-twotone@1.2.4':
+    resolution: {integrity: sha512-AhnGngG6DxuIZMsz4FMrv0QWTRM/CZ3NnEeaceV6psKSgt/axW+hft7oQ6pIAFN9KB95Kp3hbJuhlhG3ao60eQ==}
+
+  '@iconify-json/iconamoon@1.2.2':
+    resolution: {integrity: sha512-Xn7YeSDniPgutPr0qil/iQwQelq975OYQ/i2twGjcK4DjGOXBrBC+6q45WtVuQbFfXzM7bgijv4yVnxy0OqUdQ==}
+
+  '@iconify-json/ion@1.2.6':
+    resolution: {integrity: sha512-JftEXKfjvJNn3SrGeSBrG/waRkjeTpLdMLNLwpAX4NgI14QgJoAeXEh2iZjNPqioAkeIgErX4Bi6mnFwpjk3BQ==}
+
+  '@iconify-json/line-md@1.2.11':
+    resolution: {integrity: sha512-JYczKuKvTq/Pf9rSCoxwdBbAiWqceNrb3EtM3acD4YkzCAdp3co+CdNE/pb5lTURGbIA9GrGuqentHqVwXyVWA==}
+
+  '@iconify-json/material-symbols@1.2.33':
+    resolution: {integrity: sha512-Bs0X1+/vpJydW63olrGh60zkR8/Y70sI14AIWaP7Z6YQXukzWANH4q3I0sIPklbIn1oL6uwLvh0zQyd6Vh79LQ==}
+
+  '@iconify-json/mdi@1.2.3':
+    resolution: {integrity: sha512-O3cLwbDOK7NNDf2ihaQOH5F9JglnulNDFV7WprU2dSoZu3h3cWH//h74uQAB87brHmvFVxIOkuBX2sZSzYhScg==}
+
+  '@iconify-json/octicon@1.2.11':
+    resolution: {integrity: sha512-NuiI29ByA0GqEuCUBb9D9ZH0p6JgFi+sSHzX6KmvdYEtcyaX53OiXg6F/32MkjqURwXpgs3S8HZlG3SX6hE0PA==}
+
+  '@iconify-json/pepicons-pop@1.2.3':
+    resolution: {integrity: sha512-keopIpR7DYXpwbSHNF/IPdeyRL5JaPk4ZVMpzZT25XtgK6qPz7ne24W8FA7ZKPYZw4l8wZw3Ho/zi859pN+fxg==}
+
+  '@iconify-json/ph@1.2.2':
+    resolution: {integrity: sha512-PgkEZNtqa8hBGjHXQa4pMwZa93hmfu8FUSjs/nv4oUU6yLsgv+gh9nu28Kqi8Fz9CCVu4hj1MZs9/60J57IzFw==}
+
+  '@iconify-json/simple-icons@1.2.49':
+    resolution: {integrity: sha512-nRLwrHzz+cTAQYBNQrcr4eWOmQIcHObTj/QSi7nj0SFwVh5MvBsgx8OhoDC/R8iGklNmMpmoE/NKU0cPXMlOZw==}
+
+  '@iconify-json/streamline@1.2.5':
+    resolution: {integrity: sha512-u6l9BOJoIIPjjDXWl6D/hPDzeBk5WiaEHZ+U9SbkQ14N9hgotaYyIZVMfgF175CG1TTS06j8k15D3FM2OYaFIw==}
 
   '@iconify/collections@1.0.490':
     resolution: {integrity: sha512-Ovq4xC2gXl2o3P8me4VNuG9ow+tU1d6u+7YHR6rU9+xTrpXKvew76gyls+SqsOgGcQZYl/NuzraKBW1ON3/7jA==}
@@ -5677,6 +5749,54 @@ snapshots:
     dependencies:
       giscus: 1.5.0
       vue: 3.5.20(typescript@5.9.2)
+
+  '@iconify-json/bxl@1.2.2':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/icon-park-twotone@1.2.4':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/iconamoon@1.2.2':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/ion@1.2.6':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/line-md@1.2.11':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/material-symbols@1.2.33':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/mdi@1.2.3':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/octicon@1.2.11':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/pepicons-pop@1.2.3':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/ph@1.2.2':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/simple-icons@1.2.49':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/streamline@1.2.5':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/collections@1.0.490':
     dependencies:
