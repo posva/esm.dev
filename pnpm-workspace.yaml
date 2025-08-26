@@ -2,6 +2,10 @@ ignoredBuiltDependencies:
   - '@parcel/watcher'
 
 onlyBuiltDependencies:
+  - better-sqlite3
   - esbuild
   - sharp
   - vue-demi
+
+patchedDependencies:
+  nuxt-fathom: patches/nuxt-fathom.patch

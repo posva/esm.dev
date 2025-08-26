@@ -112,6 +112,10 @@ const tiers = [
   shine?: 'lines' | 'spot' | 'crosses' | 'rainbow'
   description?: string
 }>
+
+const { data: data_intro } = await useAsyncData('intro', () => {
+  return queryCollection('content').path('/open-source/_intro').first()
+})
 </script>
 
 <template>
@@ -121,9 +125,7 @@ const tiers = [
     >
       <h1>Open Source Software</h1>
 
-      <ContentQuery path="/open-source/_intro" find="one" v-slot="{ data }">
-        <ContentRenderer :value="data" />
-      </ContentQuery>
+      <ContentRenderer v-if="data_intro" :value="data_intro" />
 
       <h2 id="for-companies">For Companies 🏢</h2>
 
@@ -197,9 +199,11 @@ const tiers = [
       <h3>Thank you!</h3>
 
       <section class="text-center">
-        <!-- TODO: make it interactive -->
+        <!-- TODO: make it interactive
+      -->
 
-        <!-- <SponsorsCircles /> -->
+        <!-- <SponsorsCircles />
+      -->
 
         <a
           href="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static/sk/circles.svg"

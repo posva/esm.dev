@@ -1,0 +1,13 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 6d7de408d63a1d46af208d625ec9f87e9f51b543..c63122a741655dd57f9462b938760bb1f37ef32c 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -6,7 +6,7 @@ const module = defineNuxtModule({
+     name: "fathom",
+     configKey: "fathom",
+     compatibility: {
+-      nuxt: "^3.0.0"
++      nuxt: "^4.0.0"
+     }
+   },
+   defaults: {

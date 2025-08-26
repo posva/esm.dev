@@ -15,7 +15,6 @@ const route = useRoute('index')
 useHead({
   meta: [
     {
-      hid: 'description',
       name: 'description',
       content: description,
     },

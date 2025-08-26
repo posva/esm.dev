@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // copied from antfu.me
 // not working yet as it's missing the tooltip directive and some of the classes for style
-import sponsors from '../data/sponsors-circles.json'
+import sponsors from '../../data/sponsors-circles.json'
 
 const lastHovered = ref<string[]>([])
 
