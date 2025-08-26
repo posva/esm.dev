@@ -21,7 +21,7 @@
     "@nuxt/content": "^2.13.4",
     "@tailwindcss/typography": "^0.5.16",
     "@vueuse/core": "^13.7.0",
-    "@vueuse/nuxt": "^11.3.0",
+    "@vueuse/nuxt": "^13.7.0",
     "eventemitter3": "^5.0.1",
     "fuse.js": "^7.1.0",
     "lodash-es": "^4.17.21",
