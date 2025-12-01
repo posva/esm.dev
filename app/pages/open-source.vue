@@ -20,7 +20,7 @@ const tiers = [
     spots: 'Limited spots!',
     perks: [
       'Prioritized issues',
-      '1 full day of dedicated consultancy work per month',
+      '2 hours of dedicated consultancy work per month',
       'Big logo placement on Vue Router and Pinia docs (>3M impressions)',
       'Access to a private Discord',
       'My eternal appreciation for your support ❤',
@@ -61,7 +61,6 @@ const tiers = [
     spots: 'Limited spots!',
     perks: [
       'Prioritized issues',
-      '45 minutes of dedicated consultancy work per month',
       'Logo placement on Vue Router and Pinia docs (>3M impressions)',
       'Access to a private Discord',
       'My eternal appreciation for your support ❤',

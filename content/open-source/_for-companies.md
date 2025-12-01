@@ -10,6 +10,8 @@ This is a great question! Here are **my top reasons**:
 
 On top of that, I can offer you Freelancing services if you **fund my work** [💰]{.wiggle}. **Even [$50]{.font-mono.font-thin} per month goes a long way**. Check the options below [👇]{.handshake}
 
-- [🤝]{.handshake} **One Time help**: :cal-schedule-button - Schedule a call together so I can provide personalized assistance.
+- ~~[🤝]{.handshake} **One Time help**: :cal-schedule-button - Schedule a call together so I can provide personalized assistance.~~
 - [❤️]{.heartbeat} **Small sponsorship**: Sponsor me on :chip-link{text="GitHub Sponsors" icon="bxl:github" url="https://github.com/sponsors/posva"} with small amounts like [$50]{.font-mono}. It does not require anything from your side and **help me a lot**.
-- [<Icon name="pepicons-pop:arrows-spin" />]{.spin.reverse} **Recurring help**: Let's setup a contract. Similar to GitHub Sponsor but adapted to companies who value good practices and well-maintained code bases:
+- ~~[<Icon name="pepicons-pop:arrows-spin" />]{.spin.reverse} **Recurring help**: Let's setup a contract. Similar to GitHub Sponsor but adapted to companies who value good practices and well-maintained code bases.~~
+
+ℹ️ Since I am currently full-time employed, I can no longer offer freelancing contracts and consultancy.

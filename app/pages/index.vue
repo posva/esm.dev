@@ -73,16 +73,14 @@ useHead({
           <a v-magnetic href="https://github.com/posva">GitHub</a>.
         </p>
 
-        <p>
-          If you want to work together, please
-          <a v-magnetic href="https://twitter.com/posva"
-            >message me on Twitter</a
-          >
-          or
-          <a href="#" v-magnetic @click.prevent="openCal('posva/consultancy')"
-            >book a call</a
-          >.
-        </p>
+        <!-- <p> -->
+        <!--   If you want to work together, please -->
+        <!--   <a v-magnetic href="https://x.com/posva">message me on Twitter</a> -->
+        <!--   or -->
+        <!--   <a href="#" v-magnetic @click.prevent="openCal('posva/consultancy')" -->
+        <!--     >book a call</a -->
+        <!--   >. -->
+        <!-- </p> -->
       </main>
     </div>
 

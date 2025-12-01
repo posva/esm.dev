@@ -3,7 +3,7 @@ const footerSocials = [
   {
     icon: 'line-md:twitter-x-alt',
     text: 'X',
-    url: 'https://twitter.com/posva',
+    url: 'https://x.com/posva',
   },
   {
     text: 'Bluesky',
