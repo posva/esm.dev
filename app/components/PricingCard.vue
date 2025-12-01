@@ -80,6 +80,7 @@ function onMouseMove(e: MouseEvent | TouchEvent) {
   let clientX: number
   let clientY: number
   if (isTouchEvent(e)) {
+    if (!e.touches[0]) return
     clientX = e.touches[0].clientX
     clientY = e.touches[0].clientY
   } else {
@@ -176,13 +177,13 @@ const cssLinesPos = computed(() => `${linesPos.v}%`)
 
           <div class="flex justify-between w-full mx-auto">
             <button class="btn secondary" @click="toggle()">
-              <span>
-                <Icon name="material-symbols:arrow-back-ios-new" /> Back
-              </span>
+              <Icon name="material-symbols:arrow-back-ios-new" />
+              <span>Back</span>
             </button>
 
             <button class="btn" @click="openCal('posva/sponsor')">
-              <span> <Icon name="material-symbols:call" /> Let's talk </span>
+              <Icon name="material-symbols:call" />
+              <span>Let's talk</span>
             </button>
           </div>
 
@@ -201,9 +202,9 @@ const cssLinesPos = computed(() => `${linesPos.v}%`)
         >
           <h4 class="flex items-center font-mono text-2xl">
             <span
-              class="relative block w-10 h-10 mr-2 overflow-hidden text-center border border-current rounded-full bg-slate-400/30"
+              class="flex items-center justify-center w-10 h-10 mr-2 overflow-hidden text-center border border-current rounded-full bg-slate-400/30"
             >
-              <Icon :name="icon" class="" />
+              <Icon :name="icon" />
             </span>
             <span class="block">{{ tier }}</span>
           </h4>
@@ -225,10 +226,8 @@ const cssLinesPos = computed(() => `${linesPos.v}%`)
               class="btn"
               @click="springRotateDelta.y = springRotateDelta.y > 90 ? 0 : 180"
             >
-              <span>
-                Perks
-                <Icon name="ion:sparkles-sharp" />
-              </span>
+              <span>Perks</span>
+              <Icon name="ion:sparkles-sharp" />
               <div class="card_glare spot"></div>
             </button>
             <span v-if="spots !== null" class="font-mono text-xs">
@@ -273,6 +272,10 @@ button.card_rotator {
   --primary: var(--card-primary);
 
   @apply relative px-4 mt-2 overflow-hidden font-mono text-sm font-bold transition-all border-2 rounded-full shadow-inner active:shadow-black shadow-slate-200;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 
   border-color: currentColor;
   border-color: color-mix(in srgb, var(--primary) 20%, currentColor 40%);
