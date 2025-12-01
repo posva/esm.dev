@@ -57,6 +57,6 @@
     "d3-hierarchy": "^3.1.2",
     "nuxt": "^4.2.1",
     "nuxt-fathom": "^0.0.3",
-    "prettier": "^3.6.2"
+    "prettier": "^3.7.3"
   }
 }
