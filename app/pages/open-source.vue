@@ -225,10 +225,10 @@ const { data: contentWorkingNow } = await useAsyncData('working-now', () => {
       -->
 
         <a
-          href="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static/sk/circles.svg"
+          href="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static@main/sk/circles.svg"
         >
           <img
-            src="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static/sk/circles.svg"
+            src="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static@main/sk/circles.svg"
             alt="posva's sponsors"
           />
         </a>
