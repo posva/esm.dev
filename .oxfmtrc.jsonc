@@ -3,14 +3,7 @@
   "semi": false,
   "printWidth": 100,
   "trailingComma": "all",
-  "experimentalSortPackageJson": false,
+  "experimentalSortPackageJson": true,
   "singleQuote": true,
-  "ignorePatterns": [
-    "typed-router.d.ts",
-    "components.d.ts",
-    "codemods/rule-tests/__snapshots__/",
-    // it breaks vitepress features
-    "docs/**/*.md",
-    "pnpm-lock.yaml",
-  ],
+  "ignorePatterns": [],
 }
