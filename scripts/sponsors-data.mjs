@@ -18,7 +18,7 @@ async function main() {
   console.log('Fetching sponsors...')
   /** @type {Sponsor[]} */
   const _sponsors = await fetch(
-    'https://cdn.jsdelivr.net/gh/posva/sponsorkit-static/sk/sponsors.json'
+    'https://cdn.jsdelivr.net/gh/posva/sponsorkit-static/sk/sponsors.json',
   ).then((res) => res.json())
 
   console.log(`Found ${_sponsors.length} sponsors`)
@@ -40,15 +40,7 @@ async function main() {
     }))
 
   const root = hierarchy({ ...sponsors[0], children: sponsors, id: 'root' })
-    .sum(
-      (d) =>
-        1 +
-        lerp(
-          RADIUS_MIN,
-          RADIUS_MAX,
-          (Math.max(0.1, d.amount || 0) / amountMax) ** 0.9
-        )
-    )
+    .sum((d) => 1 + lerp(RADIUS_MIN, RADIUS_MAX, (Math.max(0.1, d.amount || 0) / amountMax) ** 0.9))
     .sort((a, b) => (b.value || 0) - (a.value || 0))
 
   const p = pack()
@@ -84,7 +76,7 @@ async function main() {
   fs.mkdirSync(path.join(__dirname, '../data'), { recursive: true })
   fs.writeFileSync(
     path.join(__dirname, '../data/sponsors-circles.json'),
-    JSON.stringify(sponsors, null, 2)
+    JSON.stringify(sponsors, null, 2),
   )
   console.log('Done')
 }

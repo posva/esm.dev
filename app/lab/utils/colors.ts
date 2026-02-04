@@ -11,7 +11,7 @@ export function getHexColorVariable(variable: string): number {
       .slice(1)
       .map((n) => Number(n).toString(16))
       .join(''),
-    16
+    16,
   )
 }
 

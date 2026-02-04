@@ -14,7 +14,7 @@ export interface UseFuseOptions<T> {
 export function useFuse<DataItem>(
   search: MaybeRefOrGetter<string>,
   data: MaybeRefOrGetter<DataItem[]>,
-  options?: MaybeRefOrGetter<UseFuseOptions<DataItem>>
+  options?: MaybeRefOrGetter<UseFuseOptions<DataItem>>,
 ) {
   const createFuse = () => {
     return new Fuse(toValue(data) ?? [], toValue(options)?.fuseOptions)
@@ -27,7 +27,7 @@ export function useFuse<DataItem>(
     () => {
       fuse.value = createFuse()
     },
-    { deep: true }
+    { deep: true },
   )
 
   watch(
@@ -35,7 +35,7 @@ export function useFuse<DataItem>(
     (newData) => {
       fuse.value.setCollection(newData)
     },
-    { deep: true }
+    { deep: true },
   )
 
   const results: ComputedRef<FuseResult<DataItem>[]> = computed(() => {

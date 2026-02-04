@@ -21,9 +21,8 @@ onMounted(() => {
 
   const experiment = () =>
     (experimentModuleList[experimentId].module?.() ??
-      experimentModuleList[
-        Math.floor(Math.random() * experimentModuleList.length)
-      ].module) as Promise<{
+      experimentModuleList[Math.floor(Math.random() * experimentModuleList.length)]
+        .module) as Promise<{
       isPixi?: boolean
       start: () => any
       stop?: () => void

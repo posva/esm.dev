@@ -9,9 +9,7 @@ const labId = computed(() => {
   if (!Number.isNaN(n)) return n
 
   // try to deduce from
-  const index = experimentModuleList.findIndex(
-    (m) => m.name === route.params.id
-  )
+  const index = experimentModuleList.findIndex((m) => m.name === route.params.id)
 
   return index > -1 ? index : null
 })

@@ -33,9 +33,7 @@ const navLinks = [
 </script>
 
 <template>
-  <header
-    class="flex px-4 py-2 transition-opacity opacity-50 hover:opacity-100"
-  >
+  <header class="flex px-4 py-2 transition-opacity opacity-50 hover:opacity-100">
     <NuxtLink to="/" title="Homepage">
       <img class="w-8 rounded-full" src="/avatar.jpg" alt="Eduardo" />
       <span class="sr-only">Homepage</span>

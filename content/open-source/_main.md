@@ -82,7 +82,6 @@ haha
 - Book calls (Paris Time zone)
   - None work for you and really need help? Over hours calls (x2 price)
 - Monthly contracts
-
   - minimum 3 months
   - different tiers give different levels of support for Vue/Nuxt projects
 

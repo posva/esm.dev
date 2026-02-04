@@ -49,7 +49,7 @@ const props = withDefaults(
     // for black/white cards (like cards against humanity, hard-light works better)
     blend: 'soft-light',
     shine: 'lines',
-  }
+  },
 )
 
 const gradientBg = computed(
@@ -57,7 +57,7 @@ const gradientBg = computed(
     props.primary &&
     props.secondary && {
       'background-image': `linear-gradient(to right top, ${props.primary}, ${props.secondary});`,
-    }
+    },
 )
 
 const interacting = ref(false)
@@ -113,13 +113,9 @@ function onMouseMove(e: MouseEvent | TouchEvent) {
   springBackground.y = adjust(percent.y, 0, 100, 33, 67)
 
   const rotateMultiplierX =
-    typeof props.rotateMultiplier === 'number'
-      ? props.rotateMultiplier
-      : props.rotateMultiplier.x
+    typeof props.rotateMultiplier === 'number' ? props.rotateMultiplier : props.rotateMultiplier.x
   const rotateMultiplierY =
-    typeof props.rotateMultiplier === 'number'
-      ? props.rotateMultiplier
-      : props.rotateMultiplier.y
+    typeof props.rotateMultiplier === 'number' ? props.rotateMultiplier : props.rotateMultiplier.y
 
   springRotate.x = round(rotateMultiplierX * -center.x)
   springRotate.y = round(rotateMultiplierY * center.y)
@@ -166,9 +162,7 @@ const cssLinesPos = computed(() => `${linesPos.v}%`)
         @focus="interacting = true"
         @blur="interacting = false"
       >
-        <section
-          class="flex flex-col px-4 pt-3 pb-3 border-4 select-none card_back"
-        >
+        <section class="flex flex-col px-4 pt-3 pb-3 border-4 select-none card_back">
           <h4 class="mb-4 font-mono text-xl">Perks</h4>
 
           <div class="flex-grow pb-4 text-sm">
@@ -197,9 +191,7 @@ const cssLinesPos = computed(() => `${linesPos.v}%`)
           <div class="card_glare spot"></div>
         </section>
 
-        <section
-          class="relative flex flex-col p-4 border-4 select-none card_front"
-        >
+        <section class="relative flex flex-col p-4 border-4 select-none card_front">
           <h4 class="flex items-center font-mono text-2xl">
             <span
               class="flex items-center justify-center w-10 h-10 mr-2 overflow-hidden text-center border border-current rounded-full bg-slate-400/30"
@@ -222,10 +214,7 @@ const cssLinesPos = computed(() => `${linesPos.v}%`)
           <div class="card_glare" :class="shine"></div>
 
           <div class="flex items-end justify-between">
-            <button
-              class="btn"
-              @click="springRotateDelta.y = springRotateDelta.y > 90 ? 0 : 180"
-            >
+            <button class="btn" @click="springRotateDelta.y = springRotateDelta.y > 90 ? 0 : 180">
               <span>Perks</span>
               <Icon name="ion:sparkles-sharp" />
               <div class="card_glare spot"></div>
@@ -261,11 +250,7 @@ button.card_rotator {
 
 .card_front,
 .card_back {
-  background-image: linear-gradient(
-    to left bottom,
-    var(--card-primary),
-    var(--card-secondary)
-  );
+  background-image: linear-gradient(to left bottom, var(--card-primary), var(--card-secondary));
 }
 
 .card .btn {
@@ -286,11 +271,7 @@ button.card_rotator {
 .card_back,
 .card_front {
   --border-color: #000;
-  border-color: color-mix(
-    in srgb,
-    var(--border-color) 60%,
-    var(--card-primary) 60%
-  );
+  border-color: color-mix(in srgb, var(--border-color) 60%, var(--card-primary) 60%);
 }
 
 @media (prefers-dark-interface), (prefers-color-scheme: dark) {
@@ -579,10 +560,8 @@ Shine & Glare Effects
     210% 210%;
   background-position:
     center,
-    calc(((var(--background-x) - 50%) * 1.5) + 50%)
-      calc(((var(--background-y) - 50%) * 1.5) + 50%),
-    calc(((var(--background-x) - 50%) * 1.5) + 50%)
-      calc(((var(--background-y) - 50%) * 1.5) + 50%);
+    calc(((var(--background-x) - 50%) * 1.5) + 50%) calc(((var(--background-y) - 50%) * 1.5) + 50%),
+    calc(((var(--background-x) - 50%) * 1.5) + 50%) calc(((var(--background-y) - 50%) * 1.5) + 50%);
   background-blend-mode: exclusion, color-dodge, color-burn;
   filter: brightness(0.5) contrast(2) saturate(1.75);
   mix-blend-mode: soft-light;

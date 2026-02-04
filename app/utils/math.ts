@@ -7,9 +7,7 @@ export function adjust(
   fromMin: number,
   fromMax: number,
   toMin: number,
-  toMax: number
+  toMax: number,
 ) {
-  return round(
-    toMin + ((toMax - toMin) * (value - fromMin)) / (fromMax - fromMin)
-  )
+  return round(toMin + ((toMax - toMin) * (value - fromMin)) / (fromMax - fromMin))
 }

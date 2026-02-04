@@ -63,8 +63,7 @@ body.light {
 body {
   box-sizing: border-box;
   font-family:
-    -apple-system, 'Helvetica Neue', BlinkMacSystemFont, Cantarell, 'Open Sans',
-    sans-serif;
+    -apple-system, 'Helvetica Neue', BlinkMacSystemFont, Cantarell, 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   background-color: rgb(var(--bgColor));
   color: rgb(var(--textColor));

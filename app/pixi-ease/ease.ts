@@ -7,7 +7,7 @@ export type EasingFn = (
   currentTime: number,
   initialValue: number,
   changeInValue: number,
-  duration: number
+  duration: number,
 ) => number
 
 interface EaseOptions {
@@ -128,13 +128,11 @@ export class Ease extends Events {
   add(
     element: Container | Container[],
     params: Record<string, any>,
-    options?: EaseOptions
+    options?: EaseOptions,
   ): Easing {
     options = options || {}
     options.duration =
-      typeof options.duration !== 'undefined'
-        ? options.duration
-        : this.options.duration
+      typeof options.duration !== 'undefined' ? options.duration : this.options.duration
     options.ease = options.ease || this.options.ease
     if (typeof options.ease === 'string') {
       options.ease = Penner[options.ease]
@@ -142,9 +140,7 @@ export class Ease extends Events {
     const easing = new Easing(element, params, options)
     this.easings.push(easing)
     if (this.empty && this.options.useRAF) {
-      this.handleRAF = requestAnimationFrame((deltaTime) =>
-        this.update({ deltaTime })
-      )
+      this.handleRAF = requestAnimationFrame((deltaTime) => this.update({ deltaTime }))
       this.lastTime = Date.now()
     }
     this.empty = false
@@ -171,12 +167,10 @@ export class Ease extends Events {
     element: Container,
     target: Container | Point,
     speed: number,
-    options?: EaseOptions
+    options?: EaseOptions,
   ): Easing {
     const duration =
-      Math.sqrt(
-        Math.pow(element.x - target.x, 2) + Math.pow(element.y - target.y, 2)
-      ) / speed
+      Math.sqrt(Math.pow(element.x - target.x, 2) + Math.pow(element.y - target.y, 2)) / speed
     options = options || {}
     options.duration = duration
     return this.add(element, { x: target.x, y: target.y }, options)
@@ -201,11 +195,11 @@ export class Ease extends Events {
     element: Container,
     target: Container | Point,
     speed: number,
-    options?: EaseOptions
+    options?: EaseOptions,
   ): Easing {
     const shortestAngle = Easing.shortestAngle(
       element.rotation,
-      Math.atan2(target.y - element.y, target.x - element.x)
+      Math.atan2(target.y - element.y, target.x - element.x),
     )
     const duration = Math.abs(shortestAngle - element.rotation) / speed
     options = options || {}
@@ -275,9 +269,7 @@ export class Ease extends Events {
       }
     }
     if (this.options.useRAF && this.easings.length) {
-      this.handleRAF = requestAnimationFrame((deltaTime) =>
-        this.update({ deltaTime })
-      )
+      this.handleRAF = requestAnimationFrame((deltaTime) => this.update({ deltaTime }))
     } else {
       this.handleRAF = undefined
     }

@@ -1,6 +1,4 @@
-export function addTapListener(
-  listener: (event: TouchEvent | PointerEvent | MouseEvent) => void
-) {
+export function addTapListener(listener: (event: TouchEvent | PointerEvent | MouseEvent) => void) {
   if ('PointerEvent' in window) {
     document.body.addEventListener('pointerdown', listener)
   } else {

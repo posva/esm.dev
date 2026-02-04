@@ -2,13 +2,7 @@ import { nanoid } from 'nanoid'
 import { debounce } from 'lodash-es'
 import { resetCanvasCheck, ensureCanvasWithSize } from '../utils/screen'
 import { getColorVariable, onColorChange } from '../utils/colors'
-import {
-  generateMaze,
-  solveMaze,
-  simplifyPath,
-  type Context,
-  setRandomizer,
-} from './002-maze'
+import { generateMaze, solveMaze, simplifyPath, type Context, setRandomizer } from './002-maze'
 import { addTapListener } from '../utils/events'
 import { createRandomizer } from '../utils/random'
 
@@ -38,11 +32,7 @@ function getContext(): Context | null {
   setRandomizer(random)
 
   const tree = generateMaze(width, height)
-  let solutionUnoptimized = solveMaze(
-    tree,
-    { x: 0, y: 0 },
-    { x: width - 1, y: height - 1 }
-  )
+  let solutionUnoptimized = solveMaze(tree, { x: 0, y: 0 }, { x: width - 1, y: height - 1 })
 
   // add a small offset outside of the maze to make it look better
   solutionUnoptimized.unshift({ x: 0, y: -1 })
@@ -61,7 +51,7 @@ function getContext(): Context | null {
       debounce(() => {
         _context = null
         getContext()
-      }, 200)
+      }, 200),
     )
 
     onColorChange(() => {
@@ -102,8 +92,7 @@ export function render() {
     const { offset, cellSize, ctx, solution } = context
 
     // clear
-    ctx.fillStyle =
-      getColorVariable('bgColor') === 'rgb(18, 19, 20)' ? 'black' : 'white'
+    ctx.fillStyle = getColorVariable('bgColor') === 'rgb(18, 19, 20)' ? 'black' : 'white'
     ctx.fillRect(0, 0, size.x, size.y)
 
     // draw the path that has been traversed already

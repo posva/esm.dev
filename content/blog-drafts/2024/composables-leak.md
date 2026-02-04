@@ -37,10 +37,7 @@ import {
   queryLineageByWorkFlowCode,
   queryLineageByWorkFlowName,
 } from '@/service/modules/lineages'
-import type {
-  WorkflowRes,
-  WorkFlowListRes,
-} from '@/service/modules/lineages/types'
+import type { WorkflowRes, WorkFlowListRes } from '@/service/modules/lineages/types'
 export function useRelation() {
   const variables = reactive({
     workflowOptions: [],
@@ -68,29 +65,26 @@ export function useRelation() {
   }
   const getWorkflowName = (projectCode: number) => {
     const { state } = useAsyncState(
-      queryLineageByWorkFlowName({ projectCode }).then(
-        (res: Array<WorkFlowListRes>) => {
-          variables.workflowOptions = res.map((item) => {
-            return {
-              label: item.workFlowName,
-              value: item.workFlowCode,
-            }
-          }) as any
-        }
-      ),
-      {}
+      queryLineageByWorkFlowName({ projectCode }).then((res: Array<WorkFlowListRes>) => {
+        variables.workflowOptions = res.map((item) => {
+          return {
+            label: item.workFlowName,
+            value: item.workFlowCode,
+          }
+        }) as any
+      }),
+      {},
     )
     return state
   }
   const getOneWorkflow = (workflowCode: number, projectCode: number) => {
     const { state } = useAsyncState(
-      queryLineageByWorkFlowCode(
-        { workFlowCode: workflowCode },
-        { projectCode }
-      ).then((res: WorkflowRes) => {
-        formatWorkflow(res)
-      }),
-      {}
+      queryLineageByWorkFlowCode({ workFlowCode: workflowCode }, { projectCode }).then(
+        (res: WorkflowRes) => {
+          formatWorkflow(res)
+        },
+      ),
+      {},
     )
     return state
   }
@@ -101,7 +95,7 @@ export function useRelation() {
       }).then((res: WorkflowRes) => {
         formatWorkflow(res)
       }),
-      {}
+      {},
     )
     return state
   }

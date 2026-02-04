@@ -99,8 +99,7 @@
     min-width: 2.75rem;
 
     font-family:
-      'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial',
-      sans-serif;
+      'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
     /* letter-spacing: -0.013em; */
     font-size: 18px;
     line-height: 1.43;

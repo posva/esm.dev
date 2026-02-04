@@ -30,9 +30,7 @@ const langFlag = computed<string>(() => {
       <Icon name="icon-park-twotone:local-pin" />
       {{ talk.location }}</span
     >
-    <time v-if="talk.duration" :datetime="`PT0H${talk.duration}M00S`"
-      >{{ talk.duration }}m</time
-    >
+    <time v-if="talk.duration" :datetime="`PT0H${talk.duration}M00S`">{{ talk.duration }}m</time>
     <Icon :name="langFlag" />
     <span class="sr-only"> {{ talk.language || 'en' }}</span>
     <div>

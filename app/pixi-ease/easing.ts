@@ -33,11 +33,7 @@ export class Easing extends Events {
    * @fires EaseElement#wait
    * @fires EaseElement#wait-end
    */
-  constructor(
-    element: Container | Container[],
-    params: Record<string, any>,
-    options: object
-  ) {
+  constructor(element: Container | Container[], params: Record<string, any>, options: object) {
     super()
 
     /**
@@ -82,9 +78,7 @@ export class Easing extends Events {
 
       case 'tint':
       case 'blend':
-        const colors = Array.isArray(param)
-          ? param
-          : [(element as Container).tint, param]
+        const colors = Array.isArray(param) ? param : [(element as Container).tint, param]
         start = 0
         to = colors.length
         delta = to
@@ -117,10 +111,7 @@ export class Easing extends Events {
 
       case 'face':
         start = element.rotation
-        to = Easing.shortestAngle(
-          start,
-          Math.atan2(param.y - element.y, param.x - element.x)
-        )
+        to = Easing.shortestAngle(start, Math.atan2(param.y - element.y, param.x - element.x))
         delta = to - start
         update = (ease: Ease) => this.updateOne(ease, 'rotation')
         break
@@ -188,7 +179,7 @@ export class Easing extends Events {
       this.time,
       ease.start,
       ease.delta,
-      this.options.duration
+      this.options.duration,
     )
   }
 
@@ -197,23 +188,13 @@ export class Easing extends Events {
       this.time,
       ease.start,
       ease.delta,
-      this.options.duration
+      this.options.duration,
     )
   }
 
   updatePosition(ease: any) {
-    ease.element.x = this.options.ease(
-      this.time,
-      ease.start.x,
-      ease.delta.x,
-      this.options.duration
-    )
-    ease.element.y = this.options.ease(
-      this.time,
-      ease.start.y,
-      ease.delta.y,
-      this.options.duration
-    )
+    ease.element.x = this.options.ease(this.time, ease.start.x, ease.delta.x, this.options.duration)
+    ease.element.y = this.options.ease(this.time, ease.start.y, ease.delta.y, this.options.duration)
   }
 
   updateCoord(ease: any, name: string, coord: string) {
@@ -221,18 +202,13 @@ export class Easing extends Events {
       this.time,
       ease.start,
       ease.delta,
-      this.options.duration
+      this.options.duration,
     )
   }
 
   updateTint(ease: any, colors: number[]) {
     let index = Math.floor(
-      this.options.ease(
-        this.time,
-        ease.start,
-        ease.delta,
-        this.options.duration
-      )
+      this.options.ease(this.time, ease.start, ease.delta, this.options.duration),
     )
     if (index === colors.length) {
       index = colors.length - 1
@@ -241,12 +217,7 @@ export class Easing extends Events {
   }
 
   updateBlend(ease: any, colors: number[]) {
-    const calc = this.options.ease(
-      this.time,
-      ease.start,
-      ease.delta,
-      this.options.duration
-    )
+    const calc = this.options.ease(this.time, ease.start, ease.delta, this.options.duration)
     let index = Math.floor(calc)
     if (index === colors.length) {
       index = colors.length - 1

@@ -23,7 +23,7 @@ export const experimentModuleMap = Object.keys(EXPERIMENT_MODULES).reduce(
     }
     return acc
   },
-  {} as typeof EXPERIMENT_MODULES
+  {} as typeof EXPERIMENT_MODULES,
 )
 
 export const experimentNames = Object.keys(experimentModuleMap)

@@ -1,11 +1,6 @@
 import { debounce } from 'lodash-es'
 import { nanoid } from 'nanoid'
-import {
-  type Point,
-  isSamePoint,
-  resetCanvasCheck,
-  ensureCanvasWithSize,
-} from '../utils/screen'
+import { type Point, isSamePoint, resetCanvasCheck, ensureCanvasWithSize } from '../utils/screen'
 import { getColorVariable, onColorChange } from '../utils/colors'
 import { createRandomizer, type Randomizer } from '../utils/random'
 
@@ -46,12 +41,7 @@ interface MazeNode {
  * @param start start of the labyrinth, must be on the left side and only one value (x or y) can be different from zero
  * @param end start of the labyrinth, must be on the right side and only one value (x or y) can be different from the width or height
  */
-function createWall(
-  x: number,
-  y: number,
-  width: number,
-  height: number
-): MazeNode | MazeNodeLeaf {
+function createWall(x: number, y: number, width: number, height: number): MazeNode | MazeNodeLeaf {
   if (width === 1 || height === 1) {
     return {
       x,
@@ -74,13 +64,13 @@ function createWall(
     x,
     y,
     wall === WallType.vertical ? wallOffset : width,
-    wall === WallType.vertical ? height : wallOffset
+    wall === WallType.vertical ? height : wallOffset,
   )
   const right = createWall(
     x + (wall === WallType.vertical ? wallOffset : 0),
     y + (wall === WallType.vertical ? 0 : wallOffset),
     wall === WallType.vertical ? width - wallOffset : width,
-    wall === WallType.vertical ? height : height - wallOffset
+    wall === WallType.vertical ? height : height - wallOffset,
   )
 
   return {
@@ -105,11 +95,7 @@ export function generateMaze(width: number, height: number): MazeNode {
   return createWall(0, 0, width, height) as MazeNode
 }
 
-function dividePath(
-  maze: MazeNode | MazeNodeLeaf,
-  start: Point,
-  end: Point
-): Point[] {
+function dividePath(maze: MazeNode | MazeNodeLeaf, start: Point, end: Point): Point[] {
   if (isSamePoint(start, end)) return [{ ...start }]
   if (maze.wall === WallType.none) return [{ ...start }, { ...end }]
 
@@ -243,7 +229,7 @@ function getContext(
   cellSize: number,
   offset: Point,
   start: Point = { x: 0, y: -1 },
-  end?: Point
+  end?: Point,
 ): Context | null {
   if (_context) return _context
   resetCanvasCheck()
@@ -258,7 +244,7 @@ function getContext(
 
   const seed = window.location.hash.slice(1) || nanoid()
   console.log(
-    `Generating a maze ${width}x${height} with cellSize of ${cellSize} with 🌱 seed "${seed}"`
+    `Generating a maze ${width}x${height} with cellSize of ${cellSize} with 🌱 seed "${seed}"`,
   )
   const random = createRandomizer(seed)
   randomizer = random
@@ -270,7 +256,7 @@ function getContext(
   let solutionUnoptimized = solveMaze(
     tree,
     cropPoint(start, tree.width, tree.height),
-    cropPoint(end, tree.width, tree.height)
+    cropPoint(end, tree.width, tree.height),
   )
   console.log(`🛣 Length of the path: ${solutionUnoptimized.length}`)
   // console.timeEnd('Maze solving')
@@ -296,7 +282,7 @@ function getContext(
         const width = Math.floor((size.x - offset.x * 2) / cellSize)
         const height = Math.floor((size.y - offset.y * 2) / cellSize)
         getContext(width, height, cellSize, offset)
-      }, 500)
+      }, 500),
     )
     onColorChange(() => {
       if (!_context) return
@@ -350,8 +336,7 @@ function movePosition(context: Context, ratio: number) {
   const { position, direction, nextPoint } = context
   const point = context.solution[nextPoint]
   const delta = (ratio * context.solution.length) / 30
-  position[direction] +=
-    (position[direction] < point[direction] ? 1 : -1) * delta
+  position[direction] += (position[direction] < point[direction] ? 1 : -1) * delta
   context.remaining -= delta
 
   if (context.remaining <= 0) {
@@ -361,8 +346,7 @@ function movePosition(context: Context, ratio: number) {
     if (context.nextPoint >= context.solution.length) context.state = 'end'
     else {
       context.remaining = Math.abs(
-        context.solution[context.nextPoint][context.direction] -
-          position[context.direction]
+        context.solution[context.nextPoint][context.direction] - position[context.direction],
       )
     }
   }
@@ -371,14 +355,8 @@ function movePosition(context: Context, ratio: number) {
 function drawWall(context: Context) {
   const { ctx, tree, cellSize, offset } = context
   ctx.beginPath()
-  const x =
-    (tree.x + (tree.wall === WallType.vertical ? tree.wallOffset : 0)) *
-      cellSize +
-    offset.x
-  const y =
-    (tree.y + (tree.wall === WallType.vertical ? 0 : tree.wallOffset)) *
-      cellSize +
-    offset.y
+  const x = (tree.x + (tree.wall === WallType.vertical ? tree.wallOffset : 0)) * cellSize + offset.x
+  const y = (tree.y + (tree.wall === WallType.vertical ? 0 : tree.wallOffset)) * cellSize + offset.y
 
   ctx.moveTo(x, y)
   if (tree.wall === WallType.vertical) {
@@ -404,10 +382,8 @@ function drawWall(context: Context) {
   }
   ctx.stroke()
 
-  if (tree.left.wall !== WallType.none)
-    drawWall({ ...context, tree: tree.left })
-  if (tree.right.wall !== WallType.none)
-    drawWall({ ...context, tree: tree.right })
+  if (tree.left.wall !== WallType.none) drawWall({ ...context, tree: tree.left })
+  if (tree.right.wall !== WallType.none) drawWall({ ...context, tree: tree.right })
 }
 
 function drawTree(context: Context) {
@@ -428,14 +404,8 @@ function drawTree(context: Context) {
   ctx.beginPath()
   ctx.moveTo(offset.x, offset.y)
   ctx.lineTo(offset.x + tree.width * cellSize, offset.y)
-  ctx.lineTo(
-    offset.x + tree.width * cellSize,
-    offset.y + tree.height * cellSize
-  )
-  ctx.moveTo(
-    offset.x + tree.width * cellSize,
-    offset.y + tree.height * cellSize
-  )
+  ctx.lineTo(offset.x + tree.width * cellSize, offset.y + tree.height * cellSize)
+  ctx.moveTo(offset.x + tree.width * cellSize, offset.y + tree.height * cellSize)
   ctx.lineTo(offset.x, offset.y + tree.height * cellSize)
   ctx.lineTo(offset.x, offset.y)
 
@@ -455,14 +425,10 @@ function clearDoor(ctx: CanvasRenderingContext2D, p: Point, context: Context) {
   const { offset, tree, cellSize } = context
   if (p.x < 0 || p.y < 0 || p.x >= tree.width || p.y >= tree.height) {
     ctx.fillRect(
-      offset.x +
-        p.x * cellSize +
-        (p.x < 0 ? cellSize : p.x >= tree.width ? -cellSize : 0) / 2,
-      offset.y +
-        p.y * cellSize +
-        (p.y < 0 ? cellSize : p.y >= tree.height ? -cellSize : 0) / 2,
+      offset.x + p.x * cellSize + (p.x < 0 ? cellSize : p.x >= tree.width ? -cellSize : 0) / 2,
+      offset.y + p.y * cellSize + (p.y < 0 ? cellSize : p.y >= tree.height ? -cellSize : 0) / 2,
       cellSize,
-      cellSize
+      cellSize,
     )
   }
 }
@@ -484,8 +450,7 @@ function clearPlayer(context: Context) {
 }
 
 export function drawPath(context: Context) {
-  const { offset, cellSize, ctx, position, solution, nextPoint, direction } =
-    context
+  const { offset, cellSize, ctx, position, solution, nextPoint, direction } = context
 
   // draw the path that has been traversed already
   let point = solution[0]
@@ -505,14 +470,9 @@ export function drawPath(context: Context) {
   }
   // draw the portion that is being walked currently
   const remaining =
-    Math.max(context.remaining, 0) *
-    (position[direction] < point[direction] ? 1 : -1)
-  x =
-    offset.x +
-    (point.x + 0.5 - +(context.direction === 'x') * remaining) * cellSize
-  y =
-    offset.y +
-    (point.y + 0.5 - +(context.direction === 'y') * remaining) * cellSize
+    Math.max(context.remaining, 0) * (position[direction] < point[direction] ? 1 : -1)
+  x = offset.x + (point.x + 0.5 - +(context.direction === 'x') * remaining) * cellSize
+  y = offset.y + (point.y + 0.5 - +(context.direction === 'y') * remaining) * cellSize
   ctx.lineTo(x, y)
   ctx.stroke()
 

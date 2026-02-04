@@ -17,10 +17,9 @@ useHead({
     <main>
       <ol>
         <li v-for="experiment of experimentModuleList">
-          <NuxtLink
-            :to="{ name: 'labs-id', params: { id: experiment.name } }"
-            >{{ experiment.name }}</NuxtLink
-          >
+          <NuxtLink :to="{ name: 'labs-id', params: { id: experiment.name } }">{{
+            experiment.name
+          }}</NuxtLink>
         </li>
       </ol>
     </main>

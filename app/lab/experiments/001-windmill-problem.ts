@@ -4,11 +4,7 @@
 
 import { debounce, throttle } from 'lodash-es'
 
-import {
-  type Point,
-  resetCanvasCheck,
-  ensureCanvasWithSize,
-} from '../utils/screen'
+import { type Point, resetCanvasCheck, ensureCanvasWithSize } from '../utils/screen'
 import { getColorVariable } from '../utils/colors'
 
 /**
@@ -103,9 +99,7 @@ function globalClickHandler(event: MouseEvent | TouchEvent | PointerEvent) {
     }
   }
 
-  const collisionPointI = context.points.findIndex((p, i) =>
-    isPointInside(mousePoint, p, radius)
-  )
+  const collisionPointI = context.points.findIndex((p, i) => isPointInside(mousePoint, p, radius))
   if (collisionPointI < 0) {
     context.points.push(mousePoint)
     // reset nextPoint
@@ -155,7 +149,7 @@ function start(seed: number, options: Options) {
       'resize',
       debounce(() => {
         start(seed + 1, options)
-      }, 500)
+      }, 500),
     )
     document.body.addEventListener('keydown', ({ key }) => {
       const inc = (+(key === 'ArrowRight') - +(key === 'ArrowLeft')) * 0.15
@@ -166,8 +160,7 @@ function start(seed: number, options: Options) {
     })
     // remove add points
     const throttledClick = throttle(globalClickHandler, 100)
-    if ('PointerEvent' in window)
-      document.body.addEventListener('pointerdown', throttledClick)
+    if ('PointerEvent' in window) document.body.addEventListener('pointerdown', throttledClick)
     else {
       document.body.addEventListener('mousedown', throttledClick)
       // touch devices
@@ -290,12 +283,7 @@ export function render(ratio: number) {
   ctx.fillRect(0, 0, size.x, size.y)
 
   // draw all points except current one
-  const circleGradient = ctx.createLinearGradient(
-    0,
-    0,
-    context.options.width,
-    0
-  )
+  const circleGradient = ctx.createLinearGradient(0, 0, context.options.width, 0)
   circleGradient.addColorStop(0, getColorVariable('primary'))
   circleGradient.addColorStop(1, getColorVariable('secondary'))
   ctx.fillStyle = circleGradient
@@ -322,7 +310,7 @@ export function render(ratio: number) {
     Math.max(0, Math.min(from.x, size.x)),
     Math.max(0, Math.min(from.y, size.y)),
     Math.max(0, Math.min(to.x, size.x)),
-    Math.max(0, Math.min(to.y, size.y))
+    Math.max(0, Math.min(to.y, size.y)),
   )
   lineGradient.addColorStop(0, 'red')
   lineGradient.addColorStop(1, 'blue')

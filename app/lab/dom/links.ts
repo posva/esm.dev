@@ -11,13 +11,7 @@ export async function rotateOffsets(ratio: number, distanceMultiplier: number) {
 
   angle += angleIncrement * ratio
   angle %= TWO_PI
-  main.style.setProperty(
-    '--moveX',
-    distanceMultiplier * offsetBase * Math.cos(angle) + 'px'
-  )
-  main.style.setProperty(
-    '--moveY',
-    distanceMultiplier * offsetBase * Math.sin(angle) + 'px'
-  )
+  main.style.setProperty('--moveX', distanceMultiplier * offsetBase * Math.cos(angle) + 'px')
+  main.style.setProperty('--moveY', distanceMultiplier * offsetBase * Math.sin(angle) + 'px')
   // await delay(1000)
 }

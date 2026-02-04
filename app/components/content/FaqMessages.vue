@@ -15,8 +15,7 @@ const entries = [
 
   {
     question: 'Can I book a slot for a team?',
-    answer:
-      'Yes, you can book a slot for a team. You can be as many as you want in the call.',
+    answer: 'Yes, you can book a slot for a team. You can be as many as you want in the call.',
   },
   {
     question: 'Can you issue invoices?',
@@ -144,7 +143,7 @@ const highlightedResults = computed(() => {
 const submitQuestionLink = ref<HTMLAnchorElement>()
 const newQuestionLink = computed(
   () =>
-    `https://github.com/posva/posva/discussions/new?category=q-a&labels=from-esm.dev&body=%3C!--%20add%20any%20extra%20information%20here%20--%3E&title=${encodeURIComponent(searchText.value)}`
+    `https://github.com/posva/posva/discussions/new?category=q-a&labels=from-esm.dev&body=%3C!--%20add%20any%20extra%20information%20here%20--%3E&title=${encodeURIComponent(searchText.value)}`,
 )
 
 function submitQuestion() {
@@ -166,11 +165,7 @@ function submitQuestion() {
         >
           <div class="mx-4 mt-2">
             <button @click="isOpen = false">
-              <Icon
-                name="material-symbols:arrow-back-ios"
-                size="1.5em"
-                class="action"
-              />
+              <Icon name="material-symbols:arrow-back-ios" size="1.5em" class="action" />
             </button>
           </div>
 
@@ -188,9 +183,7 @@ function submitQuestion() {
           </div>
         </header>
 
-        <main
-          class="px-2 pt-[86px] pb-[68px] flex flex-col-reverse justify-start min-h-[800px]"
-        >
+        <main class="px-2 pt-[86px] pb-[68px] flex flex-col-reverse justify-start min-h-[800px]">
           <FaqEntry v-for="{ question, answer } in highlightedResults">
             <p v-html="question"></p>
 
@@ -240,10 +233,7 @@ function submitQuestion() {
 
         <main class="flex flex-col">
           <div class="flex justify-center flex-grow align-middle">
-            <button
-              class="flex flex-col items-center space-y-1 select-none"
-              @click="isOpen = true"
-            >
+            <button class="flex flex-col items-center space-y-1 select-none" @click="isOpen = true">
               <img
                 src="/avatar.jpg"
                 class="block w-16 rounded-full shadow-md shadow-slate-950/40"
@@ -253,13 +243,8 @@ function submitQuestion() {
             </button>
           </div>
 
-          <div
-            class="flex flex-col pl-6 mt-4 space-y-2 overflow-hidden message-list"
-          >
-            <div
-              class="grid grid-flow-row h-[62px]"
-              v-for="conversation in conversalionList"
-            >
+          <div class="flex flex-col pl-6 mt-4 space-y-2 overflow-hidden message-list">
+            <div class="grid grid-flow-row h-[62px]" v-for="conversation in conversalionList">
               <div class="w-16 h-16 py-2">
                 <img
                   :src="conversation.img"
@@ -323,9 +308,7 @@ function submitQuestion() {
 
 .chat-container {
   --c-blue: rgb(25 139 254);
-  font-family:
-    'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial',
-    sans-serif;
+  font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   font-size: 18px;
   line-height: 1.43;
   font-weight: 400;

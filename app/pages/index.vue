@@ -57,8 +57,8 @@ useHead({
           <NuxtLink v-magnetic to="/open-source"><b>Open Source</b></NuxtLink
           >.
           <br />
-          I'm part of the <Icon name="logos:vue" size="0.85em" /> Vue.js Core
-          Team, the author of <Icon name="logos:pinia" /> Pinia and Vue Router.
+          I'm part of the <Icon name="logos:vue" size="0.85em" /> Vue.js Core Team, the author of
+          <Icon name="logos:pinia" /> Pinia and Vue Router.
         </p>
 
         <p>
@@ -67,10 +67,8 @@ useHead({
             href="https://www.youtube.com/results?search_query=eduardo+san+martin+morote"
             v-magnetic
             >talks at conferences</a
-          >. and writing
-          <NuxtLink v-magnetic to="/open-source">useful libraries</NuxtLink>,
-          mostly for Vue, but not only, on
-          <a v-magnetic href="https://github.com/posva">GitHub</a>.
+          >. and writing <NuxtLink v-magnetic to="/open-source">useful libraries</NuxtLink>, mostly
+          for Vue, but not only, on <a v-magnetic href="https://github.com/posva">GitHub</a>.
         </p>
 
         <!-- <p> -->
@@ -84,10 +82,7 @@ useHead({
       </main>
     </div>
 
-    <LabExperiment
-      v-if="route.query.lab !== 'no'"
-      :labId="route.query.i || route.query.lab"
-    />
+    <LabExperiment v-if="route.query.lab !== 'no'" :labId="route.query.i || route.query.lab" />
     <div id="lab-cloak"></div>
   </div>
 </template>

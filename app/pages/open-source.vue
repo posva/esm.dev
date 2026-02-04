@@ -75,8 +75,7 @@ const tiers = [
     primary: '#CD7F32',
     secondary: '#A59264',
     text: '#fff',
-    description:
-      'You use Vue, you make decent money thanks to it and you want to give back.',
+    description: 'You use Vue, you make decent money thanks to it and you want to give back.',
     perks: [
       'Logo placement on the readmes of my projects (Includes Vue Router and Pinia)',
       'Access to a private Discord',
@@ -97,10 +96,7 @@ const tiers = [
     shine: 'spot',
     description:
       'Give back to the Open Source you use and love. Simple and accessible, yet effective.',
-    perks: [
-      'Access to a private Discord',
-      'My eternal appreciation for your support ❤',
-    ],
+    perks: ['Access to a private Discord', 'My eternal appreciation for your support ❤'],
   },
 ] satisfies Array<{
   height: number
@@ -120,32 +116,17 @@ const { data: contentIntro } = await useAsyncData('intro', () => {
   return queryCollection('content').path('/open-source/_intro').first()
 })
 
-const { data: contentForCompanies } = await useAsyncData(
-  'for-companies',
-  () => {
-    return queryCollection('content')
-      .path('/open-source/_for-companies')
-      .first()
-  }
-)
+const { data: contentForCompanies } = await useAsyncData('for-companies', () => {
+  return queryCollection('content').path('/open-source/_for-companies').first()
+})
 
-const { data: contentForCompaniesAfter } = await useAsyncData(
-  'for-companies-after',
-  () => {
-    return queryCollection('content')
-      .path('/open-source/_for-companies-after')
-      .first()
-  }
-)
+const { data: contentForCompaniesAfter } = await useAsyncData('for-companies-after', () => {
+  return queryCollection('content').path('/open-source/_for-companies-after').first()
+})
 
-const { data: contentForIndividuals } = await useAsyncData(
-  'for-individuals',
-  () => {
-    return queryCollection('content')
-      .path('/open-source/_for-individuals')
-      .first()
-  }
-)
+const { data: contentForIndividuals } = await useAsyncData('for-individuals', () => {
+  return queryCollection('content').path('/open-source/_for-individuals').first()
+})
 
 const { data: contentWorkingNow } = await useAsyncData('working-now', () => {
   return queryCollection('content').path('/open-source/_working-now').first()
@@ -154,19 +135,14 @@ const { data: contentWorkingNow } = await useAsyncData('working-now', () => {
 
 <template>
   <main>
-    <div
-      class="w-full px-2 pt-16 mx-auto prose md:px-0 max-w-xxl lg:prose-xl dark:prose-invert"
-    >
+    <div class="w-full px-2 pt-16 mx-auto prose md:px-0 max-w-xxl lg:prose-xl dark:prose-invert">
       <h1>Open Source Software</h1>
 
       <ContentRenderer v-if="contentIntro" :value="contentIntro" />
 
       <h2 id="for-companies">For Companies 🏢</h2>
 
-      <ContentRenderer
-        v-if="contentForCompanies"
-        :value="contentForCompanies"
-      />
+      <ContentRenderer v-if="contentForCompanies" :value="contentForCompanies" />
 
       <div class="grid w-full grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-4">
         <PricingCard
@@ -195,10 +171,7 @@ const { data: contentWorkingNow } = await useAsyncData('working-now', () => {
         </PricingCard>
       </div>
 
-      <ContentRenderer
-        v-if="contentForCompaniesAfter"
-        :value="contentForCompaniesAfter"
-      />
+      <ContentRenderer v-if="contentForCompaniesAfter" :value="contentForCompaniesAfter" />
 
       <h3 id="faq">F.A.Q.</h3>
 
@@ -206,10 +179,7 @@ const { data: contentWorkingNow } = await useAsyncData('working-now', () => {
 
       <h2 id="for-individuals">For individuals 🧑‍💻</h2>
 
-      <ContentRenderer
-        v-if="contentForIndividuals"
-        :value="contentForIndividuals"
-      />
+      <ContentRenderer v-if="contentForIndividuals" :value="contentForIndividuals" />
 
       <h2 id="working-now">What are you working on right now?</h2>
 
@@ -224,19 +194,14 @@ const { data: contentWorkingNow } = await useAsyncData('working-now', () => {
         <!-- <SponsorsCircles />
       -->
 
-        <a
-          href="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static@main/sk/circles.svg"
-        >
+        <a href="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static@main/sk/circles.svg">
           <img
             src="https://cdn.jsdelivr.net/gh/posva/sponsorkit-static@main/sk/circles.svg"
             alt="posva's sponsors"
           />
         </a>
 
-        <p>
-          Thanks to all my sponsors and to <b>you</b> for getting til the bottom
-          of the page!
-        </p>
+        <p>Thanks to all my sponsors and to <b>you</b> for getting til the bottom of the page!</p>
       </section>
     </div>
   </main>

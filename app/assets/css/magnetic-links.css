@@ -50,11 +50,7 @@
 
 [data-magnetic]:hover::before,
 [data-magnetic]:focus::before {
-  transform: translate3d(
-    var(--moveX, var(--moveOffset)),
-    var(--moveY, var(--moveOffset)),
-    0
-  );
+  transform: translate3d(var(--moveX, var(--moveOffset)), var(--moveY, var(--moveOffset)), 0);
 }
 
 [data-magnetic]:hover::after,

@@ -6,8 +6,7 @@ import sponsors from '../../data/sponsors-circles.json'
 const lastHovered = ref<string[]>([])
 
 function push(id: string) {
-  if (lastHovered.value.includes(id))
-    lastHovered.value = lastHovered.value.filter((i) => i !== id)
+  if (lastHovered.value.includes(id)) lastHovered.value = lastHovered.value.filter((i) => i !== id)
   lastHovered.value.push(id)
   if (lastHovered.value.length > 5) lastHovered.value.unshift()
 }
@@ -21,7 +20,7 @@ onMounted(() => {
     () => {
       scale.value = Math.min(2, (width.value - 80) / 500)
     },
-    { immediate: true }
+    { immediate: true },
   )
 })
 </script>

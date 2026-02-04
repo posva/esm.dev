@@ -20,180 +20,170 @@ export interface MagneticElement extends HTMLElement {
 const noop = () => {}
 let lastStop = noop
 
-export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> =
-  {
-    getSSRProps(binding, el) {
-      return {
-        'data-magnetic': '',
-      }
-    },
-    mounted(el, binding) {
-      const options: Required<VMagneticValue> = Object.assign(
-        {
-          maxDistance: 50,
-        },
-        binding.arg
-      )
+export const vMagnetic: Directive<MagneticElement, VMagneticValue | undefined> = {
+  getSSRProps(binding, el) {
+    return {
+      'data-magnetic': '',
+    }
+  },
+  mounted(el, binding) {
+    const options: Required<VMagneticValue> = Object.assign(
+      {
+        maxDistance: 50,
+      },
+      binding.arg,
+    )
 
-      const scope = effectScope(true)
-      el.__scope = scope
-      el.__children = []
-      el.dataset.magnetic = ''
-      el.dataset.text = el.innerText
+    const scope = effectScope(true)
+    el.__scope = scope
+    el.__children = []
+    el.dataset.magnetic = ''
+    el.dataset.text = el.innerText
 
-      const trail = createCopyText(el)
-      trail.style.color = 'rgba(var(--blue), 0.5)'
-      trail.style.zIndex = '10'
-      trail.style.fontSize = '2em'
-      trail.style.filter = 'blur(2px)'
+    const trail = createCopyText(el)
+    trail.style.color = 'rgba(var(--blue), 0.5)'
+    trail.style.zIndex = '10'
+    trail.style.fontSize = '2em'
+    trail.style.filter = 'blur(2px)'
 
-      let isMagnetized = false
-      let initialRect = el.getBoundingClientRect()
-      let center = {
+    let isMagnetized = false
+    let initialRect = el.getBoundingClientRect()
+    let center = {
+      x: initialRect.x + initialRect.width / 2,
+      y: initialRect.y + initialRect.height / 2,
+    }
+
+    function computeSizes() {
+      initialRect = el.getBoundingClientRect()
+      center = {
         x: initialRect.x + initialRect.width / 2,
         y: initialRect.y + initialRect.height / 2,
       }
+    }
 
-      function computeSizes() {
-        initialRect = el.getBoundingClientRect()
-        center = {
-          x: initialRect.x + initialRect.width / 2,
-          y: initialRect.y + initialRect.height / 2,
-        }
-      }
+    const mouse = getEffectScope().run(() => {
+      // FIXME: on resize recompute initialRect and center
+      // const target = reactive(_useMouse())
+      const { x: mouseX, y: mouseY } = _useMouse()
+      const mouse = _useSpring({ ...center })
+      const trailPos = _useSpring({ ...center })
 
-      const mouse = getEffectScope().run(() => {
-        // FIXME: on resize recompute initialRect and center
-        // const target = reactive(_useMouse())
-        const { x: mouseX, y: mouseY } = _useMouse()
-        const mouse = _useSpring({ ...center })
-        const trailPos = _useSpring({ ...center })
+      watch(
+        [mouseX, mouseY],
+        ([x, y]) => {
+          if (!isMagnetized) return
+          mouse.x = x
+          mouse.y = y
+        },
+        { deep: true },
+      )
 
-        watch(
-          [mouseX, mouseY],
-          ([x, y]) => {
-            if (!isMagnetized) return
-            mouse.x = x
-            mouse.y = y
-          },
-          { deep: true }
-        )
+      watch(
+        mouse,
+        ({ x, y }) => {
+          if (!isMagnetized) return
+          trailPos.x = x
+          trailPos.y = y
+        },
+        { deep: true },
+      )
 
+      watch(
+        trailPos,
+        ({ x, y }) => {
+          trail.style.transform = `translate(
+                ${x - center.x}px, ${y - center.y}px) scale(1.2)`
+        },
+        { deep: true },
+      )
+
+      return mouse
+    })!
+
+    let stopWatcher = noop
+    function magnetize() {
+      // el.style.position = 'absolute'
+      // el.style.top = '0'
+      // el.style.left = '0'
+
+      lastStop()
+      lastStop = stop
+      stopWatcher()
+      isMagnetized = true
+      trail.style.opacity = '1'
+      trail.style.filter = 'blur(1px)'
+      stopWatcher = scope.run(() =>
         watch(
           mouse,
           ({ x, y }) => {
-            if (!isMagnetized) return
-            trailPos.x = x
-            trailPos.y = y
-          },
-          { deep: true }
-        )
+            if (isFurtherFromBBoxThan({ x, y }, initialRect, options.maxDistance)) {
+              stop()
+              return
+            }
 
-        watch(
-          trailPos,
-          ({ x, y }) => {
-            trail.style.transform = `translate(
-                ${x - center.x}px, ${y - center.y}px) scale(1.2)`
-          },
-          { deep: true }
-        )
+            // const p = Math.log(1 + (200 * dist) / options.maxDistance) / 5
+            // TODO: wrong distance, should be from center
+            // const p = distance({ x, y }, center) / options.maxDistance
 
-        return mouse
-      })!
-
-      let stopWatcher = noop
-      function magnetize() {
-        // el.style.position = 'absolute'
-        // el.style.top = '0'
-        // el.style.left = '0'
-
-        lastStop()
-        lastStop = stop
-        stopWatcher()
-        isMagnetized = true
-        trail.style.opacity = '1'
-        trail.style.filter = 'blur(1px)'
-        stopWatcher = scope.run(() =>
-          watch(
-            mouse,
-            ({ x, y }) => {
-              if (
-                isFurtherFromBBoxThan(
-                  { x, y },
-                  initialRect,
-                  options.maxDistance
-                )
-              ) {
-                stop()
-                return
-              }
-
-              // const p = Math.log(1 + (200 * dist) / options.maxDistance) / 5
-              // TODO: wrong distance, should be from center
-              // const p = distance({ x, y }, center) / options.maxDistance
-
-              el.style.transform = `translate(
+            el.style.transform = `translate(
                 ${0.7 * (x - center.x)}px, ${0.7 * (y - center.y)}px)`
-            },
-            { deep: true }
-          )
-        )!
-      }
-
-      function stop() {
-        isMagnetized = false
-        // reset position smoothly
-        mouse.x = center.x
-        mouse.y = center.y
-        trail.style.opacity = '0'
-        trail.style.filter = 'blur(4px)'
-        // el.style.position = ''
-      }
-
-      scope.run(() =>
-        useEventListener(el, 'mouseenter', magnetize, { passive: true })
-      )
-      scope.run(() =>
-        useEventListener(
-          window,
-          'resize',
-          () => {
-            computeSizes()
-            updateCopyTextPosition(el)
           },
-          { passive: true }
-        )
-      )
+          { deep: true },
+        ),
+      )!
+    }
 
-      scope.run(() => {
-        onScopeDispose(() => {
-          // remove elements
-          el.__children.forEach((child) => {
-            child.remove()
-          })
+    function stop() {
+      isMagnetized = false
+      // reset position smoothly
+      mouse.x = center.x
+      mouse.y = center.y
+      trail.style.opacity = '0'
+      trail.style.filter = 'blur(4px)'
+      // el.style.position = ''
+    }
 
-          // @ts-expect-error: not optional
-          delete el.__children
+    scope.run(() => useEventListener(el, 'mouseenter', magnetize, { passive: true }))
+    scope.run(() =>
+      useEventListener(
+        window,
+        'resize',
+        () => {
+          computeSizes()
+          updateCopyTextPosition(el)
+        },
+        { passive: true },
+      ),
+    )
+
+    scope.run(() => {
+      onScopeDispose(() => {
+        // remove elements
+        el.__children.forEach((child) => {
+          child.remove()
         })
+
+        // @ts-expect-error: not optional
+        delete el.__children
       })
-    },
+    })
+  },
 
-    updated(el) {
-      el.dataset.magnetic = ''
-      el.dataset.text = el.innerText
-    },
+  updated(el) {
+    el.dataset.magnetic = ''
+    el.dataset.text = el.innerText
+  },
 
-    unmounted(el, binding) {
-      if (el.__scope) {
-        el.__scope.stop()
-        // @ts-expect-error: __scope is not optional, but this avoid potential memory leaks
-        delete el.__scope
-      }
-    },
-  }
+  unmounted(el, binding) {
+    if (el.__scope) {
+      el.__scope.stop()
+      // @ts-expect-error: __scope is not optional, but this avoid potential memory leaks
+      delete el.__scope
+    }
+  },
+}
 
-const isAnchor = (el: HTMLElement): el is HTMLAnchorElement =>
-  el.tagName === 'A'
+const isAnchor = (el: HTMLElement): el is HTMLAnchorElement => el.tagName === 'A'
 
 function createCopyText(el: MagneticElement) {
   const copyEl = document.createElement(el.tagName)
@@ -241,13 +231,9 @@ function isFurtherThan(p1: Point, p2: Point, distance: number) {
 
 function distanceFromBBox(p1: Point, box: DOMRect) {
   if (p1.x >= box.left && p1.x <= box.right) {
-    return Math.abs(
-      Math.min(Math.abs(p1.y - box.top), Math.abs(p1.y - box.bottom))
-    )
+    return Math.abs(Math.min(Math.abs(p1.y - box.top), Math.abs(p1.y - box.bottom)))
   } else if (p1.y >= box.top && p1.y <= box.bottom) {
-    return Math.abs(
-      Math.min(Math.abs(p1.x - box.left), Math.abs(p1.x - box.right))
-    )
+    return Math.abs(Math.min(Math.abs(p1.x - box.left), Math.abs(p1.x - box.right)))
   }
 
   const p2: Point = {
@@ -260,13 +246,9 @@ function distanceFromBBox(p1: Point, box: DOMRect) {
 
 function isFurtherFromBBoxThan(p1: Point, box: DOMRect, distance: number) {
   if (p1.x >= box.left && p1.x <= box.right) {
-    return (
-      Math.min(Math.abs(p1.y - box.top), Math.abs(p1.y - box.bottom)) > distance
-    )
+    return Math.min(Math.abs(p1.y - box.top), Math.abs(p1.y - box.bottom)) > distance
   } else if (p1.y >= box.top && p1.y <= box.bottom) {
-    return (
-      Math.min(Math.abs(p1.x - box.left), Math.abs(p1.x - box.right)) > distance
-    )
+    return Math.min(Math.abs(p1.x - box.left), Math.abs(p1.x - box.right)) > distance
   }
 
   const p2: Point = {

@@ -1,22 +1,7 @@
-import {
-  Application,
-  Container,
-  Graphics,
-  RenderTexture,
-  Sprite,
-  Texture,
-} from 'pixi.js'
+import { Application, Container, Graphics, RenderTexture, Sprite, Texture } from 'pixi.js'
 import { ease, Ease, Easing } from '../../pixi-ease'
-import {
-  type Point,
-  resetCanvasCheck,
-  ensureCanvasWithSize,
-} from '../utils/screen'
-import {
-  getColorVariable,
-  onColorChange,
-  getHexColorVariable,
-} from '../utils/colors'
+import { type Point, resetCanvasCheck, ensureCanvasWithSize } from '../utils/screen'
+import { getColorVariable, onColorChange, getHexColorVariable } from '../utils/colors'
 import { createRandomizer, type Randomizer } from '../utils/random'
 import { nanoid } from 'nanoid'
 import { memoize, debounce } from 'lodash-es'
@@ -94,7 +79,7 @@ export async function start() {
     size.y,
     diameter,
     lineWidth,
-    drawingColorNames.map((name) => colors[name])
+    drawingColorNames.map((name) => colors[name]),
   )
 
   for (let polygon of polygons) {
@@ -113,7 +98,7 @@ export async function start() {
 
   async function rotatePolygon(
     polygon: Polygon,
-    options?: Parameters<Ease['add']>[2] & { wait?: number }
+    options?: Parameters<Ease['add']>[2] & { wait?: number },
   ) {
     if (!polygon.easing) {
       if (options?.wait) {
@@ -122,7 +107,7 @@ export async function start() {
       polygon.easing = ease.add(
         polygon.sprite,
         { angle: polygon.sprite.angle + (1 + (randomizer.int32() % 5)) * 60 },
-        { duration: 500, ease: 'easeOutQuad', ...options }
+        { duration: 500, ease: 'easeOutQuad', ...options },
       )
       polygon.easing.once('complete', () => {
         polygon.easing = null
@@ -162,7 +147,7 @@ function createGrid(
   height: number,
   diameter: number,
   lineWidth: number,
-  drawingColors: number[]
+  drawingColors: number[],
 ) {
   const sides = 6
   let radius = toFixed(diameter / 2)
@@ -178,12 +163,7 @@ function createGrid(
     i++
     // if (i === 57 || i === 58) {
     const paths = createPolygonPaths(basePolygon.midpoints, sides)
-    const sprite = createSpriteFromPaths(
-      basePolygon,
-      paths,
-      lineWidth,
-      drawingColors
-    )
+    const sprite = createSpriteFromPaths(basePolygon, paths, lineWidth, drawingColors)
     sprites.push(sprite)
 
     sprite.sprite.position.x = center.x
@@ -224,11 +204,7 @@ const sin = memoize(Math.sin)
 // https;//www.redblobgames.com/grids/hexagons/
 const startAngle = (-Math.PI * 30) / 180
 
-function createPolygon(
-  center: Point,
-  diameter: number,
-  sides: number
-): PolygonShape {
+function createPolygon(center: Point, diameter: number, sides: number): PolygonShape {
   if (sides % 2 !== 0) throw new Error('Must have a even number of sides')
   let radius = toFixed(diameter / 2)
   const points: Point[] = [
@@ -302,7 +278,7 @@ function createSpriteFromPaths(
   polygon: PolygonShape,
   paths: Point[][],
   lineWidth: number,
-  drawingColors: number[]
+  drawingColors: number[],
 ): Polygon {
   const container = new Container()
 
@@ -343,7 +319,7 @@ function createSpriteFromPaths(
           polygon.center.x - p1.x,
           polygon.center.y - p1.y,
           p2.x - p1.x,
-          p2.y - p1.y
+          p2.y - p1.y,
         )
         bezier.stroke({ width: lineWidth / Math.pow(2, i), color, alpha: 1 })
 

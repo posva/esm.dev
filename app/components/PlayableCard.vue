@@ -41,7 +41,7 @@ const props = withDefaults(
     backSrc:
       // 'https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/f/f8/Magic_card_back.jpg',
       'https://static.wikia.nocookie.net/mtgsalvation_gamepedia/images/f/f8/Magic_card_back.jpg',
-  }
+  },
 )
 
 const interacting = ref(false)
@@ -85,13 +85,9 @@ function onMouseMove(e: MouseEvent | TouchEvent) {
   springBackground.y = adjust(percent.y, 0, 100, 33, 67)
 
   const rotateMultiplierX =
-    typeof props.rotateMultiplier === 'number'
-      ? props.rotateMultiplier
-      : props.rotateMultiplier.x
+    typeof props.rotateMultiplier === 'number' ? props.rotateMultiplier : props.rotateMultiplier.x
   const rotateMultiplierY =
-    typeof props.rotateMultiplier === 'number'
-      ? props.rotateMultiplier
-      : props.rotateMultiplier.y
+    typeof props.rotateMultiplier === 'number' ? props.rotateMultiplier : props.rotateMultiplier.y
 
   springRotate.x = round(rotateMultiplierX * -center.x)
   springRotate.y = round(rotateMultiplierY * center.y)
@@ -153,13 +149,7 @@ const cssTranslateY = computed(() => `${springTranslate.y}px`)
           style="margin: 0"
         />
         <div class="select-none card_front">
-          <img
-            :src="src"
-            loading="lazy"
-            :width="width"
-            :height="height"
-            style="margin: 0"
-          />
+          <img :src="src" loading="lazy" :width="width" :height="height" style="margin: 0" />
           <div class="card_glare"></div>
         </div>
       </button>

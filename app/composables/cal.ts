@@ -44,9 +44,7 @@ Cal("ui", ${JSON.stringify(styleConfig)});
 
   // MDC has a bug when adding an Icon that rerenders the content and throws away event listeners
   // so we need to add the event listener manually
-  function open(
-    link: 'posva/consultancy' | 'posva/sponsor' | 'posva/freelancing'
-  ) {
+  function open(link: 'posva/consultancy' | 'posva/sponsor' | 'posva/freelancing') {
     ;(window as any).Cal('modal', {
       calLink: link,
       config: initConfig,

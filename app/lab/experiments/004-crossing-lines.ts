@@ -132,11 +132,7 @@ interface Polygon {
 // https;//www.redblobgames.com/grids/hexagons/
 const startAngle = (-Math.PI * 30) / 180
 
-function createPolygon(
-  center: Point,
-  diameter: number,
-  sides: number
-): Polygon {
+function createPolygon(center: Point, diameter: number, sides: number): Polygon {
   if (sides % 2 !== 0) throw new Error('Must have a even number of sides')
   let radius = diameter / 2
   const points: Point[] = [
@@ -213,12 +209,7 @@ function drawPolygon(ctx: CanvasRenderingContext2D, points: Point[]) {
   ctx.closePath()
 }
 
-function drawConnector(
-  ctx: CanvasRenderingContext2D,
-  p: Point,
-  offset: Point,
-  thickness: number
-) {
+function drawConnector(ctx: CanvasRenderingContext2D, p: Point, offset: Point, thickness: number) {
   ctx.beginPath()
   ctx.moveTo(p.x - thickness * offset.x, p.y - thickness * offset.y)
   ctx.lineTo(p.x + thickness * offset.x, p.y + thickness * offset.y)
@@ -226,11 +217,7 @@ function drawConnector(
   ctx.closePath()
 }
 
-function drawPath(
-  ctx: CanvasRenderingContext2D,
-  center: Point,
-  [p1, p2]: Point[]
-) {
+function drawPath(ctx: CanvasRenderingContext2D, center: Point, [p1, p2]: Point[]) {
   ctx.beginPath()
   ctx.moveTo(p1.x, p1.y)
   // ctx.lineTo(center.x, center.y)
