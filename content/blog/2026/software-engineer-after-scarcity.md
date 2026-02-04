@@ -1,113 +1,117 @@
 # Software Engineers After Scarcity
 
-For most of modern history, software engineers were scarce because **writing code was hard**. That era is ending.
+For most of modern history, software engineers were scarce for a simple reason. **Writing code was hard.**
 
-AI didn’t just make us faster. It changed **what is scarce**.
+That constraint shaped careers, salaries, and company structures. If you could reliably turn ideas into working software, you had leverage.
 
-And scarcity—not effort—determines value.
+That era is fading.
+
+AI did not just make engineers faster. It changed **what is scarce**.
+
+And scarcity, not effort, is what determines value.
 
 ## Code Is No Longer the Bottleneck
 
-AI has turned code into a commodity.
-Not because it writes perfect programs, but because it writes _good enough code instantly_.
+AI has pushed code toward commodity status.
+Not because it produces perfect software, but because it produces usable software instantly.
 
-As a result:
+That changes the math.
 
-- Execution speed is no longer a differentiator
-- “I can build it” stopped being a competitive advantage
-- Output volume stopped correlating with income
+- Raw execution speed matters less
+- “I can build it” is no longer a moat
+- Shipping more code does not reliably increase income
 
-This is why many senior engineers feel paradoxical right now:
-**More productive than ever, less certain how to monetize it.**
+This is why many senior engineers feel unsettled right now.
+They are more productive than ever, and less sure how that productivity turns into leverage.
 
-That feeling is accurate.
+That discomfort is a signal.
 
-## The Shift: From Builders to Decision Holders
+## From Builders to Decision Holders
 
 When intelligence becomes cheap, **judgment becomes expensive**.
 
-Software engineers are no longer primarily valued for:
+Engineers used to be valued for:
 
-- syntax mastery
-- framework knowledge
+- syntax fluency
+- framework expertise
 - implementation speed
 
-Those are now table stakes.
+Those skills still matter. They are no longer the differentiator. They are the baseline.
 
-The new center of gravity is:
+What is becoming scarce instead is the ability to decide:
 
-- deciding _what_ should exist
-- defining _constraints_ under which systems operate
-- owning consequences when things go wrong
+- what should exist
+- which constraints matter
+- where the real risks are
+- who owns the consequences when something breaks
 
-In other words: engineers move closer to **authority**, not just execution.
+In practice, this pulls engineers closer to authority, not just execution.
 
-## Why “People Will Just Ask AI” Is Only Half True
+## “People Will Just Ask AI” Is Only Half True
 
-Yes—people will ask AI directly.
+Yes, people will ask AI for answers.
 
-But asking is free.
+But asking is cheap.
 **Acting is not.**
 
-Any action that:
+The moment an action:
 
-- carries legal risk
-- touches real money
+- involves real money
+- carries legal or regulatory risk
 - affects customers
-- triggers irreversible consequences
+- creates irreversible outcomes
 
-cannot be safely delegated to a general-purpose AI without structure, auditability, and accountability.
+you need more than a generated response. You need structure, traceability, and accountability.
 
 That gap is where software still matters.
 
-As AI gets better, institutions don’t relax controls—they tighten them.
-The cost of being wrong goes up.
+As AI improves, institutions do not loosen controls. They tighten them. When systems become more powerful, the cost of being wrong increases.
 
-## Software Stops Being a Product and Becomes a Boundary
+## Software Becomes a Boundary
 
-The future of software is not apps—it’s **permissioned execution**.
+Increasingly, software is not about features. It is about **permissioned execution**.
 
-Software increasingly exists to answer questions like:
+It exists to answer questions like:
 
 - Who is allowed to do this?
 - Under what conditions?
 - With what guarantees?
-- Who is responsible?
+- Who is responsible if it goes wrong?
 
-AI generates suggestions.
-Software authorizes actions.
+AI can suggest.
+Software decides what is allowed to happen.
 
-This is why engineering doesn’t disappear—it **moves up the stack**.
+That is why engineering does not disappear. It moves up the stack.
 
-## What This Means for Software Engineers
+## What This Means for Engineers
 
-Three uncomfortable truths:
+A few uncomfortable realities:
 
 1. **Pure execution roles shrink**
-   If your value is “I implement features,” you are competing with AI-assisted everyone.
+   If your primary value is “I implement features,” you are competing with AI-assisted everyone.
 
 2. **Responsibility becomes leverage**
-   Engineers who can own outcomes—not just code—gain pricing power.
+   Engineers who can own outcomes, not just code, gain pricing power.
 
 3. **Money follows risk absorption**
-   People don’t pay for intelligence.
-   They pay to reduce risk, save time in critical paths, and sleep at night.
+   People do not pay for intelligence.
+   They pay to reduce risk, compress critical timelines, and sleep better at night.
 
 The highest-value engineers will be those who:
 
-- design systems with constraints
-- integrate AI safely into real workflows
-- are trusted to be the last human in the loop
+- design systems with real constraints
+- integrate AI into workflows safely
+- are trusted as the final human in the loop
 
-## The Reframing That Matters
+## The Reframe That Matters
 
-The future software engineer is less:
+The question used to be:
 
 > “How do I build this?”
 
-And more:
+Increasingly, it becomes:
 
-> “Who already pays for this pain—and what am I allowed to take responsibility for?”
+> “Who already pays for this pain, and what am I willing to be responsible for?”
 
-That shift is uncomfortable because it’s not purely technical.
-But it’s also where software engineers regain leverage.
+That shift is uncomfortable because it is not purely technical.
+It is also where engineers stop being interchangeable and regain leverage.
