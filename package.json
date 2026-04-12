@@ -15,7 +15,7 @@
     "lint": "oxfmt --check",
     "lint:fix": "pnpm run lint --write",
     "test:unit": "vitest",
-    "test": "pnpm run lint && pnpm run test:unit run && pnpm run build"
+    "test": "pnpm run lint && pnpm run test:unit run && pnpm run generate"
   },
   "dependencies": {
     "@giscus/vue": "^3.1.1",
