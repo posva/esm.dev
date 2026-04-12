@@ -96,7 +96,7 @@ export function render(ratio: number) {
       const r = canvasEl.getBoundingClientRect()
       const x = clientX - r.left
       const y = clientY - r.top
-      const side = findNearestSide(sim.grid, x, y, width, height)
+      const side = findNearestSide(sim.grid, x, y, r.width, r.height)
       if (side && !side.alive) {
         side.alive = true
         // Give clicked sides 10x life so they dominate
