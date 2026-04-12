@@ -35,35 +35,39 @@ onMounted(() => {
       render: (...args: any[]) => void
     }>
 
-  experiment().then((module) => {
-    if (module.isPixi) {
-      app = module.start()
-      stop = module.stop
-    } else {
-      function update() {
-        rafId = requestAnimationFrame((elapsed) => {
-          stepper(elapsed)
-          update()
-        })
+  experiment()
+    .then((module) => {
+      if (module.isPixi) {
+        app = module.start()
+        stop = module.stop
+      } else {
+        function update() {
+          rafId = requestAnimationFrame((elapsed) => {
+            stepper(elapsed)
+            update()
+          })
+        }
+
+        let experimentRender: ((...args: any[]) => void) | null = null
+        experimentRender = module.render
+        update()
+
+        let lastElapsed = 0
+        const BASE_DELTA = 1000 / 60 // 1s / 60 frames
+        let lastDelta = BASE_DELTA
+
+        function stepper(elapsed: number) {
+          lastDelta = elapsed - lastElapsed
+          lastElapsed = elapsed
+          const ratio = lastDelta / BASE_DELTA
+
+          experimentRender && experimentRender(ratio)
+        }
       }
-
-      let experimentRender: ((...args: any[]) => void) | null = null
-      experimentRender = module.render
-      update()
-
-      let lastElapsed = 0
-      const BASE_DELTA = 1000 / 60 // 1s / 60 frames
-      let lastDelta = BASE_DELTA
-
-      function stepper(elapsed: number) {
-        lastDelta = elapsed - lastElapsed
-        lastElapsed = elapsed
-        const ratio = lastDelta / BASE_DELTA
-
-        experimentRender && experimentRender(ratio)
-      }
-    }
-  })
+    })
+    .catch((err) => {
+      console.error('Failed to load lab experiment', err)
+    })
 })
 
 onUnmounted(() => {

@@ -6,9 +6,9 @@ const route = useRoute('labs-id')
 
 const labId = computed(() => {
   const n = Number(route.params.id)
-  if (!Number.isNaN(n)) return n
+  if (Number.isInteger(n) && n >= 0 && n < experimentModuleList.length) return n
 
-  // try to deduce from
+  // try to deduce from name
   const index = experimentModuleList.findIndex((m) => m.name === route.params.id)
 
   return index > -1 ? index : null
