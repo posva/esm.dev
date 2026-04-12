@@ -41,6 +41,7 @@ onMounted(() => {
         app = module.start()
         stop = module.stop
       } else {
+        stop = module.stop
         function update() {
           rafId = requestAnimationFrame((elapsed) => {
             stepper(elapsed)

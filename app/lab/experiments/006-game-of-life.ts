@@ -11,7 +11,8 @@ let gridType: GridType = 6
 let precision = 12
 let ruleIndex = ALL_RULES.findIndex((r) => r.name === 'Survival')
 let lastStepTime = 0
-let isListening = false
+let listeningOn: HTMLCanvasElement | null = null
+let cleanupListeners: (() => void) | null = null
 let lastWidth = 0
 let lastHeight = 0
 let isMouseDown = false
@@ -71,6 +72,137 @@ function drawHUD(ctx: CanvasRenderingContext2D, width: number, height: number) {
   }
 }
 
+function attachListeners(canvasEl: HTMLCanvasElement): () => void {
+  function activateAtPosition(clientX: number, clientY: number) {
+    if (!sim) return
+    const r = canvasEl.getBoundingClientRect()
+    const x = clientX - r.left
+    const y = clientY - r.top
+    const side = findNearestSide(sim.grid, x, y, r.width, r.height)
+    if (side && !side.alive) {
+      side.alive = true
+      // Give clicked sides 10x life so they dominate
+      const life = SURVIVAL_BASE_LIFE * 10
+      side.life = life
+      side.maxLife = life
+      randomizeMovement(side)
+    }
+  }
+
+  const onMouseDown = (e: MouseEvent) => {
+    isMouseDown = true
+    activateAtPosition(e.clientX, e.clientY)
+  }
+  const onMouseMove = (e: MouseEvent) => {
+    if (isMouseDown) activateAtPosition(e.clientX, e.clientY)
+  }
+  const onMouseUp = () => {
+    isMouseDown = false
+  }
+  const onTouchStart = (e: TouchEvent) => {
+    e.preventDefault()
+    for (const touch of e.changedTouches) {
+      activateAtPosition(touch.clientX, touch.clientY)
+    }
+  }
+  const onTouchMove = (e: TouchEvent) => {
+    e.preventDefault()
+    for (const touch of e.changedTouches) {
+      activateAtPosition(touch.clientX, touch.clientY)
+    }
+  }
+  const onKeyDown = (e: KeyboardEvent) => {
+    switch (e.key) {
+      case ' ':
+        e.preventDefault()
+        playing = !playing
+        if (playing) lastStepTime = 0
+        break
+      case 'ArrowRight':
+        e.preventDefault()
+        if (sim) {
+          playing = false
+          sim.step()
+        }
+        break
+      case 'ArrowUp':
+        e.preventDefault()
+        speed = Math.min(60, speed + 2)
+        break
+      case 'ArrowDown':
+        e.preventDefault()
+        speed = Math.max(1, speed - 2)
+        break
+      case 'r':
+        sim?.randomize(0.3)
+        break
+      case 'c':
+        sim?.reset()
+        break
+      case 'Tab':
+        e.preventDefault()
+        ruleIndex = (ruleIndex + 1) % ALL_RULES.length
+        if (sim) sim.rules = ALL_RULES[ruleIndex]
+        break
+      case '3':
+        gridType = 3
+        sim = null
+        break
+      case '4':
+        gridType = 4
+        sim = null
+        break
+      case '6':
+        gridType = 6
+        sim = null
+        break
+      case 'o':
+        gridType = 'circle'
+        sim = null
+        break
+      case '+':
+      case '=':
+        if (gridType === 'circle') {
+          precision = Math.min(48, precision + 6)
+          sim = null
+        }
+        break
+      case '-':
+        if (gridType === 'circle') {
+          precision = Math.max(6, precision - 6)
+          sim = null
+        }
+        break
+      case 'd':
+        showGrid = !showGrid
+        break
+    }
+  }
+
+  canvasEl.addEventListener('mousedown', onMouseDown)
+  canvasEl.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('mouseup', onMouseUp)
+  canvasEl.addEventListener('touchstart', onTouchStart)
+  canvasEl.addEventListener('touchmove', onTouchMove)
+  document.body.addEventListener('keydown', onKeyDown)
+
+  return () => {
+    canvasEl.removeEventListener('mousedown', onMouseDown)
+    canvasEl.removeEventListener('mousemove', onMouseMove)
+    document.removeEventListener('mouseup', onMouseUp)
+    canvasEl.removeEventListener('touchstart', onTouchStart)
+    canvasEl.removeEventListener('touchmove', onTouchMove)
+    document.body.removeEventListener('keydown', onKeyDown)
+  }
+}
+
+export function stop() {
+  cleanupListeners?.()
+  cleanupListeners = null
+  listeningOn = null
+  isMouseDown = false
+}
+
 export function render(ratio: number) {
   if (ratio > 2) return
 
@@ -88,116 +220,10 @@ export function render(ratio: number) {
   if (!ctx) return
   ctx.scale(dpr, dpr)
 
-  if (!isListening) {
-    isListening = true
-
-    function activateAtPosition(clientX: number, clientY: number) {
-      if (!sim) return
-      const r = canvasEl.getBoundingClientRect()
-      const x = clientX - r.left
-      const y = clientY - r.top
-      const side = findNearestSide(sim.grid, x, y, r.width, r.height)
-      if (side && !side.alive) {
-        side.alive = true
-        // Give clicked sides 10x life so they dominate
-        const life = SURVIVAL_BASE_LIFE * 10
-        side.life = life
-        side.maxLife = life
-        randomizeMovement(side)
-      }
-    }
-
-    canvasEl.addEventListener('mousedown', (e) => {
-      isMouseDown = true
-      activateAtPosition(e.clientX, e.clientY)
-    })
-    canvasEl.addEventListener('mousemove', (e) => {
-      if (isMouseDown) activateAtPosition(e.clientX, e.clientY)
-    })
-    document.addEventListener('mouseup', () => {
-      isMouseDown = false
-    })
-
-    canvasEl.addEventListener('touchstart', (e) => {
-      e.preventDefault()
-      for (const touch of e.changedTouches) {
-        activateAtPosition(touch.clientX, touch.clientY)
-      }
-    })
-    canvasEl.addEventListener('touchmove', (e) => {
-      e.preventDefault()
-      for (const touch of e.changedTouches) {
-        activateAtPosition(touch.clientX, touch.clientY)
-      }
-    })
-
-    document.body.addEventListener('keydown', (e) => {
-      switch (e.key) {
-        case ' ':
-          e.preventDefault()
-          playing = !playing
-          if (playing) lastStepTime = 0
-          break
-        case 'ArrowRight':
-          e.preventDefault()
-          if (sim) {
-            playing = false
-            sim.step()
-          }
-          break
-        case 'ArrowUp':
-          e.preventDefault()
-          speed = Math.min(60, speed + 2)
-          break
-        case 'ArrowDown':
-          e.preventDefault()
-          speed = Math.max(1, speed - 2)
-          break
-        case 'r':
-          sim?.randomize(0.3)
-          break
-        case 'c':
-          sim?.reset()
-          break
-        case 'Tab':
-          e.preventDefault()
-          ruleIndex = (ruleIndex + 1) % ALL_RULES.length
-          if (sim) sim.rules = ALL_RULES[ruleIndex]
-          break
-        case '3':
-          gridType = 3
-          sim = null
-          break
-        case '4':
-          gridType = 4
-          sim = null
-          break
-        case '6':
-          gridType = 6
-          sim = null
-          break
-        case 'o':
-          gridType = 'circle'
-          sim = null
-          break
-        case '+':
-        case '=':
-          if (gridType === 'circle') {
-            precision = Math.min(48, precision + 6)
-            sim = null
-          }
-          break
-        case '-':
-          if (gridType === 'circle') {
-            precision = Math.max(6, precision - 6)
-            sim = null
-          }
-          break
-        case 'd':
-          showGrid = !showGrid
-          break
-      }
-    })
+  if (listeningOn !== canvasEl) {
+    cleanupListeners?.()
+    cleanupListeners = attachListeners(canvasEl)
+    listeningOn = canvasEl
   }
 
   // Detect size change → rebuild simulation
