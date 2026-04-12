@@ -50,9 +50,11 @@ useHead({
 
 #lab :deep(#experiment) {
   position: initial;
+  z-index: auto;
   display: block;
   width: 100%;
   flex: 1;
   min-height: 0;
+  touch-action: none;
 }
 </style>

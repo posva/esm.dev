@@ -14,15 +14,21 @@ const props = defineProps<{
 let stop: (() => void) | undefined
 
 onMounted(() => {
-  const experimentId =
-    props.labId == null
-      ? Math.floor(Math.random() * experimentModuleList.length)
-      : Number(props.labId)
+  const requestedId = props.labId == null ? null : Number(props.labId)
+  let experimentId =
+    requestedId != null &&
+    Number.isInteger(requestedId) &&
+    requestedId >= 0 &&
+    requestedId < experimentModuleList.length
+      ? requestedId
+      : Math.floor(Math.random() * experimentModuleList.length)
+
+  if (props.labId != null && experimentId !== requestedId) {
+    console.warn(`Invalid lab id "${props.labId}", falling back to random (${experimentId})`)
+  }
 
   const experiment = () =>
-    (experimentModuleList[experimentId].module?.() ??
-      experimentModuleList[Math.floor(Math.random() * experimentModuleList.length)]
-        .module) as Promise<{
+    experimentModuleList[experimentId].module() as Promise<{
       isPixi?: boolean
       start: () => any
       stop?: () => void
