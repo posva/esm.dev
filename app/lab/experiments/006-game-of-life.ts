@@ -21,8 +21,9 @@ const GRID_LABELS: Record<string, string> = { 3: '△', 4: '□', 6: '⬡', circ
 
 function initSim(width: number, height: number) {
   const cellSize = gridType === 'circle' ? 40 : 25
-  const rows = Math.max(3, Math.floor(height / cellSize))
-  const cols = Math.max(3, Math.floor(width / cellSize))
+  // +2 so the grid extends beyond the viewport edges
+  const rows = Math.max(3, Math.floor(height / cellSize) + 2)
+  const cols = Math.max(3, Math.floor(width / cellSize) + 2)
 
   sim = new Simulation(
     gridType,
@@ -78,8 +79,10 @@ export function render(ratio: number) {
 
   const rect = canvasEl.getBoundingClientRect()
   const dpr = window.devicePixelRatio || 1
-  canvasEl.width = rect.width * dpr
-  canvasEl.height = rect.height * dpr
+  const width = rect.width
+  const height = rect.height
+  canvasEl.width = width * dpr
+  canvasEl.height = height * dpr
 
   const ctx = canvasEl.getContext('2d')
   if (!ctx) return
@@ -93,7 +96,7 @@ export function render(ratio: number) {
       const r = canvasEl.getBoundingClientRect()
       const x = clientX - r.left
       const y = clientY - r.top
-      const side = findNearestSide(sim.grid, x, y, r.width, r.height)
+      const side = findNearestSide(sim.grid, x, y, width, height)
       if (side && !side.alive) {
         side.alive = true
         // Give clicked sides 10x life so they dominate
@@ -197,10 +200,10 @@ export function render(ratio: number) {
   }
 
   // Detect size change → rebuild simulation
-  if (!sim || rect.width !== lastWidth || rect.height !== lastHeight) {
-    lastWidth = rect.width
-    lastHeight = rect.height
-    initSim(rect.width, rect.height)
+  if (!sim || width !== lastWidth || height !== lastHeight) {
+    lastWidth = width
+    lastHeight = height
+    initSim(width, height)
   }
 
   // Step simulation if playing
@@ -221,7 +224,7 @@ export function render(ratio: number) {
   const aliveColor = getColorVariable('accent')
   const deadColor = getColorVariable('textColor')
 
-  renderGrid(ctx, sim!.grid, rect.width, rect.height, {
+  renderGrid(ctx, sim!.grid, width, height, {
     bgColor,
     aliveColor,
     deadColor,
@@ -230,5 +233,5 @@ export function render(ratio: number) {
     showGrid,
   })
 
-  drawHUD(ctx, rect.width, rect.height)
+  drawHUD(ctx, width, height)
 }

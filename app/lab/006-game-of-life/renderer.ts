@@ -70,12 +70,10 @@ function computeTransform(grid: Grid, canvasWidth: number, canvasHeight: number)
   const gridW = bounds.maxX - bounds.minX
   const gridH = bounds.maxY - bounds.minY
 
-  const padding = 20
-  const availW = canvasWidth - padding * 2
-  const availH = canvasHeight - padding * 2
-  const scale = Math.min(availW / gridW, availH / gridH)
-  const offsetX = padding + (availW - gridW * scale) / 2 - bounds.minX * scale
-  const offsetY = padding + (availH - gridH * scale) / 2 - bounds.minY * scale
+  // Use Math.max so the grid fills the entire canvas, overflowing edges
+  const scale = Math.max(canvasWidth / gridW, canvasHeight / gridH)
+  const offsetX = (canvasWidth - gridW * scale) / 2 - bounds.minX * scale
+  const offsetY = (canvasHeight - gridH * scale) / 2 - bounds.minY * scale
 
   return {
     tx: (x: number) => x * scale + offsetX,

@@ -42,9 +42,17 @@ useHead({
 </template>
 
 <style scoped>
+#lab {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 48px);
+}
+
 #lab :deep(#experiment) {
   position: initial;
-  /* width: 100%;
-  height: 100%; */
+  display: block;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
 }
 </style>
