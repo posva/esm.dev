@@ -6,7 +6,7 @@ import type { GridType, PolygonType } from '../006-game-of-life/grid'
 
 let sim: Simulation | null = null
 let playing = false
-let speed = 10 // steps per second
+let speed = 25 // steps per second
 let gridType: GridType = 4
 let precision = 12
 let ruleIndex = 0
@@ -15,6 +15,7 @@ let isListening = false
 let lastWidth = 0
 let lastHeight = 0
 let isMouseDown = false
+let showGrid = true
 
 const GRID_LABELS: Record<string, string> = { 3: '△', 4: '□', 6: '⬡', circle: '○' }
 
@@ -48,7 +49,7 @@ function drawHUD(ctx: CanvasRenderingContext2D, width: number, height: number) {
   const precisionLabel = gridType === 'circle' ? ` p${precision}` : ''
   const lines = [
     `${typeLabel} ${gridType}${precisionLabel}  |  ${ALL_RULES[ruleIndex].name}  |  Gen ${sim.generation}  |  ${playing ? '▶' : '⏸'} ${speed}fps`,
-    `[3/4/6] shape  [o] circle  [+/-] precision  [space] play  [→] step  [↑↓] speed  [r] random  [c] clear  [tab] rule`,
+    `[3/4/6] shape  [o] circle  [+/-] precision  [space] play  [→] step  [↑↓] speed  [r] random  [c] clear  [tab] rule  [d] grid`,
   ]
 
   const boxHeight = lines.length * lineHeight + padding * 2
@@ -113,6 +114,19 @@ export function render(ratio: number) {
       isMouseDown = false
     })
 
+    canvasEl.addEventListener('touchstart', (e) => {
+      e.preventDefault()
+      for (const touch of e.changedTouches) {
+        activateAtPosition(touch.clientX, touch.clientY)
+      }
+    })
+    canvasEl.addEventListener('touchmove', (e) => {
+      e.preventDefault()
+      for (const touch of e.changedTouches) {
+        activateAtPosition(touch.clientX, touch.clientY)
+      }
+    })
+
     document.body.addEventListener('keydown', (e) => {
       switch (e.key) {
         case ' ':
@@ -175,6 +189,9 @@ export function render(ratio: number) {
             sim = null
           }
           break
+        case 'd':
+          showGrid = !showGrid
+          break
       }
     })
   }
@@ -210,6 +227,7 @@ export function render(ratio: number) {
     deadColor,
     deadWidth: 0.5,
     aliveWidth: 3,
+    showGrid,
   })
 
   drawHUD(ctx, rect.width, rect.height)

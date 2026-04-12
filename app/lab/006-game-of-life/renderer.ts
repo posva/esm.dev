@@ -17,6 +17,8 @@ export interface RenderOptions {
   dotRadius?: number
   /** Radius for dead dots in circle mode */
   deadDotRadius?: number
+  /** Whether to draw grid lines / cell outlines */
+  showGrid?: boolean
 }
 
 const DEFAULTS: Required<RenderOptions> = {
@@ -28,6 +30,7 @@ const DEFAULTS: Required<RenderOptions> = {
   bgColor: '#0a0a0a',
   dotRadius: 4,
   deadDotRadius: 1.5,
+  showGrid: true,
 }
 
 /**
@@ -140,60 +143,62 @@ function renderCircleGrid(
     ctx.restore()
   }
 
-  // Draw circle outlines (connecting dots)
-  ctx.save()
-  ctx.globalAlpha = opts.deadAlpha
-  ctx.strokeStyle = opts.deadColor
-  ctx.lineWidth = opts.deadWidth
-  ctx.beginPath()
-  for (const cell of grid.cells) {
-    const verts = cell.vertices
-    ctx.moveTo(tx(verts[0].x), ty(verts[0].y))
-    for (let i = 1; i < verts.length; i++) {
-      ctx.lineTo(tx(verts[i].x), ty(verts[i].y))
-    }
-    ctx.closePath()
-  }
-  ctx.stroke()
-  ctx.restore()
-
-  // Draw inter-circle connection lines
-  ctx.save()
-  ctx.globalAlpha = opts.deadAlpha * 0.5
-  ctx.strokeStyle = opts.deadColor
-  ctx.lineWidth = opts.deadWidth
-  ctx.beginPath()
-  for (const side of grid.sides) {
-    for (const linked of side.linkedNeighbors) {
-      // Only draw each connection once
-      if (side.id > linked.id) continue
-      const cellA = side.cells[0]
-      const cellB = linked.cells[0]
-      if (!cellA || !cellB) continue
-      const vA = dotVertex(cellA, side)
-      const vB = dotVertex(cellB, linked)
-      ctx.moveTo(tx(vA.x), ty(vA.y))
-      ctx.lineTo(tx(vB.x), ty(vB.y))
-    }
-  }
-  ctx.stroke()
-  ctx.restore()
-
-  // Draw dead dots
-  const deadR = opts.deadDotRadius * (scale / 30)
-  ctx.save()
-  ctx.globalAlpha = opts.deadAlpha
-  ctx.fillStyle = opts.deadColor
-  for (const side of grid.sides) {
-    if (side.alive) continue
-    const cell = side.cells[0]
-    if (!cell) continue
-    const v = dotVertex(cell, side)
+  if (opts.showGrid) {
+    // Draw circle outlines (connecting dots)
+    ctx.save()
+    ctx.globalAlpha = opts.deadAlpha
+    ctx.strokeStyle = opts.deadColor
+    ctx.lineWidth = opts.deadWidth
     ctx.beginPath()
-    ctx.arc(tx(v.x), ty(v.y), deadR, 0, Math.PI * 2)
-    ctx.fill()
+    for (const cell of grid.cells) {
+      const verts = cell.vertices
+      ctx.moveTo(tx(verts[0].x), ty(verts[0].y))
+      for (let i = 1; i < verts.length; i++) {
+        ctx.lineTo(tx(verts[i].x), ty(verts[i].y))
+      }
+      ctx.closePath()
+    }
+    ctx.stroke()
+    ctx.restore()
+
+    // Draw inter-circle connection lines
+    ctx.save()
+    ctx.globalAlpha = opts.deadAlpha * 0.5
+    ctx.strokeStyle = opts.deadColor
+    ctx.lineWidth = opts.deadWidth
+    ctx.beginPath()
+    for (const side of grid.sides) {
+      for (const linked of side.linkedNeighbors) {
+        // Only draw each connection once
+        if (side.id > linked.id) continue
+        const cellA = side.cells[0]
+        const cellB = linked.cells[0]
+        if (!cellA || !cellB) continue
+        const vA = dotVertex(cellA, side)
+        const vB = dotVertex(cellB, linked)
+        ctx.moveTo(tx(vA.x), ty(vA.y))
+        ctx.lineTo(tx(vB.x), ty(vB.y))
+      }
+    }
+    ctx.stroke()
+    ctx.restore()
+
+    // Draw dead dots
+    const deadR = opts.deadDotRadius * (scale / 30)
+    ctx.save()
+    ctx.globalAlpha = opts.deadAlpha
+    ctx.fillStyle = opts.deadColor
+    for (const side of grid.sides) {
+      if (side.alive) continue
+      const cell = side.cells[0]
+      if (!cell) continue
+      const v = dotVertex(cell, side)
+      ctx.beginPath()
+      ctx.arc(tx(v.x), ty(v.y), deadR, 0, Math.PI * 2)
+      ctx.fill()
+    }
+    ctx.restore()
   }
-  ctx.restore()
 
   // Draw alive dots
   const aliveR = opts.dotRadius * (scale / 30)
@@ -241,21 +246,23 @@ export function renderGrid(
   if (!valid) return
 
   // Draw cell outlines (dead sides)
-  ctx.save()
-  ctx.globalAlpha = opts.deadAlpha
-  ctx.strokeStyle = opts.deadColor
-  ctx.lineWidth = opts.deadWidth
-  ctx.beginPath()
-  for (const cell of grid.cells) {
-    const verts = cell.vertices
-    ctx.moveTo(tx(verts[0].x), ty(verts[0].y))
-    for (let i = 1; i < verts.length; i++) {
-      ctx.lineTo(tx(verts[i].x), ty(verts[i].y))
+  if (opts.showGrid) {
+    ctx.save()
+    ctx.globalAlpha = opts.deadAlpha
+    ctx.strokeStyle = opts.deadColor
+    ctx.lineWidth = opts.deadWidth
+    ctx.beginPath()
+    for (const cell of grid.cells) {
+      const verts = cell.vertices
+      ctx.moveTo(tx(verts[0].x), ty(verts[0].y))
+      for (let i = 1; i < verts.length; i++) {
+        ctx.lineTo(tx(verts[i].x), ty(verts[i].y))
+      }
+      ctx.closePath()
     }
-    ctx.closePath()
+    ctx.stroke()
+    ctx.restore()
   }
-  ctx.stroke()
-  ctx.restore()
 
   // Draw alive sides on top
   ctx.lineWidth = opts.aliveWidth
