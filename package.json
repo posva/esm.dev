@@ -58,7 +58,7 @@
     "d3-hierarchy": "^3.1.2",
     "nuxt": "^4.4.2",
     "nuxt-fathom": "^0.0.3",
-    "oxfmt": "^0.28.0"
+    "oxfmt": "^0.44.0"
   },
   "packageManager": "pnpm@10.33.0"
 }
