@@ -21,9 +21,6 @@ useHead({
             experiment.name
           }}</NuxtLink>
         </li>
-        <li>
-          <NuxtLink to="/labs/game-of-life">006-game-of-life</NuxtLink>
-        </li>
       </ol>
     </main>
   </div>

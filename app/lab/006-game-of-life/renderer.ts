@@ -9,15 +9,18 @@ export interface RenderOptions {
   aliveWidth?: number
   /** Line width for dead sides (cell outlines) */
   deadWidth?: number
+  /** Opacity for dead sides (0-1) */
+  deadAlpha?: number
   /** Background color */
   bgColor?: string
 }
 
 const DEFAULTS: Required<RenderOptions> = {
   aliveColor: '#22c55e',
-  deadColor: '#333333',
+  deadColor: '#888888',
   aliveWidth: 3,
   deadWidth: 0.5,
+  deadAlpha: 0.25,
   bgColor: '#0a0a0a',
 }
 
@@ -87,6 +90,8 @@ export function renderGrid(
   const ty = (y: number) => y * scale + offsetY
 
   // Draw cell outlines (dead sides)
+  ctx.save()
+  ctx.globalAlpha = opts.deadAlpha
   ctx.strokeStyle = opts.deadColor
   ctx.lineWidth = opts.deadWidth
   ctx.beginPath()
@@ -99,6 +104,7 @@ export function renderGrid(
     ctx.closePath()
   }
   ctx.stroke()
+  ctx.restore()
 
   // Draw alive sides on top
   ctx.strokeStyle = opts.aliveColor
