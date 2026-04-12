@@ -28,6 +28,8 @@ export class Side {
   hue: number = 0
   /** Steps spent orbiting within the current cell. */
   stepsInCell: number = 0
+  /** Orbit direction within a cell: 1 = forward, -1 = backward. Set on creation, randomized on cell change. */
+  direction: 1 | -1 = 1
 
   constructor(public readonly id: number) {}
 

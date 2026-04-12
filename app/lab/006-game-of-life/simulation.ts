@@ -52,6 +52,7 @@ export class Simulation {
       side.maxLife = 0
       side.hue = 0
       side.stepsInCell = 0
+      side.direction = 1
     }
     this.generation = 0
   }
@@ -67,6 +68,7 @@ export class Simulation {
       side.maxLife = 0
       side.hue = 0
       side.stepsInCell = 0
+      side.direction = 1
     }
     this.generation = 0
   }

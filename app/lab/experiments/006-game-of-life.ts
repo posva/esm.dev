@@ -5,11 +5,11 @@ import { ALL_RULES, SURVIVAL_BASE_LIFE } from '../006-game-of-life/rules'
 import type { GridType, PolygonType } from '../006-game-of-life/grid'
 
 let sim: Simulation | null = null
-let playing = false
+let playing = true
 let speed = 25 // steps per second
-let gridType: GridType = 4
+let gridType: GridType = 6
 let precision = 12
-let ruleIndex = 0
+let ruleIndex = ALL_RULES.findIndex((r) => r.name === 'Survival')
 let lastStepTime = 0
 let isListening = false
 let lastWidth = 0

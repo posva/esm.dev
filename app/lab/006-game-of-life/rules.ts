@@ -90,12 +90,17 @@ const SURVIVAL_LIFE_STEAL = 0.25
 const SURVIVAL_HUE_MUTATION = 10
 const SURVIVAL_INITIAL_HUE = 200 // starting hue (blue-ish)
 
+function randomDirection(): 1 | -1 {
+  return Math.random() < 0.5 ? 1 : -1
+}
+
 function clearSide(side: Side): void {
   side.alive = false
   side.life = 0
   side.maxLife = 0
   side.hue = 0
   side.stepsInCell = 0
+  side.direction = 1
 }
 
 function moveTo(source: Side, target: Side): void {
@@ -104,6 +109,7 @@ function moveTo(source: Side, target: Side): void {
   target.maxLife = source.maxLife
   target.hue = source.hue
   target.stepsInCell = source.stepsInCell
+  target.direction = source.direction
   clearSide(source)
 }
 
@@ -175,8 +181,7 @@ function nextSideInCell(side: Side): Side | null {
   if (!cell) return null
   const idx = cell.sides.indexOf(side)
   const n = cell.sides.length
-  const dir = Math.random() < 0.5 ? 1 : n - 1
-  return cell.sides[(idx + dir) % n]
+  return cell.sides[(idx + (side.direction === 1 ? 1 : n - 1)) % n]
 }
 
 function survivalStepGrid(grid: Grid): void {
@@ -194,6 +199,7 @@ function survivalStepGrid(grid: Grid): void {
       side.maxLife = side.life
       side.hue = SURVIVAL_INITIAL_HUE
       side.stepsInCell = 0
+      side.direction = randomDirection()
     }
 
     // Decay
@@ -223,6 +229,7 @@ function survivalStepGrid(grid: Grid): void {
       } else {
         moveTo(side, target)
         target.stepsInCell = 0
+        target.direction = randomDirection()
       }
     } else if (roll < SURVIVAL_P_JUMP + SURVIVAL_P_SPLIT) {
       // Split: spawn child on external neighbor
@@ -250,6 +257,7 @@ function survivalStepGrid(grid: Grid): void {
           target.maxLife = side.maxLife
           target.hue = childHue
           target.stepsInCell = 0
+          target.direction = randomDirection()
         } else if (target.life > childLife) {
           const stolen = Math.min(
             Math.floor(childLife * SURVIVAL_LIFE_STEAL),
@@ -267,6 +275,7 @@ function survivalStepGrid(grid: Grid): void {
           (side.hue + (Math.random() * SURVIVAL_HUE_MUTATION * 2 - SURVIVAL_HUE_MUTATION) + 360) %
           360
         target.stepsInCell = 0
+        target.direction = randomDirection()
       }
     } else {
       // Default: orbit to next side in same cell
