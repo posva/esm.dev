@@ -12,9 +12,10 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "prettier -c \"{app,server,content,scripts,public}/**/*.{vue,js,ts,html}\"",
+    "lint": "oxfmt --check",
     "lint:fix": "pnpm run lint --write",
-    "test": "pnpm run build"
+    "test:unit": "vitest",
+    "test": "pnpm run lint && pnpm run test:unit run && pnpm run build"
   },
   "dependencies": {
     "@giscus/vue": "^3.1.1",
