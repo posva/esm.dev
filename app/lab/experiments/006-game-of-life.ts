@@ -1,7 +1,7 @@
 import { getColorVariable } from '../utils/colors'
 import { Simulation } from '../006-game-of-life/simulation'
 import { renderGrid, findNearestSide } from '../006-game-of-life/renderer'
-import { ALL_RULES, SURVIVAL_BASE_LIFE } from '../006-game-of-life/rules'
+import { ALL_RULES, SURVIVAL_BASE_LIFE, randomizeMovement } from '../006-game-of-life/rules'
 import type { GridType, PolygonType } from '../006-game-of-life/grid'
 
 let sim: Simulation | null = null
@@ -103,6 +103,7 @@ export function render(ratio: number) {
         const life = SURVIVAL_BASE_LIFE * 10
         side.life = life
         side.maxLife = life
+        randomizeMovement(side)
       }
     }
 

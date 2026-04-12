@@ -30,6 +30,12 @@ export class Side {
   stepsInCell: number = 0
   /** Orbit direction within a cell: 1 = forward, -1 = backward. Set on creation, randomized on cell change. */
   direction: 1 | -1 = 1
+  /**
+   * Which of the two cells (cells[0] or cells[1]) to orbit around.
+   * Without this, orbits always use cells[0] which is biased toward the upper-left
+   * cell (since the grid is built left-to-right, top-to-bottom). Randomized at creation.
+   */
+  orbitCellIndex: 0 | 1 = 0
 
   constructor(public readonly id: number) {}
 

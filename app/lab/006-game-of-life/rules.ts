@@ -1,4 +1,4 @@
-import type { Side, Grid } from './grid'
+import type { Side, Cell, Grid } from './grid'
 
 /**
  * A rule function receives a side and its neighbors (precomputed),
@@ -94,6 +94,24 @@ function randomDirection(): 1 | -1 {
   return Math.random() < 0.5 ? 1 : -1
 }
 
+/**
+ * Pick a random orbit cell for a side. Falls back to 0 on boundary sides
+ * where cells[1] is null.
+ */
+export function randomOrbitCellIndex(side: Side): 0 | 1 {
+  return side.cells[1] ? (Math.random() < 0.5 ? 0 : 1) : 0
+}
+
+/**
+ * Randomize the movement parameters (direction + orbit cell) for a side.
+ * Call this whenever a side becomes "newly alive" at a fresh location:
+ * init, jump, split, fight victory, click.
+ */
+export function randomizeMovement(side: Side): void {
+  side.direction = randomDirection()
+  side.orbitCellIndex = randomOrbitCellIndex(side)
+}
+
 function clearSide(side: Side): void {
   side.alive = false
   side.life = 0
@@ -101,15 +119,19 @@ function clearSide(side: Side): void {
   side.hue = 0
   side.stepsInCell = 0
   side.direction = 1
+  side.orbitCellIndex = 0
 }
 
+/**
+ * Copy a side's state to another. Direction and orbitCellIndex are NOT copied —
+ * the caller decides whether to preserve (orbit) or randomize (jump/split).
+ */
 function moveTo(source: Side, target: Side): void {
   target.alive = true
   target.life = source.life
   target.maxLife = source.maxLife
   target.hue = source.hue
   target.stepsInCell = source.stepsInCell
-  target.direction = source.direction
   clearSide(source)
 }
 
@@ -131,6 +153,7 @@ export function resolveFight(attacker: Side, defender: Side, lifeSteal: number):
     defender.hue = attacker.hue
     defender.stepsInCell = 0
     defender.alive = true
+    randomizeMovement(defender)
     clearSide(attacker)
   } else if (dLife > aLife) {
     // Defender wins → stays
@@ -174,14 +197,22 @@ function externalNeighbors(side: Side): Side[] {
 }
 
 /**
- * Get the next side in the same cell (orbit).
+ * Get the next side in the orbit cell. Uses Array.at() so direction = -1
+ * naturally wraps to the last element when idx is 0.
  */
 function nextSideInCell(side: Side): Side | null {
-  const cell = side.cells[0]
+  const cell = side.cells[side.orbitCellIndex] ?? side.cells[0]
   if (!cell) return null
   const idx = cell.sides.indexOf(side)
-  const n = cell.sides.length
-  return cell.sides[(idx + (side.direction === 1 ? 1 : n - 1)) % n]
+  return cell.sides.at((idx + side.direction) % cell.sides.length) ?? null
+}
+
+/**
+ * After orbiting, find which of the target side's cells matches the orbit cell
+ * we were rotating around. This preserves orbit continuity across the move.
+ */
+function inheritOrbit(target: Side, orbitCell: Cell | null): void {
+  target.orbitCellIndex = target.cells[1] === orbitCell ? 1 : 0
 }
 
 function survivalStepGrid(grid: Grid): void {
@@ -193,13 +224,13 @@ function survivalStepGrid(grid: Grid): void {
     // Skip if already killed by a fight earlier in this step
     if (!side.alive) continue
 
-    // Initialize newly alive sides (from randomize)
+    // Initialize newly alive sides (from randomize or click)
     if (side.maxLife === 0) {
       side.life = SURVIVAL_BASE_LIFE + Math.floor(Math.random() * SURVIVAL_RANDOM_LIFE)
       side.maxLife = side.life
       side.hue = SURVIVAL_INITIAL_HUE
       side.stepsInCell = 0
-      side.direction = randomDirection()
+      randomizeMovement(side)
     }
 
     // Decay
@@ -229,7 +260,7 @@ function survivalStepGrid(grid: Grid): void {
       } else {
         moveTo(side, target)
         target.stepsInCell = 0
-        target.direction = randomDirection()
+        randomizeMovement(target)
       }
     } else if (roll < SURVIVAL_P_JUMP + SURVIVAL_P_SPLIT) {
       // Split: spawn child on external neighbor
@@ -257,7 +288,7 @@ function survivalStepGrid(grid: Grid): void {
           target.maxLife = side.maxLife
           target.hue = childHue
           target.stepsInCell = 0
-          target.direction = randomDirection()
+          randomizeMovement(target)
         } else if (target.life > childLife) {
           const stolen = Math.min(
             Math.floor(childLife * SURVIVAL_LIFE_STEAL),
@@ -275,10 +306,12 @@ function survivalStepGrid(grid: Grid): void {
           (side.hue + (Math.random() * SURVIVAL_HUE_MUTATION * 2 - SURVIVAL_HUE_MUTATION) + 360) %
           360
         target.stepsInCell = 0
-        target.direction = randomDirection()
+        randomizeMovement(target)
       }
     } else {
       // Default: orbit to next side in same cell
+      const orbitCell = side.cells[side.orbitCellIndex] ?? side.cells[0]
+      const dir = side.direction
       const next = nextSideInCell(side)
       if (!next || next === side) continue
 
@@ -287,6 +320,9 @@ function survivalStepGrid(grid: Grid): void {
       } else {
         side.stepsInCell++
         moveTo(side, next)
+        // moveTo cleared source.direction; restore captured value
+        next.direction = dir
+        inheritOrbit(next, orbitCell)
       }
     }
   }
