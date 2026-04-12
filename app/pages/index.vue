@@ -13,6 +13,7 @@ const description = 'Hello! I am Eduardo and this is my website 🙂'
 const route = useRoute('index')
 
 useHead({
+  bodyAttrs: { class: 'home-pass-through' },
   meta: [
     {
       name: 'description',
@@ -40,6 +41,7 @@ useHead({
 <template>
   <div class="relative max-w-full leading-tight" id="bio-container">
     <div
+      id="bio-card"
       class="px-3 py-2 pb-4 space-y-6 shadow-lg bg-opacity-70 md:py-4 rounded-xl md:px-6 dark:bg-gray-950 bg-slate-100 dark:bg-opacity-70 backdrop-blur-md"
     >
       <h1 class="font-bold">Hi <span class="wave">👋</span></h1>
@@ -95,6 +97,20 @@ useHead({
   /* max-width: min(100%, 1400px); */
 }
 
+/* Let clicks pass through empty areas to the canvas behind. The Nuxt page
+   wrapper sits above the negative-z-index canvas, so we have to walk up. */
+.home-pass-through,
+.home-pass-through #__nuxt,
+.home-pass-through #__nuxt > div,
+.home-pass-through #bio-container {
+  pointer-events: none;
+}
+
+.home-pass-through #bio-card,
+.home-pass-through #experiment {
+  pointer-events: auto;
+}
+
 #bio-container .icon {
   /* fixes alignment of <Icon /> */
   vertical-align: text-top;
@@ -121,6 +137,7 @@ useHead({
   top: 0;
   left: 0;
   display: block;
+  pointer-events: none;
   animation: fadeOut 1s ease-out 2s;
   animation-fill-mode: forwards;
 }
