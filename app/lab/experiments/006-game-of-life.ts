@@ -1,28 +1,35 @@
 import { getColorVariable } from '../utils/colors'
 import { Simulation } from '../006-game-of-life/simulation'
-import { renderGrid } from '../006-game-of-life/renderer'
-import { ALL_RULES } from '../006-game-of-life/rules'
-import type { PolygonType } from '../006-game-of-life/grid'
+import { renderGrid, findNearestSide } from '../006-game-of-life/renderer'
+import { ALL_RULES, SURVIVAL_BASE_LIFE } from '../006-game-of-life/rules'
+import type { GridType, PolygonType } from '../006-game-of-life/grid'
 
 let sim: Simulation | null = null
 let playing = false
 let speed = 10 // steps per second
-let polygonType: PolygonType = 4
+let gridType: GridType = 4
+let precision = 12
 let ruleIndex = 0
 let lastStepTime = 0
 let isListening = false
 let lastWidth = 0
 let lastHeight = 0
+let isMouseDown = false
 
-const POLYGON_LABELS: Record<PolygonType, string> = { 3: '△', 4: '□', 6: '⬡' }
+const GRID_LABELS: Record<string, string> = { 3: '△', 4: '□', 6: '⬡', circle: '○' }
 
 function initSim(width: number, height: number) {
-  // Scale grid size to canvas
-  const cellSize = 25
+  const cellSize = gridType === 'circle' ? 40 : 25
   const rows = Math.max(3, Math.floor(height / cellSize))
   const cols = Math.max(3, Math.floor(width / cellSize))
 
-  sim = new Simulation(polygonType, rows, cols, ALL_RULES[ruleIndex])
+  sim = new Simulation(
+    gridType,
+    rows,
+    cols,
+    ALL_RULES[ruleIndex],
+    gridType === 'circle' ? precision : undefined,
+  )
   sim.randomize(0.3)
   lastStepTime = 0
 }
@@ -37,16 +44,16 @@ function drawHUD(ctx: CanvasRenderingContext2D, width: number, height: number) {
   const padding = 10
   const fontSize = 12
 
-  // Info lines
+  const typeLabel = GRID_LABELS[String(gridType)] || String(gridType)
+  const precisionLabel = gridType === 'circle' ? ` p${precision}` : ''
   const lines = [
-    `${POLYGON_LABELS[polygonType]} ${polygonType}-gon  |  ${ALL_RULES[ruleIndex].name}  |  Gen ${sim.generation}  |  ${playing ? '▶' : '⏸'} ${speed}fps`,
-    `[3/4/6] shape  [space] play  [→] step  [↑↓] speed  [r] random  [c] clear  [tab] rule`,
+    `${typeLabel} ${gridType}${precisionLabel}  |  ${ALL_RULES[ruleIndex].name}  |  Gen ${sim.generation}  |  ${playing ? '▶' : '⏸'} ${speed}fps`,
+    `[3/4/6] shape  [o] circle  [+/-] precision  [space] play  [→] step  [↑↓] speed  [r] random  [c] clear  [tab] rule`,
   ]
 
   const boxHeight = lines.length * lineHeight + padding * 2
   const boxY = height - boxHeight
 
-  // Semi-transparent background bar
   ctx.save()
   ctx.globalAlpha = 0.7
   ctx.fillStyle = bgColor
@@ -79,6 +86,32 @@ export function render(ratio: number) {
 
   if (!isListening) {
     isListening = true
+
+    function activateAtPosition(clientX: number, clientY: number) {
+      if (!sim) return
+      const r = canvasEl.getBoundingClientRect()
+      const x = clientX - r.left
+      const y = clientY - r.top
+      const side = findNearestSide(sim.grid, x, y, r.width, r.height)
+      if (side && !side.alive) {
+        side.alive = true
+        // Give clicked sides 10x life so they dominate
+        const life = SURVIVAL_BASE_LIFE * 10
+        side.life = life
+        side.maxLife = life
+      }
+    }
+
+    canvasEl.addEventListener('mousedown', (e) => {
+      isMouseDown = true
+      activateAtPosition(e.clientX, e.clientY)
+    })
+    canvasEl.addEventListener('mousemove', (e) => {
+      if (isMouseDown) activateAtPosition(e.clientX, e.clientY)
+    })
+    document.addEventListener('mouseup', () => {
+      isMouseDown = false
+    })
 
     document.body.addEventListener('keydown', (e) => {
       switch (e.key) {
@@ -114,16 +147,33 @@ export function render(ratio: number) {
           if (sim) sim.rules = ALL_RULES[ruleIndex]
           break
         case '3':
-          polygonType = 3
+          gridType = 3
           sim = null
           break
         case '4':
-          polygonType = 4
+          gridType = 4
           sim = null
           break
         case '6':
-          polygonType = 6
+          gridType = 6
           sim = null
+          break
+        case 'o':
+          gridType = 'circle'
+          sim = null
+          break
+        case '+':
+        case '=':
+          if (gridType === 'circle') {
+            precision = Math.min(48, precision + 6)
+            sim = null
+          }
+          break
+        case '-':
+          if (gridType === 'circle') {
+            precision = Math.max(6, precision - 6)
+            sim = null
+          }
           break
       }
     })

@@ -257,6 +257,125 @@ describe('Hexagon grid (6)', () => {
   })
 })
 
+// ── Circle grid ──
+
+describe('Circle grid', () => {
+  it('creates correct number of cells', () => {
+    const grid = createGrid('circle', 3, 4, 12)
+    expect(grid.cells.length).toBe(12)
+  })
+
+  it('each cell has precision dots', () => {
+    const grid = createGrid('circle', 2, 3, 18)
+    for (const cell of grid.cells) {
+      expect(cell.sides.length).toBe(18)
+    }
+  })
+
+  it('total dots equals rows * cols * precision (no sharing)', () => {
+    const grid = createGrid('circle', 3, 4, 12)
+    expect(grid.sides.length).toBe(3 * 4 * 12)
+  })
+
+  it('each cell has precision vertices', () => {
+    const grid = createGrid('circle', 2, 2, 12)
+    for (const cell of grid.cells) {
+      expect(cell.vertices.length).toBe(12)
+    }
+  })
+
+  it('no dots are shared between cells (cells[1] is always null)', () => {
+    const grid = createGrid('circle', 3, 3, 12)
+    for (const side of grid.sides) {
+      expect(side.cells[1]).toBeNull()
+    }
+  })
+
+  it('linked neighbor symmetry: if A links to B, B links to A', () => {
+    const grid = createGrid('circle', 3, 3, 12)
+    for (const side of grid.sides) {
+      for (const linked of side.linkedNeighbors) {
+        expect(linked.linkedNeighbors).toContain(side)
+      }
+    }
+  })
+
+  it('interior dot has correct neighbor count', () => {
+    // For a fully interior circle (all 6 neighbors), each dot has:
+    // (precision - 1) same-circle + 1 linked = 11 + 1 = 12
+    const grid = createGrid('circle', 5, 5, 12)
+    // Find a cell where all 6 directions have neighbors
+    const interiorCell = grid.cells.find((c) => {
+      const totalLinked = c.sides.reduce((sum, s) => sum + s.linkedNeighbors.length, 0)
+      return totalLinked === 12
+    })
+    expect(interiorCell).toBeDefined()
+    for (const dot of interiorCell!.sides) {
+      const neighbors = dot.getNeighbors()
+      // (precision - 1) same-circle + 1 linked neighbor
+      expect(neighbors.length).toBe(12)
+    }
+  })
+
+  it('each interior dot has exactly 1 linked neighbor', () => {
+    const precision = 12
+    const grid = createGrid('circle', 5, 5, precision)
+    // Find interior cell (all 6 directions connected = precision total links)
+    const interiorCell = grid.cells.find((c) => {
+      const totalLinked = c.sides.reduce((sum, s) => sum + s.linkedNeighbors.length, 0)
+      return totalLinked === precision
+    })
+    expect(interiorCell).toBeDefined()
+    // Each dot faces one direction and connects to exactly one dot on the neighbor
+    for (const dot of interiorCell!.sides) {
+      expect(dot.linkedNeighbors.length).toBe(1)
+    }
+  })
+
+  it('throws for precision not divisible by 6', () => {
+    expect(() => createGrid('circle', 2, 2, 8)).toThrow()
+    expect(() => createGrid('circle', 2, 2, 10)).toThrow()
+    expect(() => createGrid('circle', 2, 2, 4)).toThrow()
+  })
+
+  it('throws for precision less than 6', () => {
+    expect(() => createGrid('circle', 2, 2, 3)).toThrow()
+    expect(() => createGrid('circle', 2, 2, 0)).toThrow()
+  })
+
+  it('works with precision 6 (minimum)', () => {
+    const grid = createGrid('circle', 2, 2, 6)
+    expect(grid.sides.length).toBe(2 * 2 * 6)
+  })
+
+  it('side-cell references are consistent', () => {
+    const grid = createGrid('circle', 3, 3, 12)
+    verifySideCellConsistency(grid)
+    verifyCellSideConsistency(grid)
+  })
+
+  it('all IDs are unique', () => {
+    const grid = createGrid('circle', 3, 3, 12)
+    const cellIds = grid.cells.map((c) => c.id)
+    expect(new Set(cellIds).size).toBe(cellIds.length)
+    const sideIds = grid.sides.map((s) => s.id)
+    expect(new Set(sideIds).size).toBe(sideIds.length)
+  })
+
+  it('gridType is circle', () => {
+    const grid = createGrid('circle', 2, 2, 12)
+    expect(grid.gridType).toBe('circle')
+  })
+
+  it('1x1 grid has no linked neighbors', () => {
+    const grid = createGrid('circle', 1, 1, 12)
+    expect(grid.cells.length).toBe(1)
+    for (const side of grid.sides) {
+      expect(side.linkedNeighbors.length).toBe(0)
+    }
+  })
+})
+
 // ── Side state ──
 
 describe('Side', () => {
@@ -293,6 +412,22 @@ describe('Grid general', () => {
       for (const cell of grid.cells) {
         expect(cell.vertices.length).toBe(type)
       }
+    }
+  })
+
+  it('polygon grids have no linkedNeighbors', () => {
+    for (const type of [3, 4, 6] as const) {
+      const grid = createGrid(type, 3, 3)
+      for (const side of grid.sides) {
+        expect(side.linkedNeighbors.length).toBe(0)
+      }
+    }
+  })
+
+  it('gridType matches polygon type', () => {
+    for (const type of [3, 4, 6] as const) {
+      const grid = createGrid(type, 2, 2)
+      expect(grid.gridType).toBe(type)
     }
   })
 })

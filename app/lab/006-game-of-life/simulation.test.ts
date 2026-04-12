@@ -82,7 +82,7 @@ describe('Simulation', () => {
     const sim = new Simulation(4, 3, 3, classicRule)
     const oldSideCount = sim.grid.sides.length
     sim.rebuild(6, 4, 4)
-    expect(sim.polygonType).toBe(6)
+    expect(sim.gridType).toBe(6)
     expect(sim.rows).toBe(4)
     expect(sim.cols).toBe(4)
     expect(sim.grid.sides.length).not.toBe(oldSideCount)

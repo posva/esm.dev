@@ -1,4 +1,5 @@
 export type PolygonType = 3 | 4 | 6
+export type GridType = PolygonType | 'circle'
 
 export interface Point {
   x: number
@@ -13,11 +14,26 @@ export class Side {
    */
   cells: [Cell, Cell | null] = [null!, null]
 
+  /**
+   * Explicit neighbor links for topologies where neighbors aren't
+   * determined by shared cells (e.g. circle grid inter-circle connections).
+   */
+  linkedNeighbors: Side[] = []
+
+  /** Current life points (0 = dead). Used by Survival rule. */
+  life: number = 0
+  /** Maximum life this side started with. Used for opacity fade. */
+  maxLife: number = 0
+  /** Current hue (0-360). Shifts each step in Survival. */
+  hue: number = 0
+  /** Steps spent orbiting within the current cell. */
+  stepsInCell: number = 0
+
   constructor(public readonly id: number) {}
 
   /**
    * Returns all other sides belonging to the same cells as this side,
-   * excluding itself. This forms the natural neighborhood.
+   * plus any explicitly linked neighbors, excluding itself.
    */
   getNeighbors(): Side[] {
     const seen = new Set<Side>()
@@ -28,6 +44,9 @@ export class Side {
           seen.add(side)
         }
       }
+    }
+    for (const side of this.linkedNeighbors) {
+      seen.add(side)
     }
     return Array.from(seen)
   }
@@ -46,6 +65,7 @@ export class Cell {
 export class Grid {
   cells: Cell[] = []
   sides: Side[] = []
+  gridType: GridType
 
   private nextSideId = 0
   private nextCellId = 0
@@ -54,17 +74,31 @@ export class Grid {
     public readonly polygonType: PolygonType,
     public readonly rows: number,
     public readonly cols: number,
+  )
+  constructor(gridType: 'circle', rows: number, cols: number, precision: number)
+  constructor(
+    gridTypeOrPolygon: GridType,
+    public readonly rows: number,
+    public readonly cols: number,
+    public readonly precision?: number,
   ) {
-    switch (polygonType) {
-      case 4:
-        this.buildSquareGrid()
-        break
-      case 3:
-        this.buildTriangleGrid()
-        break
-      case 6:
-        this.buildHexGrid()
-        break
+    this.gridType = gridTypeOrPolygon
+    if (gridTypeOrPolygon === 'circle') {
+      this.polygonType = 6 as PolygonType // layout uses hex positions
+      this.buildCircleGrid(this.precision!)
+    } else {
+      this.polygonType = gridTypeOrPolygon
+      switch (gridTypeOrPolygon) {
+        case 4:
+          this.buildSquareGrid()
+          break
+        case 3:
+          this.buildTriangleGrid()
+          break
+        case 6:
+          this.buildHexGrid()
+          break
+      }
     }
   }
 
@@ -382,8 +416,117 @@ export class Grid {
     if (!neighbor) return null
     return neighbor.sides[neighborSideIndex] ?? null
   }
+
+  // ── Circle grid (dots on hex-arranged circles) ──
+
+  /**
+   * Returns the hex neighbor coordinates for direction d using odd-q offset.
+   */
+  private hexNeighborCoords(
+    q: number,
+    r: number,
+    d: number,
+    isOdd: boolean,
+  ): { nq: number; nr: number } {
+    switch (d) {
+      case 0:
+        return { nq: q + 1, nr: isOdd ? r + 1 : r } // SE
+      case 1:
+        return { nq: q, nr: r + 1 } // S
+      case 2:
+        return { nq: q - 1, nr: isOdd ? r + 1 : r } // SW
+      case 3:
+        return { nq: q - 1, nr: isOdd ? r : r - 1 } // NW
+      case 4:
+        return { nq: q, nr: r - 1 } // N
+      case 5:
+        return { nq: q + 1, nr: isOdd ? r : r - 1 } // NE
+      default:
+        return { nq: -1, nr: -1 }
+    }
+  }
+
+  private buildCircleGrid(precision: number): void {
+    if (precision < 6 || precision % 6 !== 0) {
+      throw new Error(`Circle precision must be a multiple of 6 (got ${precision})`)
+    }
+
+    // Hex layout constants (same as buildHexGrid)
+    const size = 1
+    const w = size * 2
+    const h = Math.sqrt(3) * size
+    const colStep = w * 0.75
+    const rowStep = h
+
+    const dotsPerDirection = precision / 6
+    // Inradius: circle fits inside the hexagon, not outside
+    const inradius = (size * Math.sqrt(3)) / 2
+    const cellGrid: (Cell | null)[][] = []
+
+    // Build all circles
+    for (let q = 0; q < this.cols; q++) {
+      cellGrid[q] = []
+      for (let r = 0; r < this.rows; r++) {
+        const cx = q * colStep + size
+        const cy = r * rowStep + h / 2 + (q % 2 === 1 ? h / 2 : 0)
+
+        // Vertices: precision dots on a circle with half-step offset
+        // so dots straddle hex neighbor directions
+        const vertices: Point[] = []
+        for (let i = 0; i < precision; i++) {
+          const angle = Math.PI / precision + (2 * Math.PI * i) / precision
+          vertices.push({
+            x: cx + inradius * Math.cos(angle),
+            y: cy + inradius * Math.sin(angle),
+          })
+        }
+
+        const cell = this.createCell({ x: cx, y: cy }, vertices)
+        cellGrid[q][r] = cell
+
+        // Create one Side (dot) per vertex, all belonging to this cell only
+        for (let i = 0; i < precision; i++) {
+          const dot = this.createSide()
+          this.attachSide(dot, cell)
+        }
+      }
+    }
+
+    // Connect dots between neighboring circles
+    for (let q = 0; q < this.cols; q++) {
+      for (let r = 0; r < this.rows; r++) {
+        const cellA = cellGrid[q]![r]
+        if (!cellA) continue
+        const isOdd = q % 2 === 1
+
+        for (let d = 0; d < 6; d++) {
+          const { nq, nr } = this.hexNeighborCoords(q, r, d, isOdd)
+          const cellB = cellGrid[nq]?.[nr]
+          if (!cellB) continue
+
+          // Only connect in one direction to avoid double-linking
+          // Connect when (q,r) < (nq,nr) lexicographically
+          if (nq < q || (nq === q && nr < r)) continue
+
+          const oppositeD = (d + 3) % 6
+
+          for (let k = 0; k < dotsPerDirection; k++) {
+            const dotA = cellA.sides[d * dotsPerDirection + k]
+            const dotB = cellB.sides[oppositeD * dotsPerDirection + (dotsPerDirection - 1 - k)]
+            dotA.linkedNeighbors.push(dotB)
+            dotB.linkedNeighbors.push(dotA)
+          }
+        }
+      }
+    }
+  }
 }
 
-export function createGrid(type: PolygonType, rows: number, cols: number): Grid {
+export function createGrid(type: PolygonType, rows: number, cols: number): Grid
+export function createGrid(type: 'circle', rows: number, cols: number, precision: number): Grid
+export function createGrid(type: GridType, rows: number, cols: number, precision?: number): Grid {
+  if (type === 'circle') {
+    return new Grid('circle', rows, cols, precision!)
+  }
   return new Grid(type, rows, cols)
 }
