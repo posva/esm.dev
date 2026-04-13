@@ -3,10 +3,10 @@ name: ci
 on:
   push:
     paths:
-      - "src"
-      - "package.json"
-      - "pnpm-lock.yaml"
-      - ".github/workflows/ci.yml"
+      - 'src'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/ci.yml'
 
 jobs:
   build:
