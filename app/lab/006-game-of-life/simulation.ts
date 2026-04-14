@@ -4,6 +4,7 @@ import type { RuleSet } from './rules'
 export class Simulation {
   grid: Grid
   generation: number = 0
+  private nextAlive: Uint8Array = new Uint8Array(0)
 
   constructor(
     public gridType: GridType,
@@ -16,6 +17,7 @@ export class Simulation {
       gridType === 'circle'
         ? createGrid('circle', rows, cols, precision!)
         : createGrid(gridType, rows, cols)
+    this.nextAlive = new Uint8Array(this.grid.sides.length)
   }
 
   /**
@@ -26,16 +28,34 @@ export class Simulation {
     if (this.rules.stepGrid) {
       this.rules.stepGrid(this.grid)
     } else {
-      const nextStates: boolean[] = new Array(this.grid.sides.length)
+      const sides = this.grid.sides
+      const n = sides.length
+      const offsets = this.grid.neighborOffsets
+      const ids = this.grid.neighborIds
+      const applyCount = this.rules.applyCount
+      const applyArray = this.rules.apply
+      const next = this.nextAlive
 
-      for (let i = 0; i < this.grid.sides.length; i++) {
-        const side = this.grid.sides[i]
-        const neighbors = side.getNeighbors()
-        nextStates[i] = this.rules.apply(side, neighbors)
+      if (applyCount) {
+        // Fast path: no intermediate Side[] allocation per side.
+        for (let i = 0; i < n; i++) {
+          const start = offsets[i]
+          const end = offsets[i + 1]
+          let alive = 0
+          for (let k = start; k < end; k++) {
+            if (sides[ids[k]].alive) alive++
+          }
+          next[i] = applyCount(sides[i], alive) ? 1 : 0
+        }
+      } else {
+        // Fallback: array-based API.
+        for (let i = 0; i < n; i++) {
+          next[i] = applyArray(sides[i], sides[i].getNeighbors()) ? 1 : 0
+        }
       }
 
-      for (let i = 0; i < this.grid.sides.length; i++) {
-        this.grid.sides[i].alive = nextStates[i]
+      for (let i = 0; i < n; i++) {
+        sides[i].alive = next[i] === 1
       }
     }
 
@@ -85,6 +105,7 @@ export class Simulation {
       gridType === 'circle'
         ? createGrid('circle', rows, cols, precision!)
         : createGrid(gridType, rows, cols)
+    this.nextAlive = new Uint8Array(this.grid.sides.length)
     this.generation = 0
   }
 }

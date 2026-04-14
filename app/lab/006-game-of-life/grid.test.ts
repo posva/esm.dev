@@ -376,6 +376,101 @@ describe('Circle grid', () => {
   })
 })
 
+// ── Neighbor index (CSR) ──
+
+describe('Neighbor index', () => {
+  const configs = [
+    { label: 'square', make: () => createGrid(4, 3, 4) },
+    { label: 'triangle', make: () => createGrid(3, 3, 6) },
+    { label: 'hex', make: () => createGrid(6, 3, 4) },
+    { label: 'circle', make: () => createGrid('circle', 3, 3, 12) },
+  ] as const
+
+  for (const { label, make } of configs) {
+    it(`matches getNeighbors() for ${label}`, () => {
+      const grid = make()
+      for (const side of grid.sides) {
+        const expected = new Set(side.getNeighbors().map((s) => s.id))
+        const start = grid.neighborOffsets[side.id]
+        const end = grid.neighborOffsets[side.id + 1]
+        const actual = new Set<number>()
+        for (let k = start; k < end; k++) {
+          actual.add(grid.neighborIds[k])
+        }
+        expect(actual.size).toBe(expected.size)
+        for (const id of expected) {
+          expect(actual.has(id)).toBe(true)
+        }
+      }
+    })
+  }
+
+  it('offsets has length sides.length + 1', () => {
+    const grid = createGrid(4, 3, 4)
+    expect(grid.neighborOffsets.length).toBe(grid.sides.length + 1)
+  })
+
+  it('last offset equals total neighbor count', () => {
+    const grid = createGrid(6, 3, 3)
+    const total = grid.sides.reduce((sum, s) => sum + s.getNeighbors().length, 0)
+    expect(grid.neighborOffsets[grid.sides.length]).toBe(total)
+    expect(grid.neighborIds.length).toBe(total)
+  })
+})
+
+// ── indexInCell cache ──
+
+describe('indexInCell cache', () => {
+  const configs = [
+    { label: 'square', make: () => createGrid(4, 3, 4) },
+    { label: 'triangle', make: () => createGrid(3, 3, 6) },
+    { label: 'hex', make: () => createGrid(6, 3, 4) },
+    { label: 'circle', make: () => createGrid('circle', 3, 3, 12) },
+  ] as const
+
+  for (const { label, make } of configs) {
+    it(`matches cell.sides.indexOf for ${label}`, () => {
+      const grid = make()
+      for (const side of grid.sides) {
+        const c0 = side.cells[0]
+        const c1 = side.cells[1]
+        expect(side.indexInCellA).toBe(c0 ? c0.sides.indexOf(side) : -1)
+        expect(side.indexInCellB).toBe(c1 ? c1.sides.indexOf(side) : -1)
+      }
+    })
+  }
+})
+
+// ── Cached bounds ──
+
+describe('Grid.getBounds', () => {
+  it('returns same bounds as ad-hoc computation', () => {
+    const grid = createGrid(6, 3, 4)
+    let minX = Infinity,
+      minY = Infinity,
+      maxX = -Infinity,
+      maxY = -Infinity
+    for (const cell of grid.cells) {
+      for (const v of cell.vertices) {
+        if (v.x < minX) minX = v.x
+        if (v.y < minY) minY = v.y
+        if (v.x > maxX) maxX = v.x
+        if (v.y > maxY) maxY = v.y
+      }
+    }
+    const b = grid.getBounds()
+    expect(b.minX).toBe(minX)
+    expect(b.minY).toBe(minY)
+    expect(b.maxX).toBe(maxX)
+    expect(b.maxY).toBe(maxY)
+  })
+
+  it('memoizes (returns same object)', () => {
+    const grid = createGrid(4, 2, 2)
+    expect(grid.getBounds()).toBe(grid.getBounds())
+  })
+})
+
 // ── Side state ──
 
 describe('Side', () => {

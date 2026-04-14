@@ -6,10 +6,21 @@ import type { Side, Cell, Grid } from './grid'
  */
 export type RuleFn = (side: Side, neighbors: Side[]) => boolean
 
+/**
+ * Fast-path variant of RuleFn that takes only the alive-neighbor count.
+ * Used by the simulation loop to avoid building a Side[] per side per step.
+ */
+export type RuleCountFn = (side: Side, aliveCount: number) => boolean
+
 export interface RuleSet {
   name: string
   description: string
   apply: RuleFn
+  /**
+   * Optional fast path. When present, the simulation uses this instead of
+   * `apply`, skipping the per-side neighbor array allocation.
+   */
+  applyCount?: RuleCountFn
   /** Optional grid-level step that replaces the default per-side evaluation. */
   stepGrid?: (grid: Grid) => void
 }
@@ -36,10 +47,9 @@ export const classicRule: RuleSet = {
   description:
     'Sides with 2–3 alive neighbors survive or are born. Too few → dies of loneliness. Too many → overcrowding.',
   apply(side, neighbors) {
-    const alive = aliveCount(neighbors)
-    if (side.alive) {
-      return alive >= 2 && alive <= 3
-    }
+    return classicRule.applyCount!(side, aliveCount(neighbors))
+  },
+  applyCount(_side, alive) {
     return alive >= 2 && alive <= 3
   },
 }
@@ -54,8 +64,11 @@ export const seedsRule: RuleSet = {
   description:
     'Every alive side dies. Dead sides with exactly 2 alive neighbors ignite. Creates explosive, chaotic growth.',
   apply(side, neighbors) {
+    return seedsRule.applyCount!(side, aliveCount(neighbors))
+  },
+  applyCount(side, alive) {
     if (side.alive) return false
-    return aliveCount(neighbors) === 2
+    return alive === 2
   },
 }
 
@@ -69,7 +82,9 @@ export const dayNightRule: RuleSet = {
   description:
     'Symmetric rule where alive and dead states are interchangeable. Birth at 3/6/7/8, survival at 3/4/6/7/8. Produces stable, organic blobs.',
   apply(side, neighbors) {
-    const alive = aliveCount(neighbors)
+    return dayNightRule.applyCount!(side, aliveCount(neighbors))
+  },
+  applyCount(side, alive) {
     if (side.alive) {
       return alive === 3 || alive === 4 || alive >= 6
     }
@@ -168,43 +183,33 @@ export function resolveFight(attacker: Side, defender: Side, lifeSteal: number):
   }
 }
 
-/** Fisher-Yates shuffle in place */
+/**
+ * Fisher-Yates shuffle in place. Uses a temporary variable instead of
+ * destructuring to avoid per-swap allocation of a 2-element array.
+ */
 function shuffle<T>(arr: T[]): T[] {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+    const tmp = arr[i]
+    arr[i] = arr[j]
+    arr[j] = tmp
   }
   return arr
 }
 
 /**
- * Get neighbors that can serve as a "jump out" target.
- * For circle grids: linkedNeighbors (on different cells).
- * For polygon grids: neighbors that belong to a cell the current side doesn't.
- */
-function externalNeighbors(side: Side): Side[] {
-  const myCells = new Set<number>()
-  if (side.cells[0]) myCells.add(side.cells[0].id)
-  if (side.cells[1]) myCells.add(side.cells[1].id)
-
-  return side.getNeighbors().filter((n) => {
-    // A neighbor is "external" if it belongs to at least one cell
-    // that the current side does NOT belong to
-    if (n.cells[0] && !myCells.has(n.cells[0].id)) return true
-    if (n.cells[1] && !myCells.has(n.cells[1].id)) return true
-    return false
-  })
-}
-
-/**
- * Get the next side in the orbit cell. Uses Array.at() so direction = -1
- * naturally wraps to the last element when idx is 0.
+ * Get the next side in the orbit cell. Uses the cached per-cell index so
+ * we never scan `cell.sides` on the hot path.
  */
 function nextSideInCell(side: Side): Side | null {
-  const cell = side.cells[side.orbitCellIndex] ?? side.cells[0]
+  const useB = side.orbitCellIndex === 1 && side.cells[1] !== null
+  const cell = useB ? side.cells[1]! : side.cells[0]
   if (!cell) return null
-  const idx = cell.sides.indexOf(side)
-  return cell.sides.at((idx + side.direction) % cell.sides.length) ?? null
+  const idx = useB ? side.indexInCellB : side.indexInCellA
+  if (idx < 0) return null
+  const n = cell.sides.length
+  // Add n before modulo so direction = -1 wraps correctly without Array.at().
+  return cell.sides[(idx + side.direction + n) % n] ?? null
 }
 
 /**
@@ -215,9 +220,17 @@ function inheritOrbit(target: Side, orbitCell: Cell | null): void {
   target.orbitCellIndex = target.cells[1] === orbitCell ? 1 : 0
 }
 
+// Reusable scratch for the alive-side list — cleared via `.length = 0` so
+// the backing array keeps its capacity between steps.
+const aliveScratch: Side[] = []
+
 function survivalStepGrid(grid: Grid): void {
   // Collect and shuffle alive sides
-  const alive = grid.sides.filter((s) => s.alive)
+  const alive = aliveScratch
+  alive.length = 0
+  for (const s of grid.sides) {
+    if (s.alive) alive.push(s)
+  }
   shuffle(alive)
 
   for (const side of alive) {
@@ -251,7 +264,7 @@ function survivalStepGrid(grid: Grid): void {
 
     if (forcedJump || roll < SURVIVAL_P_JUMP) {
       // Jump to a neighbor on a different cell
-      const ext = externalNeighbors(side)
+      const ext = grid.externalNeighbors[side.id]
       if (ext.length === 0) continue // boundary, no external neighbors
       const target = ext[Math.floor(Math.random() * ext.length)]
 
@@ -264,7 +277,7 @@ function survivalStepGrid(grid: Grid): void {
       }
     } else if (roll < SURVIVAL_P_JUMP + SURVIVAL_P_SPLIT) {
       // Split: spawn child on external neighbor
-      const ext = externalNeighbors(side)
+      const ext = grid.externalNeighbors[side.id]
       if (ext.length === 0) continue
       const target = ext[Math.floor(Math.random() * ext.length)]
 

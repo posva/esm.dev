@@ -1,6 +1,6 @@
 import { getColorVariable } from '../utils/colors'
 import { Simulation } from '../006-game-of-life/simulation'
-import { renderGrid, findNearestSide } from '../006-game-of-life/renderer'
+import { renderGrid, findNearestSide, invalidateSpatialHash } from '../006-game-of-life/renderer'
 import { ALL_RULES, SURVIVAL_BASE_LIFE, randomizeMovement } from '../006-game-of-life/rules'
 import type { GridType, PolygonType } from '../006-game-of-life/grid'
 
@@ -15,13 +15,39 @@ let listeningOn: HTMLCanvasElement | null = null
 let cleanupListeners: (() => void) | null = null
 let lastWidth = 0
 let lastHeight = 0
+let lastDpr = 0
+let cachedCtx: CanvasRenderingContext2D | null = null
+let cachedRect: { left: number; top: number; width: number; height: number } = {
+  left: 0,
+  top: 0,
+  width: 0,
+  height: 0,
+}
 let isMouseDown = false
 let showGrid = true
+// Dirty flag: skip renderGrid (the hottest canvas work) when nothing changed
+// since the previous frame. The display refresh rate (60/120Hz) is usually
+// much higher than the sim rate (25Hz by default), so this saves a lot.
+let dirty = true
 
 const GRID_LABELS: Record<string, string> = { 3: '△', 4: '□', 6: '⬡', circle: '○' }
 
+// Cap total anchor points so very large screens stay smooth. Circle grids
+// emit `precision` sides per cell (vs 3/4/6 for polygons), so they hit the
+// cap much faster. Scale the cap accordingly.
+const MAX_POLYGON_CELLS = 6000
+const MAX_CIRCLE_ANCHORS = 20_000
+
 function initSim(width: number, height: number) {
-  const cellSize = gridType === 'circle' ? 40 : 25
+  const base = gridType === 'circle' ? 40 : 25
+  // Circle cells carry `precision` sides; the sim cost scales with side count,
+  // not cell count, so derive the cell cap from an anchor-point budget.
+  const maxCells =
+    gridType === 'circle'
+      ? Math.max(100, Math.floor(MAX_CIRCLE_ANCHORS / precision))
+      : MAX_POLYGON_CELLS
+  const minCellSize = Math.sqrt((width * height) / maxCells)
+  const cellSize = Math.max(base, minCellSize)
   // +2 so the grid extends beyond the viewport edges
   const rows = Math.max(3, Math.floor(height / cellSize) + 2)
   const cols = Math.max(3, Math.floor(width / cellSize) + 2)
@@ -34,7 +60,9 @@ function initSim(width: number, height: number) {
     gridType === 'circle' ? precision : undefined,
   )
   sim.randomize(0.3)
+  invalidateSpatialHash()
   lastStepTime = 0
+  dirty = true
 }
 
 function drawHUD(ctx: CanvasRenderingContext2D, width: number, height: number) {
@@ -75,7 +103,7 @@ function drawHUD(ctx: CanvasRenderingContext2D, width: number, height: number) {
 function attachListeners(canvasEl: HTMLCanvasElement): () => void {
   function activateAtPosition(clientX: number, clientY: number) {
     if (!sim) return
-    const r = canvasEl.getBoundingClientRect()
+    const r = cachedRect
     const x = clientX - r.left
     const y = clientY - r.top
     const side = findNearestSide(sim.grid, x, y, r.width, r.height)
@@ -86,6 +114,7 @@ function attachListeners(canvasEl: HTMLCanvasElement): () => void {
       side.life = life
       side.maxLife = life
       randomizeMovement(side)
+      dirty = true
     }
   }
 
@@ -117,64 +146,78 @@ function attachListeners(canvasEl: HTMLCanvasElement): () => void {
         e.preventDefault()
         playing = !playing
         if (playing) lastStepTime = 0
+        dirty = true
         break
       case 'ArrowRight':
         e.preventDefault()
         if (sim) {
           playing = false
           sim.step()
+          dirty = true
         }
         break
       case 'ArrowUp':
         e.preventDefault()
         speed = Math.min(60, speed + 2)
+        dirty = true
         break
       case 'ArrowDown':
         e.preventDefault()
         speed = Math.max(1, speed - 2)
+        dirty = true
         break
       case 'r':
         sim?.randomize(0.3)
+        dirty = true
         break
       case 'c':
         sim?.reset()
+        dirty = true
         break
       case 'Tab':
         e.preventDefault()
         ruleIndex = (ruleIndex + 1) % ALL_RULES.length
         if (sim) sim.rules = ALL_RULES[ruleIndex]
+        dirty = true
         break
       case '3':
         gridType = 3
         sim = null
+        invalidateSpatialHash()
         break
       case '4':
         gridType = 4
         sim = null
+        invalidateSpatialHash()
         break
       case '6':
         gridType = 6
         sim = null
+        invalidateSpatialHash()
         break
       case 'o':
         gridType = 'circle'
         sim = null
+        invalidateSpatialHash()
         break
       case '+':
       case '=':
         if (gridType === 'circle') {
           precision = Math.min(48, precision + 6)
           sim = null
+          invalidateSpatialHash()
         }
         break
       case '-':
         if (gridType === 'circle') {
           precision = Math.max(6, precision - 6)
           sim = null
+          invalidateSpatialHash()
         }
         break
       case 'd':
         showGrid = !showGrid
+        dirty = true
         break
     }
   }
@@ -200,7 +243,12 @@ export function stop() {
   cleanupListeners?.()
   cleanupListeners = null
   listeningOn = null
+  cachedCtx = null
+  lastWidth = 0
+  lastHeight = 0
+  lastDpr = 0
   isMouseDown = false
+  dirty = true
 }
 
 export function render(ratio: number) {
@@ -213,12 +261,25 @@ export function render(ratio: number) {
   const dpr = window.devicePixelRatio || 1
   const width = rect.width
   const height = rect.height
-  canvasEl.width = width * dpr
-  canvasEl.height = height * dpr
 
-  const ctx = canvasEl.getContext('2d')
+  const sizeChanged = width !== lastWidth || height !== lastHeight || dpr !== lastDpr
+  if (sizeChanged) {
+    canvasEl.width = Math.round(width * dpr)
+    canvasEl.height = Math.round(height * dpr)
+    lastWidth = width
+    lastHeight = height
+    lastDpr = dpr
+    cachedCtx = canvasEl.getContext('2d')
+    cachedCtx?.setTransform(dpr, 0, 0, dpr, 0, 0)
+    cachedRect = { left: rect.left, top: rect.top, width, height }
+    invalidateSpatialHash()
+  } else {
+    // Bounding rect can shift (scroll) without affecting canvas size.
+    cachedRect = { left: rect.left, top: rect.top, width, height }
+  }
+
+  const ctx = cachedCtx
   if (!ctx) return
-  ctx.scale(dpr, dpr)
 
   if (listeningOn !== canvasEl) {
     cleanupListeners?.()
@@ -226,10 +287,7 @@ export function render(ratio: number) {
     listeningOn = canvasEl
   }
 
-  // Detect size change → rebuild simulation
-  if (!sim || width !== lastWidth || height !== lastHeight) {
-    lastWidth = width
-    lastHeight = height
+  if (!sim || sizeChanged) {
     initSim(width, height)
   }
 
@@ -243,13 +301,22 @@ export function render(ratio: number) {
     if (now - lastStepTime >= interval) {
       sim.step()
       lastStepTime = now
+      dirty = true
     }
   }
+
+  // Skip canvas work if nothing changed since the last frame. The display
+  // refresh (often 60/120Hz) is way faster than the sim rate — re-drawing
+  // the identical frame was the biggest remaining cost.
+  if (!dirty) return
 
   // Draw
   const bgColor = getColorVariable('bgColor')
   const aliveColor = getColorVariable('accent')
   const deadColor = getColorVariable('textColor')
+
+  const rule = ALL_RULES[ruleIndex]
+  const uniformAlive = !rule.stepGrid // Survival uses stepGrid → needs per-side color
 
   renderGrid(ctx, sim!.grid, width, height, {
     bgColor,
@@ -258,7 +325,9 @@ export function render(ratio: number) {
     deadWidth: 0.5,
     aliveWidth: 3,
     showGrid,
+    uniformAlive,
   })
 
   drawHUD(ctx, width, height)
+  dirty = false
 }

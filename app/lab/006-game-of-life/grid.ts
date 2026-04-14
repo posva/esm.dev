@@ -37,6 +37,11 @@ export class Side {
    */
   orbitCellIndex: 0 | 1 = 0
 
+  /** Cached `cells[0].sides.indexOf(this)` — -1 if no cell A. */
+  indexInCellA: number = -1
+  /** Cached `cells[1].sides.indexOf(this)` — -1 if no cell B. */
+  indexInCellB: number = -1
+
   constructor(public readonly id: number) {}
 
   /**
@@ -70,10 +75,34 @@ export class Cell {
   ) {}
 }
 
+export interface GridBounds {
+  minX: number
+  minY: number
+  maxX: number
+  maxY: number
+}
+
 export class Grid {
   cells: Cell[] = []
   sides: Side[] = []
   gridType: GridType
+
+  /**
+   * CSR-style neighbor index. Neighbors of side `i` live in
+   * `neighborIds[neighborOffsets[i] .. neighborOffsets[i+1]]`.
+   * Populated once at construction time; topology is static.
+   */
+  neighborOffsets: Int32Array = new Int32Array(0)
+  neighborIds: Int32Array = new Int32Array(0)
+
+  /**
+   * Per-side precomputed "external neighbors": sides that live on a cell
+   * other than the side's own two cells. Used by the Survival rule's
+   * jump/split targeting. Topology is static so we build this once.
+   */
+  externalNeighbors: Side[][] = []
+
+  private _bounds: GridBounds | null = null
 
   private nextSideId = 0
   private nextCellId = 0
@@ -108,6 +137,114 @@ export class Grid {
           break
       }
     }
+    this.finalize()
+  }
+
+  /** Populate cached indices that depend on final topology. */
+  private finalize(): void {
+    // indexInCellA / indexInCellB
+    for (const side of this.sides) {
+      const a = side.cells[0]
+      const b = side.cells[1]
+      side.indexInCellA = a ? a.sides.indexOf(side) : -1
+      side.indexInCellB = b ? b.sides.indexOf(side) : -1
+    }
+
+    // Neighbor CSR: same-cell siblings ∪ linkedNeighbors, excluding self.
+    const n = this.sides.length
+    this.neighborOffsets = new Int32Array(n + 1)
+    // First pass: compute counts per side (may over-count boundary because
+    // a side's two cells could theoretically share a sibling — they don't
+    // in our grids, but we dedupe to stay correct).
+    const tmp: number[][] = new Array(n)
+    for (let i = 0; i < n; i++) tmp[i] = []
+    for (let i = 0; i < n; i++) {
+      const side = this.sides[i]
+      const seen = new Set<number>()
+      const a = side.cells[0]
+      if (a) {
+        for (const s of a.sides) if (s !== side) seen.add(s.id)
+      }
+      const b = side.cells[1]
+      if (b) {
+        for (const s of b.sides) if (s !== side) seen.add(s.id)
+      }
+      for (const s of side.linkedNeighbors) seen.add(s.id)
+      for (const id of seen) tmp[i].push(id)
+    }
+    let total = 0
+    for (let i = 0; i < n; i++) total += tmp[i].length
+    this.neighborIds = new Int32Array(total)
+    let cursor = 0
+    for (let i = 0; i < n; i++) {
+      this.neighborOffsets[i] = cursor
+      const list = tmp[i]
+      for (let k = 0; k < list.length; k++) {
+        this.neighborIds[cursor++] = list[k]
+      }
+    }
+    this.neighborOffsets[n] = cursor
+
+    // Per-side precomputed external neighbors (for Survival jump/split).
+    // External = neighbor lives on a cell not shared with this side, or is
+    // an explicit linkedNeighbor (circle grid).
+    this.externalNeighbors = new Array(n)
+    for (let i = 0; i < n; i++) {
+      const side = this.sides[i]
+      const a = side.cells[0]
+      const b = side.cells[1]
+      const aId = a ? a.id : -1
+      const bId = b ? b.id : -1
+      const out: Side[] = []
+      const seen = new Set<number>()
+      if (a) {
+        for (const nb of a.sides) {
+          if (nb === side || seen.has(nb.id)) continue
+          const nA = nb.cells[0]
+          const nB = nb.cells[1]
+          if ((nA && nA.id !== aId && nA.id !== bId) || (nB && nB.id !== aId && nB.id !== bId)) {
+            seen.add(nb.id)
+            out.push(nb)
+          }
+        }
+      }
+      if (b) {
+        for (const nb of b.sides) {
+          if (nb === side || seen.has(nb.id)) continue
+          const nA = nb.cells[0]
+          const nB = nb.cells[1]
+          if ((nA && nA.id !== aId && nA.id !== bId) || (nB && nB.id !== aId && nB.id !== bId)) {
+            seen.add(nb.id)
+            out.push(nb)
+          }
+        }
+      }
+      for (const nb of side.linkedNeighbors) {
+        if (seen.has(nb.id)) continue
+        seen.add(nb.id)
+        out.push(nb)
+      }
+      this.externalNeighbors[i] = out
+    }
+  }
+
+  /** Return the cached bounding box of all cell vertices. */
+  getBounds(): GridBounds {
+    if (this._bounds) return this._bounds
+    let minX = Infinity
+    let minY = Infinity
+    let maxX = -Infinity
+    let maxY = -Infinity
+    for (const cell of this.cells) {
+      for (const v of cell.vertices) {
+        if (v.x < minX) minX = v.x
+        if (v.y < minY) minY = v.y
+        if (v.x > maxX) maxX = v.x
+        if (v.y > maxY) maxY = v.y
+      }
+    }
+    this._bounds = { minX, minY, maxX, maxY }
+    return this._bounds
   }
 
   private createSide(): Side {
