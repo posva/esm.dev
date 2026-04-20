@@ -41,17 +41,17 @@ importers:
         specifier: ^4.18.1
         version: 4.18.1
       nanoid:
-        specifier: ^5.1.7
-        version: 5.1.7
+        specifier: ^5.1.9
+        version: 5.1.9
       penner:
         specifier: ^0.1.3
         version: 0.1.3
       pixi-ease:
         specifier: ^3.0.7
-        version: 3.0.7(pixi.js@8.17.1)
+        version: 3.0.7(pixi.js@8.18.1)
       pixi.js:
-        specifier: ^8.17.1
-        version: 8.17.1
+        specifier: ^8.18.1
+        version: 8.18.1
       vue-use-spring:
         specifier: ^0.3.3
         version: 0.3.3(vue@3.5.32(typescript@5.9.3))
@@ -78,8 +78,8 @@ importers:
         specifier: ^1.2.11
         version: 1.2.11
       '@iconify-json/material-symbols':
-        specifier: ^1.2.66
-        version: 1.2.66
+        specifier: ^1.2.67
+        version: 1.2.67
       '@iconify-json/mdi':
         specifier: ^1.2.3
         version: 1.2.3
@@ -93,8 +93,8 @@ importers:
         specifier: ^1.2.2
         version: 1.2.2
       '@iconify-json/simple-icons':
-        specifier: ^1.2.78
-        version: 1.2.78
+        specifier: ^1.2.79
+        version: 1.2.79
       '@iconify-json/streamline':
         specifier: ^1.2.5
         version: 1.2.5
@@ -515,8 +515,8 @@ packages:
   '@iconify-json/logos@1.2.11':
     resolution: {integrity: sha512-fOo4pGEatuyuCFNL+cwquYMa2Im0oJHRHV7lt/Qqs5Ode/lPImHCQcfTtPzZj7qYMPb/h8YHN3TG54uEowrjNQ==}
 
-  '@iconify-json/material-symbols@1.2.66':
-    resolution: {integrity: sha512-pgZmK8RBAaYjfHnR0DcUDraduiJwjGDi4FwCXp89ecyNfs6fcL8j+TJ+Xqkyv6v7c31j/4OlL5ly86ATT6yTpA==}
+  '@iconify-json/material-symbols@1.2.67':
+    resolution: {integrity: sha512-9cKkCiHfShI795yoX+f7EqchoOcPWgyl2pMcXkyylX66AJ+B5mYEOEFxYpU7toOoquOEY2OYrgU89neik0N02w==}
 
   '@iconify-json/mdi@1.2.3':
     resolution: {integrity: sha512-O3cLwbDOK7NNDf2ihaQOH5F9JglnulNDFV7WprU2dSoZu3h3cWH//h74uQAB87brHmvFVxIOkuBX2sZSzYhScg==}
@@ -530,8 +530,8 @@ packages:
   '@iconify-json/ph@1.2.2':
     resolution: {integrity: sha512-PgkEZNtqa8hBGjHXQa4pMwZa93hmfu8FUSjs/nv4oUU6yLsgv+gh9nu28Kqi8Fz9CCVu4hj1MZs9/60J57IzFw==}
 
-  '@iconify-json/simple-icons@1.2.78':
-    resolution: {integrity: sha512-I3lkNp0Qu7q2iZWkdcf/I2hqGhzK6qxdILh9T7XqowQrnpmG/BayDsiCf6PktDoWlW0U971xA5g+panm+NFrfQ==}
+  '@iconify-json/simple-icons@1.2.79':
+    resolution: {integrity: sha512-aNyO7Fd1qej9oQfIyohYFRv0lhQLaZ+6UkK1c1qwax0MDPUOZOdq65MlU500kow97pD/W+b2u1And3e25eE24Q==}
 
   '@iconify-json/streamline@1.2.5':
     resolution: {integrity: sha512-u6l9BOJoIIPjjDXWl6D/hPDzeBk5WiaEHZ+U9SbkQ14N9hgotaYyIZVMfgF175CG1TTS06j8k15D3FM2OYaFIw==}
@@ -1785,6 +1785,7 @@ packages:
 
   '@simple-git/argv-parser@1.1.0':
     resolution: {integrity: sha512-sUKOu2lb5vGIWADNNLpscyj07DAeQZU3KLbnE2Tj53tW6BbDQKMly2CCfnR4oYzqtRELCPWfwaPg+Q0T8qfKBg==}
+    deprecated: Contains a breaking change that should be a major version bump
 
   '@sindresorhus/is@4.6.0':
     resolution: {integrity: sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==}
@@ -2064,6 +2065,7 @@ packages:
   '@xmldom/xmldom@0.8.12':
     resolution: {integrity: sha512-9k/gHF6n/pAi/9tqr3m3aqkuiNosYTurLLUtc7xQ9sxB/wm7WPygCv8GYa6mS0fLJEHhqMC1ATYhz++U/lRHqg==}
     engines: {node: '>=10.0.0'}
+    deprecated: this version has critical issues, please update to the latest version
 
   abbrev@3.0.1:
     resolution: {integrity: sha512-AO2ac6pjRB3SJmGJo+v5/aK6Omggp6fsLrs6wN9bd35ulu4cCwaAU9+7ZhXjeqHVkaHThLuzH0nZr0YpCDhygg==}
@@ -3776,8 +3778,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  nanoid@5.1.7:
-    resolution: {integrity: sha512-ua3NDgISf6jdwezAheMOk4mbE1LXjm1DfMUDMuJf4AqxLFK3ccGpgWizwa5YV7Yz9EpXwEaWoRXSb/BnV0t5dQ==}
+  nanoid@5.1.9:
+    resolution: {integrity: sha512-ZUvP7KeBLe3OZ1ypw6dI/TzYJuvHP77IM4Ry73waSQTLn8/g8rpdjfyVAh7t1/+FjBtG4lCP42MEbDxOsRpBMw==}
     engines: {node: ^18 || >=20}
     hasBin: true
 
@@ -4103,8 +4105,8 @@ packages:
     peerDependencies:
       pixi.js: '>=4.6.0'
 
-  pixi.js@8.17.1:
-    resolution: {integrity: sha512-OB4TpZHrP5RYy+7FqmFrAc0IHRhfOoNIfF4sVeinvK3aG1r2pYrSMneJAKi9+WvGKC70Dj7GEpZ2OZGB6o/xdg==}
+  pixi.js@8.18.1:
+    resolution: {integrity: sha512-6LUPWYgulZhp/w4kam2XHXB0QedISZIqrJbRdHLLQ3csn5a38uzKxAp6B5j6s89QFYaIJbg95kvgTRcbgpO1ow==}
 
   pkg-types@1.3.1:
     resolution: {integrity: sha512-/Jm5M4RvtBFVkKWRu2BLUTNP8/M2a+UwuAX+ae4770q1qVGtfjG+WTCupoZixokjmHiry8uI+dlY8KXYV5HVVQ==}
@@ -5851,7 +5853,7 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/material-symbols@1.2.66':
+  '@iconify-json/material-symbols@1.2.67':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -5871,7 +5873,7 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/simple-icons@1.2.78':
+  '@iconify-json/simple-icons@1.2.79':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -9480,7 +9482,7 @@ snapshots:
 
   nanoid@3.3.11: {}
 
-  nanoid@5.1.7: {}
+  nanoid@5.1.9: {}
 
   nanotar@0.3.0: {}
 
@@ -10094,13 +10096,13 @@ snapshots:
 
   pirates@4.0.7: {}
 
-  pixi-ease@3.0.7(pixi.js@8.17.1):
+  pixi-ease@3.0.7(pixi.js@8.18.1):
     dependencies:
       eventemitter3: 4.0.7
       penner: 0.1.3
-      pixi.js: 8.17.1
+      pixi.js: 8.18.1
 
-  pixi.js@8.17.1:
+  pixi.js@8.18.1:
     dependencies:
       '@pixi/colord': 2.9.6
       '@types/earcut': 3.0.0
