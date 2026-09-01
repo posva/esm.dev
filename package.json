@@ -62,5 +62,5 @@
     "oxfmt": "^0.57.0",
     "vitest": "^4.1.10"
   },
-  "packageManager": "pnpm@10.34.4"
+  "packageManager": "pnpm@11.25.0"
 }
