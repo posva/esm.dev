@@ -55,9 +55,10 @@ useHead({
 
       <main id="main" class="space-y-4">
         <p>
-          an independent <b>Frontend Developer</b> deeply invested in
+          a <b>Frontend Nerd</b> deeply invested in
           <NuxtLink v-magnetic to="/open-source"><b>Open Source</b></NuxtLink
-          >.
+          >. Currently working at <Icon name="simple-icons:vercel" size="0.85em" /> Vercel and
+          <Icon name="logos:nuxt-icon" size="0.85em" /> Nuxt.
           <br />
           I'm part of the <Icon name="logos:vue" size="0.85em" /> Vue.js Core Team, the author of
           <Icon name="logos:pinia" /> Pinia and Vue Router.
