@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import ChipLink from '~/components/content/ChipLink.vue'
 import FaqMessages from '~/components/content/FaqMessages.vue'
 
 useHead({
@@ -137,6 +138,16 @@ const { data: contentWorkingNow } = await useAsyncData('working-now', () => {
   <main>
     <div class="w-full px-2 pt-16 mx-auto prose md:px-0 max-w-xxl lg:prose-xl dark:prose-invert">
       <h1>Open Source Software</h1>
+
+      <p>
+        Some parts of this page are not up-to-date: I currently work at
+        <ChipLink
+          text="Vercel"
+          :img="['/logos/vercel-light.svg', '/logos/vercel-dark.svg']"
+          url="https://vercel.com"
+        />
+        full time.
+      </p>
 
       <ContentRenderer v-if="contentIntro" :value="contentIntro" />
 
