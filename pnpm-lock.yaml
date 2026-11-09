@@ -47,8 +47,8 @@ importers:
         specifier: ^0.1.3
         version: 0.1.3
       pixi-ease:
-        specifier: ^3.0.7
-        version: 3.0.7(pixi.js@8.19.0)
+        specifier: ^4.0.0
+        version: 4.0.0(pixi.js@8.19.0)
       pixi.js:
         specifier: ^8.19.0
         version: 8.19.0
@@ -3351,9 +3351,6 @@ packages:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
     engines: {node: '>=6'}
 
-  eventemitter3@4.0.7:
-    resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
-
   eventemitter3@5.0.4:
     resolution: {integrity: sha512-mlsTRyGaPBjPedk6Bvw+aqbsXDtoAyAzm5MO7JgU+yVRyMQ5O8bD4Kcci7BS85f93veegeCPkL8R4GLClnjLFw==}
 
@@ -4704,10 +4701,10 @@ packages:
     resolution: {integrity: sha512-TfySrs/5nm8fQJDcBDuUng3VOUKsd7S+zqvbOTiGXHfxX4wK31ard+hoNuvkicM/2YFzlpDgABOevKSsB4G/FA==}
     engines: {node: '>= 6'}
 
-  pixi-ease@3.0.7:
-    resolution: {integrity: sha512-ew1IzAi2layygHrk8+tk6XTuue3WM6Po5LsA46v+9BtQNMa2sX0PMLzQ4nq1UpTbLg4Dwqep9RTzDRsFhCYJJw==}
+  pixi-ease@4.0.0:
+    resolution: {integrity: sha512-2yyzV3MTcpByW+4DMmbMkerhsrswF5m0L9KtbG37T0xvoatUoUf8/CMnjmxpaW40VG24E/O+Uwm8oxhkHziofQ==}
     peerDependencies:
-      pixi.js: '>=4.6.0'
+      pixi.js: ^8
 
   pixi.js@8.19.0:
     resolution: {integrity: sha512-pq1O6emA/GFjjeF+8d3Pb5t7knD8FsnfWGqQcRjYjsqFZ7QdzG1XgjLDUu0DFJRbafjV5+g8iNLFBx0b9649lg==}
@@ -9541,8 +9538,6 @@ snapshots:
 
   event-target-shim@5.0.1: {}
 
-  eventemitter3@4.0.7: {}
-
   eventemitter3@5.0.4: {}
 
   events-universal@1.0.1:
@@ -11537,9 +11532,9 @@ snapshots:
 
   pirates@4.0.7: {}
 
-  pixi-ease@3.0.7(pixi.js@8.19.0):
+  pixi-ease@4.0.0(pixi.js@8.19.0):
     dependencies:
-      eventemitter3: 4.0.7
+      eventemitter3: 5.0.4
       penner: 0.1.3
       pixi.js: 8.19.0
 
